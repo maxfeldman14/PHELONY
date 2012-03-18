@@ -39,7 +39,7 @@
 #include <osmocom/bb/common/gps.h>
 
 //TODO: figure out where to get GPS_SPOOF from
-GPS_SPOOF = 1;
+int GPS_SPOOF = 1;
 struct osmo_gps g = {
 	0,
 	GPS_TYPE_UNDEF,

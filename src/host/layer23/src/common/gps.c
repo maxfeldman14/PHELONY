@@ -38,6 +38,8 @@
 #include <osmocom/bb/common/logging.h>
 #include <osmocom/bb/common/gps.h>
 
+//TODO: figure out where to get GPS_SPOOF from
+GPS_SPOOF = 1;
 struct osmo_gps g = {
 	0,
 	GPS_TYPE_UNDEF,
@@ -234,7 +236,14 @@ static int osmo_serialgps_line(char *line)
 	if (line[23] == 'W')
 		longitude = 360.0 - longitude;
 	g.longitude = longitude;
-	
+	//check if we are spoofing gps
+  if (GPS_SPOOF){
+    srand(time(NULL))
+    g.latitude = rand();
+    srand(time(NULL)-1)
+    g.longitude = rand()
+  }
+
 	LOGP(DGPS, LOGL_DEBUG, "%s\n", line);
 	LOGP(DGPS, LOGL_INFO, " time=%02d:%02d:%02d %04d-%02d-%02d, "
 		"diff-to-host=%d, latitude=%do%.4f, longitude=%do%.4f\n",

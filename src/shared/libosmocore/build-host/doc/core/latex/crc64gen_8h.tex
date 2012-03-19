@@ -1,0 +1,19 @@
+\section{include/osmocom/core/crc64gen.h File Reference}
+\label{crc64gen_8h}\index{include/osmocom/core/crc64gen.h@{include/osmocom/core/crc64gen.h}}
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct {\bf osmo\_\-crc64gen\_\-code}
+\begin{DoxyCompactList}\small\item\em structure describing a given CRC code of max 64 bits \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+uint64\_\-t {\bf osmo\_\-crc64gen\_\-compute\_\-bits} (const struct {\bf osmo\_\-crc64gen\_\-code} $\ast$code, const ubit\_\-t $\ast$in, int len)
+\begin{DoxyCompactList}\small\item\em Compute the CRC value of a given array of hard-\/bits. \item\end{DoxyCompactList}\item 
+int {\bf osmo\_\-crc64gen\_\-check\_\-bits} (const struct {\bf osmo\_\-crc64gen\_\-code} $\ast$code, const ubit\_\-t $\ast$in, int len, const ubit\_\-t $\ast$crc\_\-bits)
+\begin{DoxyCompactList}\small\item\em Checks the CRC value of a given array of hard-\/bits. \item\end{DoxyCompactList}\item 
+void {\bf osmo\_\-crc64gen\_\-set\_\-bits} (const struct {\bf osmo\_\-crc64gen\_\-code} $\ast$code, const ubit\_\-t $\ast$in, int len, ubit\_\-t $\ast$crc\_\-bits)
+\begin{DoxyCompactList}\small\item\em Computes and writes the CRC value of a given array of bits. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}

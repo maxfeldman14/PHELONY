@@ -240,6 +240,7 @@ static int osmo_serialgps_line(char *line)
 	if (line[23] == 'W')
 		longitude = 360.0 - longitude;
 	g.longitude = longitude;
+<<<<<<< HEAD
 
 	// check if spoofing_set - if so, randomize lat/long
     if (spoofing_set) {
@@ -250,6 +251,15 @@ static int osmo_serialgps_line(char *line)
         g.longitude = rand();
         LOGP(DGPS, LOGL_INFO, " GPS has been spoofed.\n");
     }
+=======
+	//check if we are spoofing gps
+  if (GPS_SPOOF){
+    srand(time(NULL));
+    g.latitude = rand();
+    srand(time(NULL)-1);
+    g.longitude = rand();
+  }
+>>>>>>> 1835d2f6d3201f0cff1ca082bef8963420f28935
 
 	LOGP(DGPS, LOGL_DEBUG, "%s\n", line);
 	LOGP(DGPS, LOGL_INFO, " time=%02d:%02d:%02d %04d-%02d-%02d, "

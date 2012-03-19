@@ -48,7 +48,6 @@ extern struct osmo_gps g;
 
 int osmo_gps_open(void);
 void osmo_gps_close(void);
-//changed this declaration
-void osmo_gps_init(int spoof);
+void osmo_gps_init(void);
 
 

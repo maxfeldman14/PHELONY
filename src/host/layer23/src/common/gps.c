@@ -42,7 +42,7 @@
 // int GPS_SPOOF = 1;
 
 // ADDED BY CASEY
-int spoofing_set = 0;
+extern int spoofing_set = 0;
 
 struct osmo_gps g = {
 	0,
@@ -379,9 +379,8 @@ void osmo_serialgps_close(void)
 	gps_bfd.fd = -1; /* -1 or 0 indicates: 'close' */
 }
 
-void osmo_gps_init(int spoof)
+void osmo_gps_init(void)
 {
-  spoofing_set = spoof;
 	memset(&gps_bfd, 0, sizeof(gps_bfd));
 }
 

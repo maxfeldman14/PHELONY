@@ -46,6 +46,9 @@ struct osmo_gps {
 
 extern struct osmo_gps g;
 
+//new:
+extern int spoofing_set;
+
 int osmo_gps_open(void);
 void osmo_gps_close(void);
 void osmo_gps_init(void);

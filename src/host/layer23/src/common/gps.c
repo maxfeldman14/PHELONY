@@ -238,10 +238,10 @@ static int osmo_serialgps_line(char *line)
 	g.longitude = longitude;
 	//check if we are spoofing gps
   if (GPS_SPOOF){
-    srand(time(NULL))
+    srand(time(NULL));
     g.latitude = rand();
-    srand(time(NULL)-1)
-    g.longitude = rand()
+    srand(time(NULL)-1);
+    g.longitude = rand();
   }
 
 	LOGP(DGPS, LOGL_DEBUG, "%s\n", line);

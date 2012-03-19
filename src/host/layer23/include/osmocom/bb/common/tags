@@ -1,0 +1,575 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ACLOCAL	Makefile	/^ACLOCAL = ${SHELL} \/home\/max\/c194\/PHELONY\/src\/host\/layer23\/missing --run aclocal-1.11$/;"	m
+ACLOCAL_M4	Makefile	/^ACLOCAL_M4 = $(top_srcdir)\/aclocal.m4$/;"	m
+AMTAR	Makefile	/^AMTAR = ${SHELL} \/home\/max\/c194\/PHELONY\/src\/host\/layer23\/missing --run tar$/;"	m
+AM_DEFAULT_VERBOSITY	Makefile	/^AM_DEFAULT_VERBOSITY = 0$/;"	m
+AM_V_GEN	Makefile	/^AM_V_GEN = $(am__v_GEN_$(V))$/;"	m
+AM_V_at	Makefile	/^AM_V_at = $(am__v_at_$(V))$/;"	m
+AUTOCONF	Makefile	/^AUTOCONF = ${SHELL} \/home\/max\/c194\/PHELONY\/src\/host\/layer23\/missing --run autoconf$/;"	m
+AUTOHEADER	Makefile	/^AUTOHEADER = ${SHELL} \/home\/max\/c194\/PHELONY\/src\/host\/layer23\/missing --run autoheader$/;"	m
+AUTOMAKE	Makefile	/^AUTOMAKE = ${SHELL} \/home\/max\/c194\/PHELONY\/src\/host\/layer23\/missing --run automake-1.11$/;"	m
+AWK	Makefile	/^AWK = mawk$/;"	m
+CC	Makefile	/^CC = gcc$/;"	m
+CCDEPMODE	Makefile	/^CCDEPMODE = depmode=gcc3$/;"	m
+CFLAGS	Makefile	/^CFLAGS = -g -O2$/;"	m
+CONFIG_CLEAN_FILES	Makefile	/^CONFIG_CLEAN_FILES =$/;"	m
+CONFIG_CLEAN_VPATH_FILES	Makefile	/^CONFIG_CLEAN_VPATH_FILES =$/;"	m
+CPP	Makefile	/^CPP = gcc -E$/;"	m
+CPPFLAGS	Makefile	/^CPPFLAGS = $/;"	m
+CTAGS	Makefile	/^CTAGS = ctags$/;"	m
+CYGPATH_W	Makefile	/^CYGPATH_W = echo$/;"	m
+DCC	logging.h	/^	DCC,$/;"	e	enum:__anon1
+DCS	logging.h	/^	DCS,$/;"	e	enum:__anon1
+DEBUG	logging.h	4;"	d
+DEFS	Makefile	/^DEFS = -DPACKAGE_NAME=\\"\\" -DPACKAGE_TARNAME=\\"\\" -DPACKAGE_VERSION=\\"\\" -DPACKAGE_STRING=\\"\\" -DPACKAGE_BUGREPORT=\\"\\" -DPACKAGE_URL=\\"\\" -DPACKAGE=\\"layer23\\" -DVERSION=\\"0.0.0\\" -DSTDC_HEADERS=1$/;"	m
+DEPDIR	Makefile	/^DEPDIR = .deps$/;"	m
+DGPS	logging.h	/^	DGPS,$/;"	e	enum:__anon1
+DISTFILES	Makefile	/^DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)$/;"	m
+DIST_COMMON	Makefile	/^DIST_COMMON = $(noinst_HEADERS) $(srcdir)\/Makefile.am \\$/;"	m
+DIST_SOURCES	Makefile	/^DIST_SOURCES =$/;"	m
+DL1C	logging.h	/^	DL1C,$/;"	e	enum:__anon1
+DMEAS	logging.h	/^	DMEAS,$/;"	e	enum:__anon1
+DMM	logging.h	/^	DMM,$/;"	e	enum:__anon1
+DMNCC	logging.h	/^	DMNCC,$/;"	e	enum:__anon1
+DNB	logging.h	/^	DNB,$/;"	e	enum:__anon1
+DPAG	logging.h	/^	DPAG,$/;"	e	enum:__anon1
+DPLMN	logging.h	/^	DPLMN,$/;"	e	enum:__anon1
+DRR	logging.h	/^	DRR,$/;"	e	enum:__anon1
+DRSL	logging.h	/^	DRSL,$/;"	e	enum:__anon1
+DSAP	logging.h	/^	DSAP,$/;"	e	enum:__anon1
+DSIM	logging.h	/^	DSIM,$/;"	e	enum:__anon1
+DSMS	logging.h	/^	DSMS,$/;"	e	enum:__anon1
+DSS	logging.h	/^	DSS,$/;"	e	enum:__anon1
+DSUM	logging.h	/^	DSUM,$/;"	e	enum:__anon1
+ECHO_C	Makefile	/^ECHO_C = $/;"	m
+ECHO_N	Makefile	/^ECHO_N = -n$/;"	m
+ECHO_T	Makefile	/^ECHO_T = $/;"	m
+EGREP	Makefile	/^EGREP = \/bin\/grep -E$/;"	m
+ETAGS	Makefile	/^ETAGS = etags$/;"	m
+EXEEXT	Makefile	/^EXEEXT = $/;"	m
+FREQ_TYPE_HOPP	sysinfo.h	10;"	d
+FREQ_TYPE_NCELL	sysinfo.h	11;"	d
+FREQ_TYPE_NCELL_2	sysinfo.h	12;"	d
+FREQ_TYPE_NCELL_2bis	sysinfo.h	13;"	d
+FREQ_TYPE_NCELL_2ter	sysinfo.h	14;"	d
+FREQ_TYPE_REP	sysinfo.h	15;"	d
+FREQ_TYPE_REP_5	sysinfo.h	16;"	d
+FREQ_TYPE_REP_5bis	sysinfo.h	17;"	d
+FREQ_TYPE_REP_5ter	sysinfo.h	18;"	d
+FREQ_TYPE_SERV	sysinfo.h	9;"	d
+GPS_TYPE_GPSD	gps.h	/^	GPS_TYPE_GPSD,$/;"	e	enum:__anon2
+GPS_TYPE_SERIAL	gps.h	/^	GPS_TYPE_SERIAL$/;"	e	enum:__anon2
+GPS_TYPE_UNDEF	gps.h	/^	GPS_TYPE_UNDEF,$/;"	e	enum:__anon2
+GREP	Makefile	/^GREP = \/bin\/grep$/;"	m
+GSM1111_ACC_ALWAYS	sim.h	49;"	d
+GSM1111_ACC_CHV1	sim.h	50;"	d
+GSM1111_ACC_CHV2	sim.h	51;"	d
+GSM1111_ACC_NEW	sim.h	53;"	d
+GSM1111_ACC_RFU	sim.h	52;"	d
+GSM1111_CLASS_GSM	sim.h	24;"	d
+GSM1111_INST_CHANGE_CHV	sim.h	34;"	d
+GSM1111_INST_DISABLE_CHV	sim.h	35;"	d
+GSM1111_INST_ENABLE_CHV	sim.h	36;"	d
+GSM1111_INST_ENVELOPE	sim.h	44;"	d
+GSM1111_INST_FETCH	sim.h	45;"	d
+GSM1111_INST_GET_RESPONSE	sim.h	42;"	d
+GSM1111_INST_INCREASE	sim.h	32;"	d
+GSM1111_INST_INVALIDATE	sim.h	38;"	d
+GSM1111_INST_READ_BINARY	sim.h	27;"	d
+GSM1111_INST_READ_RECORD	sim.h	29;"	d
+GSM1111_INST_REHABLILITATE	sim.h	39;"	d
+GSM1111_INST_RUN_GSM_ALGO	sim.h	40;"	d
+GSM1111_INST_SEEK	sim.h	31;"	d
+GSM1111_INST_SELECT	sim.h	25;"	d
+GSM1111_INST_SLEEP	sim.h	41;"	d
+GSM1111_INST_STATUS	sim.h	26;"	d
+GSM1111_INST_TERMINAL_PROFILE	sim.h	43;"	d
+GSM1111_INST_TERMINAL_RESPONSE	sim.h	46;"	d
+GSM1111_INST_UNBLOCK_CHV	sim.h	37;"	d
+GSM1111_INST_UPDATE_BINARY	sim.h	28;"	d
+GSM1111_INST_UPDATE_RECORD	sim.h	30;"	d
+GSM1111_INST_VERIFY_CHV	sim.h	33;"	d
+GSM1111_REF_FILE_INCONSI	sim.h	87;"	d
+GSM1111_REF_FILE_NOT_FOUND	sim.h	86;"	d
+GSM1111_REF_NO_EF	sim.h	84;"	d
+GSM1111_REF_OUT_OF_RANGE	sim.h	85;"	d
+GSM1111_SEC_BLOCKED	sim.h	94;"	d
+GSM1111_SEC_CONTRA_CHV	sim.h	92;"	d
+GSM1111_SEC_CONTRA_INVAL	sim.h	93;"	d
+GSM1111_SEC_MAX_VALUE	sim.h	95;"	d
+GSM1111_SEC_NO_ACCESS	sim.h	91;"	d
+GSM1111_SEC_NO_CHV	sim.h	90;"	d
+GSM1111_SOF_CYCLIC	sim.h	65;"	d
+GSM1111_SOF_LINEAR	sim.h	64;"	d
+GSM1111_SOF_TRANSPARENT	sim.h	63;"	d
+GSM1111_STAT_APP_TK_BUSY	sim.h	73;"	d
+GSM1111_STAT_DL_ERROR	sim.h	70;"	d
+GSM1111_STAT_INCORR_P1_P2	sim.h	78;"	d
+GSM1111_STAT_INCORR_P3	sim.h	77;"	d
+GSM1111_STAT_MEM_PROBLEM	sim.h	74;"	d
+GSM1111_STAT_NORMAL	sim.h	68;"	d
+GSM1111_STAT_PROACTIVE	sim.h	69;"	d
+GSM1111_STAT_REFERENCING	sim.h	75;"	d
+GSM1111_STAT_RESPONSE	sim.h	71;"	d
+GSM1111_STAT_RESPONSE_TOO	sim.h	72;"	d
+GSM1111_STAT_SECURITY	sim.h	76;"	d
+GSM1111_STAT_TECH_PROBLEM	sim.h	81;"	d
+GSM1111_STAT_UKN_INST	sim.h	79;"	d
+GSM1111_STAT_WRONG_CLASS	sim.h	80;"	d
+GSM1111_TOF_DF	sim.h	59;"	d
+GSM1111_TOF_EF	sim.h	60;"	d
+GSM1111_TOF_MF	sim.h	58;"	d
+GSM1111_TOF_RFU	sim.h	57;"	d
+GSM_INPUT_INVALID	networks.h	4;"	d
+HEADERS	Makefile	/^HEADERS = $(noinst_HEADERS)$/;"	m
+INSTALL	Makefile	/^INSTALL = \/usr\/bin\/install -c$/;"	m
+INSTALL_DATA	Makefile	/^INSTALL_DATA = ${INSTALL} -m 644$/;"	m
+INSTALL_HEADER	Makefile	/^INSTALL_HEADER = $(INSTALL_DATA)$/;"	m
+INSTALL_PROGRAM	Makefile	/^INSTALL_PROGRAM = ${INSTALL}$/;"	m
+INSTALL_SCRIPT	Makefile	/^INSTALL_SCRIPT = ${INSTALL}$/;"	m
+INSTALL_STRIP_PROGRAM	Makefile	/^INSTALL_STRIP_PROGRAM = $(install_sh) -c -s$/;"	m
+L23_OPT_ARFCN	l23_app.h	/^	L23_OPT_ARFCN	= 2,$/;"	e	enum:__anon5
+L23_OPT_DBG	l23_app.h	/^	L23_OPT_DBG	= 16,$/;"	e	enum:__anon5
+L23_OPT_SAP	l23_app.h	/^	L23_OPT_SAP	= 1,$/;"	e	enum:__anon5
+L23_OPT_TAP	l23_app.h	/^	L23_OPT_TAP	= 4,$/;"	e	enum:__anon5
+L23_OPT_VTY	l23_app.h	/^	L23_OPT_VTY	= 8,$/;"	e	enum:__anon5
+LDFLAGS	Makefile	/^LDFLAGS = $/;"	m
+LIBOBJS	Makefile	/^LIBOBJS = $/;"	m
+LIBOSMOCODEC_CFLAGS	Makefile	/^LIBOSMOCODEC_CFLAGS = -I\/home\/max\/c194\/PHELONY\/src\/shared\/libosmocore\/include$/;"	m
+LIBOSMOCODEC_LIBS	Makefile	/^LIBOSMOCODEC_LIBS = \/home\/max\/c194\/PHELONY\/src\/shared\/libosmocore\/build-host\/src\/codec\/.libs\/libosmocodec.a$/;"	m
+LIBOSMOCORE_CFLAGS	Makefile	/^LIBOSMOCORE_CFLAGS = -I\/home\/max\/c194\/PHELONY\/src\/shared\/libosmocore\/include$/;"	m
+LIBOSMOCORE_LIBS	Makefile	/^LIBOSMOCORE_LIBS = \/home\/max\/c194\/PHELONY\/src\/shared\/libosmocore\/build-host\/src\/.libs\/libosmocore.a$/;"	m
+LIBOSMOGSM_CFLAGS	Makefile	/^LIBOSMOGSM_CFLAGS = -I\/home\/max\/c194\/PHELONY\/src\/shared\/libosmocore\/include$/;"	m
+LIBOSMOGSM_LIBS	Makefile	/^LIBOSMOGSM_LIBS = \/home\/max\/c194\/PHELONY\/src\/shared\/libosmocore\/build-host\/src\/gsm\/.libs\/libosmogsm.a$/;"	m
+LIBOSMOVTY_CFLAGS	Makefile	/^LIBOSMOVTY_CFLAGS = -I\/home\/max\/c194\/PHELONY\/src\/shared\/libosmocore\/include$/;"	m
+LIBOSMOVTY_LIBS	Makefile	/^LIBOSMOVTY_LIBS = \/home\/max\/c194\/PHELONY\/src\/shared\/libosmocore\/build-host\/src\/vty\/.libs\/libosmovty.a$/;"	m
+LIBS	Makefile	/^LIBS = $/;"	m
+LTLIBOBJS	Makefile	/^LTLIBOBJS = $/;"	m
+MAKEINFO	Makefile	/^MAKEINFO = ${SHELL} \/home\/max\/c194\/PHELONY\/src\/host\/layer23\/missing --run makeinfo$/;"	m
+MAX_SIM_PATH_LENGTH	sim.h	157;"	d
+MKDIR_P	Makefile	/^MKDIR_P = \/bin\/mkdir -p$/;"	m
+NORMAL_INSTALL	Makefile	/^NORMAL_INSTALL = :$/;"	m
+NORMAL_UNINSTALL	Makefile	/^NORMAL_UNINSTALL = :$/;"	m
+OBJEXT	Makefile	/^OBJEXT = o$/;"	m
+PACKAGE	Makefile	/^PACKAGE = layer23$/;"	m
+PACKAGE_BUGREPORT	Makefile	/^PACKAGE_BUGREPORT = $/;"	m
+PACKAGE_NAME	Makefile	/^PACKAGE_NAME = $/;"	m
+PACKAGE_STRING	Makefile	/^PACKAGE_STRING = $/;"	m
+PACKAGE_TARNAME	Makefile	/^PACKAGE_TARNAME = $/;"	m
+PACKAGE_URL	Makefile	/^PACKAGE_URL = $/;"	m
+PACKAGE_VERSION	Makefile	/^PACKAGE_VERSION = $/;"	m
+PATH_SEPARATOR	Makefile	/^PATH_SEPARATOR = :$/;"	m
+PKG_CONFIG	Makefile	/^PKG_CONFIG = \/usr\/bin\/pkg-config$/;"	m
+PKG_CONFIG_LIBDIR	Makefile	/^PKG_CONFIG_LIBDIR = $/;"	m
+PKG_CONFIG_PATH	Makefile	/^PKG_CONFIG_PATH = $/;"	m
+POST_INSTALL	Makefile	/^POST_INSTALL = :$/;"	m
+POST_UNINSTALL	Makefile	/^POST_UNINSTALL = :$/;"	m
+PRE_INSTALL	Makefile	/^PRE_INSTALL = :$/;"	m
+PRE_UNINSTALL	Makefile	/^PRE_UNINSTALL = :$/;"	m
+RANLIB	Makefile	/^RANLIB = ranlib$/;"	m
+SET_MAKE	Makefile	/^SET_MAKE = $/;"	m
+SHELL	Makefile	/^SHELL = \/bin\/bash$/;"	m
+SIM_ALLOC_HEADROOM	sim.h	191;"	d
+SIM_ALLOC_SIZE	sim.h	190;"	d
+SIM_CAUSE_NO_SIM	sim.h	128;"	d
+SIM_CAUSE_PIN1_BLOCKED	sim.h	133;"	d
+SIM_CAUSE_PIN1_REQUIRED	sim.h	131;"	d
+SIM_CAUSE_PIN2_BLOCKED	sim.h	134;"	d
+SIM_CAUSE_PIN2_REQUIRED	sim.h	132;"	d
+SIM_CAUSE_PUC_BLOCKED	sim.h	135;"	d
+SIM_CAUSE_REQUEST_ERROR	sim.h	130;"	d
+SIM_CAUSE_SIM_ERROR	sim.h	129;"	d
+SIM_JOB_ERROR	sim.h	/^	SIM_JOB_ERROR,$/;"	e	enum:__anon3
+SIM_JOB_ERROR	sim.h	125;"	d
+SIM_JOB_INCREASE	sim.h	/^	SIM_JOB_INCREASE,$/;"	e	enum:__anon3
+SIM_JOB_INVALIDATE	sim.h	/^	SIM_JOB_INVALIDATE,$/;"	e	enum:__anon3
+SIM_JOB_OK	sim.h	/^	SIM_JOB_OK,$/;"	e	enum:__anon3
+SIM_JOB_OK	sim.h	124;"	d
+SIM_JOB_PIN1_CHANGE	sim.h	/^	SIM_JOB_PIN1_CHANGE,$/;"	e	enum:__anon3
+SIM_JOB_PIN1_DISABLE	sim.h	/^	SIM_JOB_PIN1_DISABLE,$/;"	e	enum:__anon3
+SIM_JOB_PIN1_ENABLE	sim.h	/^	SIM_JOB_PIN1_ENABLE,$/;"	e	enum:__anon3
+SIM_JOB_PIN1_UNBLOCK	sim.h	/^	SIM_JOB_PIN1_UNBLOCK,$/;"	e	enum:__anon3
+SIM_JOB_PIN1_UNLOCK	sim.h	/^	SIM_JOB_PIN1_UNLOCK,$/;"	e	enum:__anon3
+SIM_JOB_PIN2_CHANGE	sim.h	/^	SIM_JOB_PIN2_CHANGE,$/;"	e	enum:__anon3
+SIM_JOB_PIN2_UNBLOCK	sim.h	/^	SIM_JOB_PIN2_UNBLOCK,$/;"	e	enum:__anon3
+SIM_JOB_PIN2_UNLOCK	sim.h	/^	SIM_JOB_PIN2_UNLOCK,$/;"	e	enum:__anon3
+SIM_JOB_READ_BINARY	sim.h	/^	SIM_JOB_READ_BINARY,$/;"	e	enum:__anon3
+SIM_JOB_READ_RECORD	sim.h	/^	SIM_JOB_READ_RECORD,$/;"	e	enum:__anon3
+SIM_JOB_REHABILITATE	sim.h	/^	SIM_JOB_REHABILITATE,$/;"	e	enum:__anon3
+SIM_JOB_RUN_GSM_ALGO	sim.h	/^	SIM_JOB_RUN_GSM_ALGO,$/;"	e	enum:__anon3
+SIM_JOB_SEEK_RECORD	sim.h	/^	SIM_JOB_SEEK_RECORD,$/;"	e	enum:__anon3
+SIM_JOB_UPDATE_BINARY	sim.h	/^	SIM_JOB_UPDATE_BINARY,$/;"	e	enum:__anon3
+SIM_JOB_UPDATE_RECORD	sim.h	/^	SIM_JOB_UPDATE_RECORD,$/;"	e	enum:__anon3
+SIM_JST_IDLE	sim.h	/^	SIM_JST_IDLE = 0,$/;"	e	enum:__anon4
+SIM_JST_PIN1_CHANGE	sim.h	/^	SIM_JST_PIN1_CHANGE,$/;"	e	enum:__anon4
+SIM_JST_PIN1_DISABLE	sim.h	/^	SIM_JST_PIN1_DISABLE,$/;"	e	enum:__anon4
+SIM_JST_PIN1_ENABLE	sim.h	/^	SIM_JST_PIN1_ENABLE,$/;"	e	enum:__anon4
+SIM_JST_PIN1_UNBLOCK	sim.h	/^	SIM_JST_PIN1_UNBLOCK,$/;"	e	enum:__anon4
+SIM_JST_PIN1_UNLOCK	sim.h	/^	SIM_JST_PIN1_UNLOCK,$/;"	e	enum:__anon4
+SIM_JST_PIN2_CHANGE	sim.h	/^	SIM_JST_PIN2_CHANGE,$/;"	e	enum:__anon4
+SIM_JST_PIN2_UNBLOCK	sim.h	/^	SIM_JST_PIN2_UNBLOCK,$/;"	e	enum:__anon4
+SIM_JST_PIN2_UNLOCK	sim.h	/^	SIM_JST_PIN2_UNLOCK,$/;"	e	enum:__anon4
+SIM_JST_RUN_GSM_ALGO	sim.h	/^	SIM_JST_RUN_GSM_ALGO,		\/* wait for algorithm to process *\/$/;"	e	enum:__anon4
+SIM_JST_RUN_GSM_ALGO_RESP	sim.h	/^	SIM_JST_RUN_GSM_ALGO_RESP,	\/* wait for response *\/$/;"	e	enum:__anon4
+SIM_JST_SELECT_EF	sim.h	/^	SIM_JST_SELECT_EF,		\/* SELECT sent *\/$/;"	e	enum:__anon4
+SIM_JST_SELECT_EF_RESP	sim.h	/^	SIM_JST_SELECT_EF_RESP,		\/* GET RESPONSE sent *\/$/;"	e	enum:__anon4
+SIM_JST_SELECT_MFDF	sim.h	/^	SIM_JST_SELECT_MFDF,		\/* SELECT sent *\/$/;"	e	enum:__anon4
+SIM_JST_SELECT_MFDF_RESP	sim.h	/^	SIM_JST_SELECT_MFDF_RESP,	\/* GET RESPONSE sent *\/$/;"	e	enum:__anon4
+SIM_JST_WAIT_FILE	sim.h	/^	SIM_JST_WAIT_FILE,		\/* file command sent *\/$/;"	e	enum:__anon4
+SOURCES	Makefile	/^SOURCES =$/;"	m
+SS_GLOBAL	osmocom_data.h	/^	SS_GLOBAL,$/;"	e	enum:osmobb_sig_subsys
+SS_L1CTL	osmocom_data.h	/^	SS_L1CTL,$/;"	e	enum:osmobb_sig_subsys
+STRIP	Makefile	/^STRIP = $/;"	m
+S_GLOBAL_SHUTDOWN	osmocom_data.h	/^	S_GLOBAL_SHUTDOWN,$/;"	e	enum:osmobb_global_sig
+S_L1CTL_CCCH_MODE_CONF	osmocom_data.h	/^	S_L1CTL_CCCH_MODE_CONF,$/;"	e	enum:osmobb_l1ctl_sig
+S_L1CTL_FBSB_ERR	osmocom_data.h	/^	S_L1CTL_FBSB_ERR,$/;"	e	enum:osmobb_l1ctl_sig
+S_L1CTL_FBSB_RESP	osmocom_data.h	/^	S_L1CTL_FBSB_RESP,$/;"	e	enum:osmobb_l1ctl_sig
+S_L1CTL_LOSS_IND	osmocom_data.h	/^	S_L1CTL_LOSS_IND,$/;"	e	enum:osmobb_l1ctl_sig
+S_L1CTL_NEIGH_PM_IND	osmocom_data.h	/^	S_L1CTL_NEIGH_PM_IND,$/;"	e	enum:osmobb_l1ctl_sig
+S_L1CTL_PM_DONE	osmocom_data.h	/^	S_L1CTL_PM_DONE,$/;"	e	enum:osmobb_l1ctl_sig
+S_L1CTL_PM_RES	osmocom_data.h	/^	S_L1CTL_PM_RES,$/;"	e	enum:osmobb_l1ctl_sig
+S_L1CTL_RESET	osmocom_data.h	/^	S_L1CTL_RESET,$/;"	e	enum:osmobb_l1ctl_sig
+S_L1CTL_TCH_MODE_CONF	osmocom_data.h	/^	S_L1CTL_TCH_MODE_CONF,$/;"	e	enum:osmobb_l1ctl_sig
+VERSION	Makefile	/^VERSION = 0.0.0$/;"	m
+_L1L2_INTERFACE_H	l1l2_interface.h	2;"	d
+_L23_APP_H	l23_app.h	2;"	d
+_LOGGING_H	logging.h	2;"	d
+_NETWORKS_H	networks.h	2;"	d
+_SAP_INTERFACE_H	sap_interface.h	2;"	d
+_SYSINFO_H	sysinfo.h	2;"	d
+abs_builddir	Makefile	/^abs_builddir = \/home\/max\/c194\/PHELONY\/src\/host\/layer23\/include\/osmocom\/bb\/common$/;"	m
+abs_srcdir	Makefile	/^abs_srcdir = \/home\/max\/c194\/PHELONY\/src\/host\/layer23\/include\/osmocom\/bb\/common$/;"	m
+abs_top_builddir	Makefile	/^abs_top_builddir = \/home\/max\/c194\/PHELONY\/src\/host\/layer23$/;"	m
+abs_top_srcdir	Makefile	/^abs_top_srcdir = \/home\/max\/c194\/PHELONY\/src\/host\/layer23$/;"	m
+ac_ct_CC	Makefile	/^ac_ct_CC = gcc$/;"	m
+acc_inc	sim.h	/^		 acc_inc:4;$/;"	m	struct:gsm1111_response_ef
+acc_inval	sim.h	/^	uint8_t	acc_inval:4,$/;"	m	struct:gsm1111_response_ef
+acc_read	sim.h	/^		 acc_read:4;$/;"	m	struct:gsm1111_response_ef
+acc_reha	sim.h	/^		 acc_reha:4;$/;"	m	struct:gsm1111_response_ef
+acc_update	sim.h	/^	uint8_t	acc_update:4,$/;"	m	struct:gsm1111_response_ef
+acs	sysinfo.h	/^	uint8_t				acs;$/;"	m	struct:gsm48_sysinfo
+am__aclocal_m4_deps	Makefile	/^am__aclocal_m4_deps = $(top_srcdir)\/configure.ac$/;"	m
+am__cd	Makefile	/^am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd$/;"	m
+am__configure_deps	Makefile	/^am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \\$/;"	m
+am__include	Makefile	/^am__include = include$/;"	m
+am__leading_dot	Makefile	/^am__leading_dot = .$/;"	m
+am__quote	Makefile	/^am__quote = $/;"	m
+am__tar	Makefile	/^am__tar = ${AMTAR} chof - "$$tardir"$/;"	m
+am__untar	Makefile	/^am__untar = ${AMTAR} xf -$/;"	m
+am__v_GEN_	Makefile	/^am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))$/;"	m
+am__v_GEN_0	Makefile	/^am__v_GEN_0 = @echo "  GEN   " $@;$/;"	m
+am__v_at_	Makefile	/^am__v_at_ = $(am__v_at_$(AM_DEFAULT_VERBOSITY))$/;"	m
+am__v_at_0	Makefile	/^am__v_at_0 = @$/;"	m
+arfcn	sysinfo.h	/^	uint16_t			arfcn;$/;"	m	struct:gsm48_sysinfo
+att_allowed	sysinfo.h	/^	uint8_t				att_allowed;$/;"	m	struct:gsm48_sysinfo
+audio_mode	osmocom_data.h	/^	uint8_t audio_mode;$/;"	m	struct:osmobb_tch_mode_conf
+band_arfcn	osmocom_data.h	/^	uint16_t band_arfcn;$/;"	m	struct:osmobb_fbsb_res
+band_arfcn	osmocom_data.h	/^	uint16_t band_arfcn;$/;"	m	struct:osmobb_meas_res
+band_arfcn	osmocom_data.h	/^	uint16_t band_arfcn;$/;"	m	struct:osmobb_neigh_pm_ind
+band_ind	sysinfo.h	/^	uint8_t				band_ind; \/* set for DCS *\/$/;"	m	struct:gsm48_sysinfo
+baud	gps.h	/^	uint32_t	baud;$/;"	m	struct:osmo_gps
+bcch_dtx	sysinfo.h	/^	uint8_t				bcch_dtx;$/;"	m	struct:gsm48_sysinfo
+bcch_pwrc	sysinfo.h	/^	uint8_t				bcch_pwrc;$/;"	m	struct:gsm48_sysinfo
+bcch_radio_link_timeout	sysinfo.h	/^	uint8_t				bcch_radio_link_timeout;$/;"	m	struct:gsm48_sysinfo
+berr	osmocom_data.h	/^	uint32_t berr;$/;"	m	struct:rx_meas_stat
+bindir	Makefile	/^bindir = ${exec_prefix}\/bin$/;"	m
+bs_ag_blks_res	sysinfo.h	/^	uint8_t				bs_ag_blks_res;$/;"	m	struct:gsm48_sysinfo
+bsic	osmocom_data.h	/^	uint8_t bsic;$/;"	m	struct:osmobb_fbsb_res
+bsic	sysinfo.h	/^	uint8_t				bsic;$/;"	m	struct:gsm48_sysinfo
+build_alias	Makefile	/^build_alias = $/;"	m
+builddir	Makefile	/^builddir = .$/;"	m
+capa_conf	sim.h	/^	uint8_t capa_conf;$/;"	m	struct:gsm1111_ef_adn
+cb	sim.h	/^	void			(*cb)(struct osmocom_ms *ms, struct msgb *msg);$/;"	m	struct:gsm_sim_handler
+ccch_conf	sysinfo.h	/^	uint8_t				ccch_conf;$/;"	m	struct:gsm48_sysinfo
+ccch_mode	osmocom_data.h	/^	uint8_t ccch_mode;$/;"	m	struct:osmobb_ccch_mode_conf
+cclayer	osmocom_data.h	/^	struct gsm48_cclayer cclayer;$/;"	m	struct:osmocom_ms	typeref:struct:osmocom_ms::gsm48_cclayer
+cell_barr	sysinfo.h	/^	uint8_t				cell_barr; \/* 1 = barred *\/$/;"	m	struct:gsm48_sysinfo
+cell_id	sysinfo.h	/^	uint16_t			cell_id;$/;"	m	struct:gsm48_sysinfo
+cell_resel_hyst_db	sysinfo.h	/^	int8_t				cell_resel_hyst_db;$/;"	m	struct:gsm48_sysinfo
+cellsel	osmocom_data.h	/^	struct gsm322_cellsel cellsel;$/;"	m	struct:osmocom_ms	typeref:struct:osmocom_ms::gsm322_cellsel
+cfg_getopt_opt	l23_app.h	/^	int (*cfg_getopt_opt)(struct option **options);$/;"	m	struct:l23_app_info
+cfg_handle_opt	l23_app.h	/^	int (*cfg_handle_opt)(int c,const char *optarg);$/;"	m	struct:l23_app_info
+cfg_print_help	l23_app.h	/^	int (*cfg_print_help)();$/;"	m	struct:l23_app_info
+cfg_supported	l23_app.h	/^	int (*cfg_supported)();$/;"	m	struct:l23_app_info
+chan_nr	sysinfo.h	/^	uint8_t				chan_nr; \/* type, slot, sub slot *\/$/;"	m	struct:gsm48_sysinfo
+chv1_init	sim.h	/^		 chv1_init:1;$/;"	m	struct:gsm1111_response_mfdf_gsm
+chv1_remain	sim.h	/^	uint8_t			chv1_remain, chv2_remain;$/;"	m	struct:gsm_sim
+chv1_remain	sim.h	/^	uint8_t chv1_remain:4,$/;"	m	struct:gsm1111_response_mfdf_gsm
+chv2_init	sim.h	/^		 chv2_init:1;$/;"	m	struct:gsm1111_response_mfdf_gsm
+chv2_remain	sim.h	/^	uint8_t			chv1_remain, chv2_remain;$/;"	m	struct:gsm_sim
+chv2_remain	sim.h	/^	uint8_t chv2_remain:4,$/;"	m	struct:gsm1111_response_mfdf_gsm
+class_barr	sysinfo.h	/^	uint16_t			class_barr; \/* bit 10 is emergency *\/$/;"	m	struct:gsm48_sysinfo
+contribution	l23_app.h	/^	const char *contribution;$/;"	m	struct:l23_app_info
+copyright	l23_app.h	/^	const char *copyright;$/;"	m	struct:l23_app_info
+datadir	Makefile	/^datadir = ${datarootdir}$/;"	m
+datarootdir	Makefile	/^datarootdir = ${prefix}\/share$/;"	m
+deleting	osmocom_data.h	/^	uint8_t deleting, shutdown, started;$/;"	m	struct:osmocom_ms
+device	gps.h	/^	char		device[32];$/;"	m	struct:osmo_gps
+docdir	Makefile	/^docdir = ${datarootdir}\/doc\/${PACKAGE}$/;"	m
+ds_fail	osmocom_data.h	/^	int16_t dsc, ds_fail;$/;"	m	struct:rx_meas_stat
+dsc	osmocom_data.h	/^	int16_t dsc, ds_fail;$/;"	m	struct:rx_meas_stat
+dvidir	Makefile	/^dvidir = ${docdir}$/;"	m
+ecsm	sysinfo.h	/^	uint8_t				ecsm;$/;"	m	struct:gsm48_sysinfo
+enable	gps.h	/^	uint8_t		enable;$/;"	m	struct:osmo_gps
+entity	osmocom_data.h	/^	struct llist_head entity;$/;"	m	struct:osmocom_ms	typeref:struct:osmocom_ms::llist_head
+entry	sim.h	/^	struct llist_head	entry;$/;"	m	struct:gsm_sim_handler	typeref:struct:gsm_sim_handler::llist_head
+exec_prefix	Makefile	/^exec_prefix = ${prefix}$/;"	m
+ext_id	sim.h	/^	uint8_t ext_id;$/;"	m	struct:gsm1111_ef_adn
+file	sim.h	/^	uint16_t file;$/;"	m	struct:gsm_sim
+file	sim.h	/^	uint16_t file;$/;"	m	struct:sim_hdr
+file_char	sim.h	/^	uint8_t file_char;$/;"	m	struct:gsm1111_response_mfdf_gsm
+file_id	sim.h	/^	uint16_t file_id;$/;"	m	struct:gsm1111_response_ef
+file_id	sim.h	/^	uint16_t file_id;$/;"	m	struct:gsm1111_response_mfdf
+file_size	sim.h	/^	uint16_t file_size;$/;"	m	struct:gsm1111_response_ef
+frames	osmocom_data.h	/^	uint32_t frames;$/;"	m	struct:rx_meas_stat
+free_mem	sim.h	/^	uint16_t free_mem;$/;"	m	struct:gsm1111_response_mfdf
+freq	sysinfo.h	/^	struct	gsm_sysinfo_freq	freq[1024]; \/* all frequencies *\/$/;"	m	struct:gsm48_sysinfo	typeref:struct:gsm48_sysinfo::gsm_sysinfo_freq
+getopt_string	l23_app.h	/^	char *getopt_string;$/;"	m	struct:l23_app_info
+gmt	gps.h	/^	time_t		gmt; \/* GMT time when position was received *\/$/;"	m	struct:osmo_gps
+gprs	sysinfo.h	/^	uint8_t				gprs;$/;"	m	struct:gsm48_sysinfo
+gprs_ra_colour	sysinfo.h	/^	uint8_t				gprs_ra_colour;$/;"	m	struct:gsm48_sysinfo
+gprs_si13_pos	sysinfo.h	/^	uint8_t				gprs_si13_pos;$/;"	m	struct:gsm48_sysinfo
+gps_type	gps.h	/^	uint8_t		gps_type;$/;"	m	struct:osmo_gps
+gpsd_host	gps.h	/^	char		gpsd_host[32];$/;"	m	struct:osmo_gps
+gpsd_port	gps.h	/^	char		gpsd_port[6];$/;"	m	struct:osmo_gps
+gsm1111_ef_adn	sim.h	/^struct gsm1111_ef_adn {$/;"	s
+gsm1111_ef_loci	sim.h	/^struct gsm1111_ef_loci {$/;"	s
+gsm1111_ef_smsp	sim.h	/^struct gsm1111_ef_smsp {$/;"	s
+gsm1111_response_ef	sim.h	/^struct gsm1111_response_ef {$/;"	s
+gsm1111_response_mfdf	sim.h	/^struct gsm1111_response_mfdf {$/;"	s
+gsm1111_response_mfdf_gsm	sim.h	/^struct gsm1111_response_mfdf_gsm {$/;"	s
+gsm48_sysinfo	sysinfo.h	/^struct gsm48_sysinfo {$/;"	s
+gsm_data	sim.h	/^	uint8_t gsm_data[0];$/;"	m	struct:gsm1111_response_mfdf
+gsm_networks	networks.h	/^struct gsm_networks {$/;"	s
+gsm_sim	sim.h	/^struct gsm_sim {$/;"	s
+gsm_sim_handler	sim.h	/^struct gsm_sim_handler {$/;"	s
+h	sysinfo.h	/^	uint8_t				h; \/* using hopping *\/$/;"	m	struct:gsm48_sysinfo
+handle	sim.h	/^	int handle;$/;"	m	struct:sim_hdr
+handle	sim.h	/^	uint32_t		handle;$/;"	m	struct:gsm_sim_handler
+handlers	sim.h	/^	struct llist_head	handlers; \/* gsm_sim_handler *\/$/;"	m	struct:gsm_sim	typeref:struct:gsm_sim::llist_head
+hopp_len	sysinfo.h	/^	uint8_t				hopp_len;$/;"	m	struct:gsm48_sysinfo
+hopping	sysinfo.h	/^	uint16_t			hopping[64]; \/* hopping arfcn *\/$/;"	m	struct:gsm48_sysinfo
+host_alias	Makefile	/^host_alias = $/;"	m
+hsn	sysinfo.h	/^	uint8_t				hsn;$/;"	m	struct:gsm48_sysinfo
+htmldir	Makefile	/^htmldir = ${docdir}$/;"	m
+inc_allowed	sim.h	/^	uint8_t inc_allowed;$/;"	m	struct:gsm1111_response_ef
+includedir	Makefile	/^includedir = ${prefix}\/include$/;"	m
+infodir	Makefile	/^infodir = ${datarootdir}\/info$/;"	m
+install_sh	Makefile	/^install_sh = ${SHELL} \/home\/max\/c194\/PHELONY\/src\/host\/layer23\/install-sh$/;"	m
+install_sh_DATA	Makefile	/^install_sh_DATA = $(install_sh) -c -m 644$/;"	m
+install_sh_PROGRAM	Makefile	/^install_sh_PROGRAM = $(install_sh) -c$/;"	m
+install_sh_SCRIPT	Makefile	/^install_sh_SCRIPT = $(install_sh) -c$/;"	m
+job_handle	sim.h	/^	uint32_t		job_handle;$/;"	m	struct:gsm_sim
+job_msg	sim.h	/^	struct msgb		*job_msg;$/;"	m	struct:gsm_sim	typeref:struct:gsm_sim::msgb
+job_state	sim.h	/^	int			job_state;$/;"	m	struct:gsm_sim
+job_type	sim.h	/^	uint8_t job_type;$/;"	m	struct:sim_hdr
+jobs	sim.h	/^	struct llist_head	jobs; \/* messages *\/$/;"	m	struct:gsm_sim	typeref:struct:gsm_sim::llist_head
+l1_entity	osmocom_data.h	/^	struct osmol1_entity l1_entity;$/;"	m	struct:osmocom_ms	typeref:struct:osmocom_ms::osmol1_entity
+l1_traffic_ind	osmocom_data.h	/^	int (*l1_traffic_ind)(struct osmocom_ms *ms, struct msgb *msg);$/;"	m	struct:osmol1_entity
+l23_app_info	l23_app.h	/^struct l23_app_info {$/;"	s
+l2_wq	osmocom_data.h	/^	struct osmo_wqueue l2_wq, sap_wq;$/;"	m	struct:osmocom_ms	typeref:struct:osmocom_ms::osmo_wqueue
+lac	sysinfo.h	/^	uint16_t			mcc, mnc, lac; \/* LAI *\/$/;"	m	struct:gsm48_sysinfo
+lai	sim.h	/^	struct gsm48_loc_area_id lai;$/;"	m	struct:gsm1111_ef_loci	typeref:struct:gsm1111_ef_loci::gsm48_loc_area_id
+lapdm_channel	osmocom_data.h	/^	struct lapdm_channel lapdm_channel;$/;"	m	struct:osmocom_ms	typeref:struct:osmocom_ms::lapdm_channel
+last_fn	osmocom_data.h	/^	uint32_t last_fn;$/;"	m	struct:rx_meas_stat
+latitude	gps.h	/^	double		latitude, longitude;$/;"	m	struct:osmo_gps
+len_bcd	sim.h	/^	uint8_t len_bcd;$/;"	m	struct:gsm1111_ef_adn
+length	sim.h	/^	uint8_t length;$/;"	m	struct:gsm1111_response_ef
+length	sim.h	/^	uint8_t length;$/;"	m	struct:gsm1111_response_mfdf
+libdir	Makefile	/^libdir = ${exec_prefix}\/lib$/;"	m
+libexecdir	Makefile	/^libexecdir = ${exec_prefix}\/libexec$/;"	m
+localedir	Makefile	/^localedir = ${datarootdir}\/locale$/;"	m
+localstatedir	Makefile	/^localstatedir = ${prefix}\/var$/;"	m
+longitude	gps.h	/^	double		latitude, longitude;$/;"	m	struct:osmo_gps
+lupd_status	sim.h	/^	uint8_t lupd_status;$/;"	m	struct:gsm1111_ef_loci
+maio	sysinfo.h	/^	uint8_t				maio;$/;"	m	struct:gsm48_sysinfo
+mandir	Makefile	/^mandir = ${datarootdir}\/man$/;"	m
+max_retrans	sysinfo.h	/^	uint8_t				max_retrans; \/* decoded *\/$/;"	m	struct:gsm48_sysinfo
+mcc	networks.h	/^	uint16_t	mcc;$/;"	m	struct:gsm_networks
+mcc	sysinfo.h	/^	uint16_t			mcc, mnc, lac; \/* LAI *\/$/;"	m	struct:gsm48_sysinfo
+meas	osmocom_data.h	/^	struct rx_meas_stat meas;$/;"	m	struct:osmocom_ms	typeref:struct:osmocom_ms::rx_meas_stat
+mkdir_p	Makefile	/^mkdir_p = \/bin\/mkdir -p$/;"	m
+mkinstalldirs	Makefile	/^mkinstalldirs = $(install_sh) -d$/;"	m
+mmlayer	osmocom_data.h	/^	struct gsm48_mmlayer mmlayer;$/;"	m	struct:osmocom_ms	typeref:struct:osmocom_ms::gsm48_mmlayer
+mnc	networks.h	/^	int16_t		mnc;$/;"	m	struct:gsm_networks
+mnc	sysinfo.h	/^	uint16_t			mcc, mnc, lac; \/* LAI *\/$/;"	m	struct:gsm48_sysinfo
+mncc_entity	osmocom_data.h	/^	struct osmomncc_entity mncc_entity;$/;"	m	struct:osmocom_ms	typeref:struct:osmocom_ms::osmomncc_entity
+mncc_recv	osmocom_data.h	/^	int (*mncc_recv)(struct osmocom_ms *ms, int msg_type, void *arg);$/;"	m	struct:osmomncc_entity
+more_data	sim.h	/^	uint8_t more_data[0];$/;"	m	struct:gsm1111_response_mfdf_gsm
+ms	osmocom_data.h	/^	struct osmocom_ms *ms;$/;"	m	struct:osmobb_ccch_mode_conf	typeref:struct:osmobb_ccch_mode_conf::osmocom_ms
+ms	osmocom_data.h	/^	struct osmocom_ms *ms;$/;"	m	struct:osmobb_fbsb_res	typeref:struct:osmobb_fbsb_res::osmocom_ms
+ms	osmocom_data.h	/^	struct osmocom_ms *ms;$/;"	m	struct:osmobb_meas_res	typeref:struct:osmobb_meas_res::osmocom_ms
+ms	osmocom_data.h	/^	struct osmocom_ms *ms;$/;"	m	struct:osmobb_neigh_pm_ind	typeref:struct:osmobb_neigh_pm_ind::osmocom_ms
+ms	osmocom_data.h	/^	struct osmocom_ms *ms;$/;"	m	struct:osmobb_tch_mode_conf	typeref:struct:osmobb_tch_mode_conf::osmocom_ms
+ms_txpwr_max_cch	sysinfo.h	/^	int8_t				ms_txpwr_max_cch;$/;"	m	struct:gsm48_sysinfo
+msg_handler	osmocom_data.h	/^	osmosap_cb_t msg_handler;$/;"	m	struct:osmosap_entity
+name	networks.h	/^	const char 	*name;$/;"	m	struct:gsm_networks
+name	osmocom_data.h	/^	char name[32];$/;"	m	struct:osmocom_ms
+nb_ba_ind_si2	sysinfo.h	/^	uint8_t				nb_ba_ind_si2;$/;"	m	struct:gsm48_sysinfo
+nb_ba_ind_si2bis	sysinfo.h	/^	uint8_t				nb_ba_ind_si2bis;$/;"	m	struct:gsm48_sysinfo
+nb_ba_ind_si2ter	sysinfo.h	/^	uint8_t				nb_ba_ind_si2ter;$/;"	m	struct:gsm48_sysinfo
+nb_ba_ind_si5	sysinfo.h	/^	uint8_t				nb_ba_ind_si5;$/;"	m	struct:gsm48_sysinfo
+nb_ba_ind_si5bis	sysinfo.h	/^	uint8_t				nb_ba_ind_si5bis;$/;"	m	struct:gsm48_sysinfo
+nb_ba_ind_si5ter	sysinfo.h	/^	uint8_t				nb_ba_ind_si5ter;$/;"	m	struct:gsm48_sysinfo
+nb_cell_barr	sysinfo.h	/^	uint8_t				nb_cell_barr; \/* 1 = barred *\/$/;"	m	struct:gsm48_sysinfo
+nb_class_barr	sysinfo.h	/^	uint16_t			nb_class_barr; \/* bit 10 is emergency *\/$/;"	m	struct:gsm48_sysinfo
+nb_ext_ind_si2	sysinfo.h	/^	uint8_t				nb_ext_ind_si2;$/;"	m	struct:gsm48_sysinfo
+nb_ext_ind_si2bis	sysinfo.h	/^	uint8_t				nb_ext_ind_si2bis;$/;"	m	struct:gsm48_sysinfo
+nb_ext_ind_si5	sysinfo.h	/^	uint8_t				nb_ext_ind_si5;$/;"	m	struct:gsm48_sysinfo
+nb_ext_ind_si5bis	sysinfo.h	/^	uint8_t				nb_ext_ind_si5bis;$/;"	m	struct:gsm48_sysinfo
+nb_max_retrans	sysinfo.h	/^	uint8_t				nb_max_retrans; \/* decoded *\/$/;"	m	struct:gsm48_sysinfo
+nb_multi_rep_si2ter	sysinfo.h	/^	uint8_t				nb_multi_rep_si2ter; \/* see GSM 05.08 8.4.3 *\/$/;"	m	struct:gsm48_sysinfo
+nb_multi_rep_si5ter	sysinfo.h	/^	uint8_t				nb_multi_rep_si5ter;$/;"	m	struct:gsm48_sysinfo
+nb_ncc_permitted_si2	sysinfo.h	/^	uint8_t				nb_ncc_permitted_si2;$/;"	m	struct:gsm48_sysinfo
+nb_ncc_permitted_si6	sysinfo.h	/^	uint8_t				nb_ncc_permitted_si6;$/;"	m	struct:gsm48_sysinfo
+nb_reest_denied	sysinfo.h	/^	uint8_t				nb_reest_denied; \/* 1 = denied *\/$/;"	m	struct:gsm48_sysinfo
+nb_tx_integer	sysinfo.h	/^	uint8_t				nb_tx_integer; \/* decoded *\/$/;"	m	struct:gsm48_sysinfo
+nch	sysinfo.h	/^	uint8_t				nch;$/;"	m	struct:gsm48_sysinfo
+nch_position	sysinfo.h	/^	uint8_t				nch_position;$/;"	m	struct:gsm48_sysinfo
+neci	sysinfo.h	/^	uint8_t				neci;$/;"	m	struct:gsm48_sysinfo
+noinst_HEADERS	Makefile	/^noinst_HEADERS = l1ctl.h l1l2_interface.h l23_app.h logging.h \\$/;"	m
+not_inval	sim.h	/^	uint8_t not_inval:1,$/;"	m	struct:gsm1111_response_ef
+num_codes	sim.h	/^	uint8_t num_codes;$/;"	m	struct:gsm1111_response_mfdf_gsm
+num_df	sim.h	/^	uint8_t num_df;$/;"	m	struct:gsm1111_response_mfdf_gsm
+num_ef	sim.h	/^	uint8_t num_ef;$/;"	m	struct:gsm1111_response_mfdf_gsm
+number	sim.h	/^	uint8_t number[10];$/;"	m	struct:gsm1111_ef_adn
+oldincludedir	Makefile	/^oldincludedir = \/usr\/include$/;"	m
+osmo_gps	gps.h	/^struct osmo_gps {$/;"	s
+osmobb_ccch_mode_conf	osmocom_data.h	/^struct osmobb_ccch_mode_conf {$/;"	s
+osmobb_fbsb_res	osmocom_data.h	/^struct osmobb_fbsb_res {$/;"	s
+osmobb_global_sig	osmocom_data.h	/^enum osmobb_global_sig {$/;"	g
+osmobb_l1ctl_sig	osmocom_data.h	/^enum osmobb_l1ctl_sig {$/;"	g
+osmobb_meas_res	osmocom_data.h	/^struct osmobb_meas_res {$/;"	s
+osmobb_neigh_pm_ind	osmocom_data.h	/^struct osmobb_neigh_pm_ind {$/;"	s
+osmobb_sig_subsys	osmocom_data.h	/^enum osmobb_sig_subsys {$/;"	g
+osmobb_tch_mode_conf	osmocom_data.h	/^struct osmobb_tch_mode_conf {$/;"	s
+osmocom_data_h	osmocom_data.h	2;"	d
+osmocom_l1ctl_h	l1ctl.h	2;"	d
+osmocom_ms	osmocom_data.h	/^struct osmocom_ms {$/;"	s
+osmol1_entity	osmocom_data.h	/^struct osmol1_entity {$/;"	s
+osmomncc_entity	osmocom_data.h	/^struct osmomncc_entity {$/;"	s
+osmosap_cb_t	sap_interface.h	/^typedef int (*osmosap_cb_t)(struct msgb *msg, struct osmocom_ms *ms);$/;"	t
+osmosap_entity	osmocom_data.h	/^struct osmosap_entity {$/;"	s
+pag_mf_periods	sysinfo.h	/^	uint8_t				pag_mf_periods;$/;"	m	struct:gsm48_sysinfo
+par_ind	sim.h	/^	uint8_t par_ind;$/;"	m	struct:gsm1111_ef_smsp
+path	sim.h	/^	uint16_t path[MAX_SIM_PATH_LENGTH];$/;"	m	struct:gsm_sim
+path	sim.h	/^	uint16_t path[MAX_SIM_PATH_LENGTH];$/;"	m	struct:sim_hdr
+pdfdir	Makefile	/^pdfdir = ${docdir}$/;"	m
+pkgdatadir	Makefile	/^pkgdatadir = $(datadir)\/layer23$/;"	m
+pkgincludedir	Makefile	/^pkgincludedir = $(includedir)\/layer23$/;"	m
+pkglibdir	Makefile	/^pkglibdir = $(libdir)\/layer23$/;"	m
+pkglibexecdir	Makefile	/^pkglibexecdir = $(libexecdir)\/layer23$/;"	m
+plmn	osmocom_data.h	/^	struct gsm322_plmn plmn;$/;"	m	struct:osmocom_ms	typeref:struct:osmocom_ms::gsm322_plmn
+po	sysinfo.h	/^	uint8_t				po;$/;"	m	struct:gsm48_sysinfo
+po_value	sysinfo.h	/^	uint8_t				po_value;$/;"	m	struct:gsm48_sysinfo
+prefix	Makefile	/^prefix = \/usr\/local$/;"	m
+program_transform_name	Makefile	/^program_transform_name = s,x,x,$/;"	m
+psdir	Makefile	/^psdir = ${docdir}$/;"	m
+rec_mode	sim.h	/^	uint8_t rec_no, rec_mode; \/* in case of record *\/$/;"	m	struct:sim_hdr
+rec_no	sim.h	/^	uint8_t rec_no, rec_mode; \/* in case of record *\/$/;"	m	struct:sim_hdr
+reest_denied	sysinfo.h	/^	uint8_t				reest_denied; \/* 1 = denied *\/$/;"	m	struct:gsm48_sysinfo
+ref	osmocom_data.h	/^	uint32_t ref;$/;"	m	struct:osmomncc_entity
+reset	sim.h	/^	uint8_t			reset;$/;"	m	struct:gsm_sim
+rfu1	sim.h	/^	uint16_t rfu1;$/;"	m	struct:gsm1111_response_ef
+rfu1	sim.h	/^	uint16_t rfu1;$/;"	m	struct:gsm1111_response_mfdf
+rfu1	sim.h	/^	uint8_t rfu1;$/;"	m	struct:gsm1111_response_mfdf_gsm
+rfu2	sim.h	/^		 rfu2:3,$/;"	m	struct:gsm1111_response_mfdf_gsm
+rfu2	sim.h	/^	uint8_t	rfu2:4,$/;"	m	struct:gsm1111_response_ef
+rfu2	sim.h	/^	uint8_t	rfu2[5];$/;"	m	struct:gsm1111_response_mfdf
+rfu3	sim.h	/^		 rfu3:1,$/;"	m	struct:gsm1111_response_ef
+rfu3	sim.h	/^		 rfu3:3,$/;"	m	struct:gsm1111_response_mfdf_gsm
+rfu4	sim.h	/^		 rfu4:3,$/;"	m	struct:gsm1111_response_mfdf_gsm
+rfu4	sim.h	/^		 rfu4:5;$/;"	m	struct:gsm1111_response_ef
+rfu5	sim.h	/^		 rfu5:3,$/;"	m	struct:gsm1111_response_mfdf_gsm
+rl_fail	osmocom_data.h	/^	int16_t s, rl_fail;$/;"	m	struct:rx_meas_stat
+rrlayer	osmocom_data.h	/^	struct gsm48_rrlayer rrlayer;$/;"	m	struct:osmocom_ms	typeref:struct:osmocom_ms::gsm48_rrlayer
+ru_inval	sim.h	/^		 ru_inval:1,$/;"	m	struct:gsm1111_response_ef
+rx_lev	osmocom_data.h	/^	uint8_t rx_lev;$/;"	m	struct:osmobb_meas_res
+rx_lev	osmocom_data.h	/^	uint8_t rx_lev;$/;"	m	struct:osmobb_neigh_pm_ind
+rx_meas_stat	osmocom_data.h	/^struct rx_meas_stat {$/;"	s
+rxlev	osmocom_data.h	/^	uint32_t rxlev;$/;"	m	struct:rx_meas_stat
+rxlev_acc_min_db	sysinfo.h	/^	int8_t				rxlev_acc_min_db;$/;"	m	struct:gsm48_sysinfo
+s	osmocom_data.h	/^	int16_t s, rl_fail;$/;"	m	struct:rx_meas_stat
+sacch_dtx	sysinfo.h	/^	uint8_t				sacch_dtx;$/;"	m	struct:gsm48_sysinfo
+sacch_pwrc	sysinfo.h	/^	uint8_t				sacch_pwrc;$/;"	m	struct:gsm48_sysinfo
+sacch_radio_link_timeout	sysinfo.h	/^	uint8_t				sacch_radio_link_timeout;$/;"	m	struct:gsm48_sysinfo
+sap_entity	osmocom_data.h	/^	struct osmosap_entity sap_entity;$/;"	m	struct:osmocom_ms	typeref:struct:osmocom_ms::osmosap_entity
+sap_wq	osmocom_data.h	/^	struct osmo_wqueue l2_wq, sap_wq;$/;"	m	struct:osmocom_ms	typeref:struct:osmocom_ms::
+sbindir	Makefile	/^sbindir = ${exec_prefix}\/sbin$/;"	m
+sched	sysinfo.h	/^	uint8_t				sched;$/;"	m	struct:gsm48_sysinfo
+sched_where	sysinfo.h	/^	uint8_t				sched_where;$/;"	m	struct:gsm48_sysinfo
+seek_type_mode	sim.h	/^	uint8_t seek_type_mode; \/* in case of seek command *\/$/;"	m	struct:sim_hdr
+settings	osmocom_data.h	/^	struct gsm_settings settings;$/;"	m	struct:osmocom_ms	typeref:struct:osmocom_ms::gsm_settings
+sharedstatedir	Makefile	/^sharedstatedir = ${prefix}\/com$/;"	m
+shutdown	osmocom_data.h	/^	uint8_t deleting, shutdown, started;$/;"	m	struct:osmocom_ms
+si1	sysinfo.h	/^	uint8_t				si1, si2, si2bis, si2ter, si3,$/;"	m	struct:gsm48_sysinfo
+si1_msg	sysinfo.h	/^	uint8_t				si1_msg[23];$/;"	m	struct:gsm48_sysinfo
+si2	sysinfo.h	/^	uint8_t				si1, si2, si2bis, si2ter, si3,$/;"	m	struct:gsm48_sysinfo
+si2_msg	sysinfo.h	/^	uint8_t				si2_msg[23];$/;"	m	struct:gsm48_sysinfo
+si2b_msg	sysinfo.h	/^	uint8_t				si2b_msg[23];$/;"	m	struct:gsm48_sysinfo
+si2bis	sysinfo.h	/^	uint8_t				si1, si2, si2bis, si2ter, si3,$/;"	m	struct:gsm48_sysinfo
+si2t_msg	sysinfo.h	/^	uint8_t				si2t_msg[23];$/;"	m	struct:gsm48_sysinfo
+si2ter	sysinfo.h	/^	uint8_t				si1, si2, si2bis, si2ter, si3,$/;"	m	struct:gsm48_sysinfo
+si2ter_ind	sysinfo.h	/^	uint8_t				si2ter_ind;$/;"	m	struct:gsm48_sysinfo
+si3	sysinfo.h	/^	uint8_t				si1, si2, si2bis, si2ter, si3,$/;"	m	struct:gsm48_sysinfo
+si3_msg	sysinfo.h	/^	uint8_t				si3_msg[23];$/;"	m	struct:gsm48_sysinfo
+si4	sysinfo.h	/^					si4, si5, si5bis, si5ter, si6;$/;"	m	struct:gsm48_sysinfo
+si4_msg	sysinfo.h	/^	uint8_t				si4_msg[23];$/;"	m	struct:gsm48_sysinfo
+si5	sysinfo.h	/^					si4, si5, si5bis, si5ter, si6;$/;"	m	struct:gsm48_sysinfo
+si5_msg	sysinfo.h	/^	uint8_t				si5_msg[18];$/;"	m	struct:gsm48_sysinfo
+si5b_msg	sysinfo.h	/^	uint8_t				si5b_msg[18];$/;"	m	struct:gsm48_sysinfo
+si5bis	sysinfo.h	/^					si4, si5, si5bis, si5ter, si6;$/;"	m	struct:gsm48_sysinfo
+si5t_msg	sysinfo.h	/^	uint8_t				si5t_msg[18];$/;"	m	struct:gsm48_sysinfo
+si5ter	sysinfo.h	/^					si4, si5, si5bis, si5ter, si6;$/;"	m	struct:gsm48_sysinfo
+si6	sysinfo.h	/^					si4, si5, si5bis, si5ter, si6;$/;"	m	struct:gsm48_sysinfo
+si6_msg	sysinfo.h	/^	uint8_t				si6_msg[18];$/;"	m	struct:gsm48_sysinfo
+sim	osmocom_data.h	/^	struct gsm_sim sim;$/;"	m	struct:osmocom_ms	typeref:struct:osmocom_ms::gsm_sim
+sim_hdr	sim.h	/^struct sim_hdr {$/;"	s
+snr	osmocom_data.h	/^	int8_t snr;$/;"	m	struct:osmobb_fbsb_res
+snr	osmocom_data.h	/^	uint32_t snr;$/;"	m	struct:rx_meas_stat
+sock_state	osmocom_data.h	/^	struct mncc_sock_state *sock_state;$/;"	m	struct:osmomncc_entity	typeref:struct:osmomncc_entity::mncc_sock_state
+sp	sysinfo.h	/^	uint8_t				sp;$/;"	m	struct:gsm48_sysinfo
+sp_cbq	sysinfo.h	/^	uint8_t				sp_cbq;$/;"	m	struct:gsm48_sysinfo
+sp_cro	sysinfo.h	/^	uint8_t				sp_cro;$/;"	m	struct:gsm48_sysinfo
+sp_pt	sysinfo.h	/^	uint8_t				sp_pt;$/;"	m	struct:gsm48_sysinfo
+sp_to	sysinfo.h	/^	uint8_t				sp_to;$/;"	m	struct:gsm48_sysinfo
+srcdir	Makefile	/^srcdir = .$/;"	m
+started	osmocom_data.h	/^	uint8_t deleting, shutdown, started;$/;"	m	struct:osmocom_ms
+structure	sim.h	/^	uint8_t structure;$/;"	m	struct:gsm1111_response_ef
+subdir	Makefile	/^subdir = include\/osmocom\/bb\/common$/;"	m
+subscr	osmocom_data.h	/^	struct gsm_subscriber subscr;$/;"	m	struct:osmocom_ms	typeref:struct:osmocom_ms::gsm_subscriber
+support	osmocom_data.h	/^	struct gsm_support support;$/;"	m	struct:osmocom_ms	typeref:struct:osmocom_ms::gsm_support
+sysconfdir	Makefile	/^sysconfdir = ${prefix}\/etc$/;"	m
+t3212	sysinfo.h	/^	int32_t				t3212; \/* real value in seconds *\/$/;"	m	struct:gsm48_sysinfo
+target_alias	Makefile	/^target_alias = $/;"	m
+tch_mode	osmocom_data.h	/^	uint8_t tch_mode;$/;"	m	struct:osmobb_tch_mode_conf
+test_arfcn	osmocom_data.h	/^	uint16_t test_arfcn;$/;"	m	struct:osmocom_ms
+tmsi	sim.h	/^	uint32_t tmsi;$/;"	m	struct:gsm1111_ef_loci
+tmsi_time	sim.h	/^	uint8_t tmsi_time;$/;"	m	struct:gsm1111_ef_loci
+tof	sim.h	/^	uint8_t tof;$/;"	m	struct:gsm1111_response_ef
+tof	sim.h	/^	uint8_t tof;$/;"	m	struct:gsm1111_response_mfdf
+ton_npi	sim.h	/^	uint8_t ton_npi;$/;"	m	struct:gsm1111_ef_adn
+top_build_prefix	Makefile	/^top_build_prefix = ..\/..\/..\/..\/$/;"	m
+top_builddir	Makefile	/^top_builddir = ..\/..\/..\/..$/;"	m
+top_srcdir	Makefile	/^top_srcdir = ..\/..\/..\/..$/;"	m
+tp_da	sim.h	/^	uint8_t tp_da[12];$/;"	m	struct:gsm1111_ef_smsp
+tp_dcs	sim.h	/^	uint8_t tp_dcs;$/;"	m	struct:gsm1111_ef_smsp
+tp_proto	sim.h	/^	uint8_t tp_proto;$/;"	m	struct:gsm1111_ef_smsp
+tp_vp	sim.h	/^	uint8_t tp_vp;$/;"	m	struct:gsm1111_ef_smsp
+trans_list	osmocom_data.h	/^	struct llist_head trans_list;$/;"	m	struct:osmocom_ms	typeref:struct:osmocom_ms::llist_head
+transform	Makefile	/^transform = $(program_transform_name)$/;"	m
+ts_sca	sim.h	/^	uint8_t ts_sca[12];$/;"	m	struct:gsm1111_ef_smsp
+tsc	sysinfo.h	/^	uint8_t				tsc;$/;"	m	struct:gsm48_sysinfo
+tx_integer	sysinfo.h	/^	uint8_t				tx_integer; \/* decoded *\/$/;"	m	struct:gsm48_sysinfo
+unblk1_init	sim.h	/^		 unblk1_init:1;$/;"	m	struct:gsm1111_response_mfdf_gsm
+unblk1_remain	sim.h	/^	uint8_t			unblk1_remain, unblk2_remain;$/;"	m	struct:gsm_sim
+unblk1_remain	sim.h	/^	uint8_t unblk1_remain:4,$/;"	m	struct:gsm1111_response_mfdf_gsm
+unblk2_init	sim.h	/^		 unblk2_init:1;$/;"	m	struct:gsm1111_response_mfdf_gsm
+unblk2_remain	sim.h	/^	uint8_t			unblk1_remain, unblk2_remain;$/;"	m	struct:gsm_sim
+unblk2_remain	sim.h	/^	uint8_t unblk2_remain:4,$/;"	m	struct:gsm1111_response_mfdf_gsm
+valid	gps.h	/^	uint8_t		valid; \/* we have a fix *\/$/;"	m	struct:osmo_gps

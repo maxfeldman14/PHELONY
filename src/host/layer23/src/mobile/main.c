@@ -57,6 +57,8 @@ int debug_set = 0;
 char *config_dir = NULL;
 int use_mncc_sock = 0;
 int daemonize = 0;
+// ADDED BY CASEY
+extern int spoofing_set = 0;
 
 int mncc_recv_socket(struct osmocom_ms *ms, int msg_type, void *arg);
 
@@ -95,6 +97,8 @@ static void print_help()
 	printf("  -D --daemonize	Run as daemon\n");
 	printf("  -m --mncc-sock	Disable built-in MNCC handler and "
 		"offer socket\n");
+    // ADDED BY CASEY
+    printf("  -s --gps-spoof    Enable GPS spoofing\n");
 }
 
 static void handle_options(int argc, char **argv)
@@ -108,6 +112,8 @@ static void handle_options(int argc, char **argv)
 			{"debug", 1, 0, 'd'},
 			{"daemonize", 0, 0, 'D'},
 			{"mncc-sock", 0, 0, 'm'},
+            // ADDED BY CASEY
+            {"gps-spoof", 0, 0, 's'},
 			{0, 0, 0, 0},
 		};
 
@@ -138,6 +144,9 @@ static void handle_options(int argc, char **argv)
 		case 'm':
 			use_mncc_sock = 1;
 			break;
+        case 's':
+            // ADDED BY CASEY
+            spoofing_set = 1;
 		default:
 			break;
 		}

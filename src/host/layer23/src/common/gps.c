@@ -38,11 +38,9 @@
 #include <osmocom/bb/common/logging.h>
 #include <osmocom/bb/common/gps.h>
 
-//TODO: figure out where to get GPS_SPOOF from -- MAX
-// int GPS_SPOOF = 1;
-
-// ADDED BY CASEY
-extern int spoofing_set;
+// want function which sets lat and long
+// no more randomizing
+// - max
 
 struct osmo_gps g = {
 	0,
@@ -174,6 +172,19 @@ void osmo_gpsd_close(void)
 
 static struct termios gps_termios, gps_old_termios;
 
+static int osmo_gps_spoof(double lat, double lon)
+{
+  g.valid = 1;
+  g.latitude = lat;
+  g.longitude = lon;
+	LOGP(DGPS, LOGL_INFO, "latitude=%do%.4f, longitude=%do%.4f\n",
+		(int)g.latitude,
+		(g.latitude - ((int)g.latitude)) * 60.0,
+		(int)g.longitude,
+		(g.longitude - ((int)g.longitude)) * 60.0);
+	return 0;
+}
+
 static int osmo_serialgps_line(char *line)
 {
 	time_t gps_now, host_now;
@@ -240,16 +251,6 @@ static int osmo_serialgps_line(char *line)
 	if (line[23] == 'W')
 		longitude = 360.0 - longitude;
 	g.longitude = longitude;
-	// check if spoofing_set - if so, randomize lat/long
-  if (spoofing_set) {
-      // maybe we should write to log here? -- CASEY
-      srand(time(NULL));
-      g.latitude = rand();
-      srand(time(NULL)-1);
-      g.longitude = rand();
-      //added write to log
-      LOGP(DGPS, LOGL_INFO, " GPS has been spoofed.\n");
-  }
 	LOGP(DGPS, LOGL_DEBUG, "%s\n", line);
 	LOGP(DGPS, LOGL_INFO, " time=%02d:%02d:%02d %04d-%02d-%02d, "
 		"diff-to-host=%d, latitude=%do%.4f, longitude=%do%.4f\n",

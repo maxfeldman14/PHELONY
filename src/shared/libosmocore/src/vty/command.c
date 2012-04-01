@@ -2220,7 +2220,7 @@ gDEFUN(config_exit,
 	return CMD_SUCCESS;
 }
 /*Spoof gps. */
-DEFUN(gps_spoof,
+gDEFUN(gps_spoof,
       gps_spoof_cmd, "gps spoof", SHOW_STR "hello world\n")
 {
   vty_out(vty, "test%s", VTY_NEWLINE);
@@ -3192,6 +3192,7 @@ void cmd_init(int terminal)
 
 	/* Each node's basic commands. */
 	install_element(VIEW_NODE, &show_version_cmd);
+	install_element(VIEW_NODE, &gps_spoof_cmd);
 	if (terminal) {
 		install_element(VIEW_NODE, &config_list_cmd);
 		install_element(VIEW_NODE, &config_exit_cmd);
@@ -3211,6 +3212,7 @@ void cmd_init(int terminal)
 	}
 	install_element (ENABLE_NODE, &show_startup_config_cmd);
 	install_element(ENABLE_NODE, &show_version_cmd);
+	install_element(ENABLE_NODE, &gps_spoof_cmd);
 
 	if (terminal) {
 		install_element(ENABLE_NODE, &config_terminal_length_cmd);

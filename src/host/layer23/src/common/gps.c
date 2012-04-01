@@ -172,7 +172,7 @@ void osmo_gpsd_close(void)
 
 static struct termios gps_termios, gps_old_termios;
 
-static int osmo_gps_spoof(double lat, double lon)
+int osmo_gps_spoof(double lat, double lon)
 {
   g.valid = 1;
   g.latitude = lat;

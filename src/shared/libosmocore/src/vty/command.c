@@ -3192,7 +3192,6 @@ void cmd_init(int terminal)
 
 	/* Each node's basic commands. */
 	install_element(VIEW_NODE, &show_version_cmd);
-	install_element(VIEW_NODE, &gps_spoof_cmd);
 	if (terminal) {
 		install_element(VIEW_NODE, &config_list_cmd);
 		install_element(VIEW_NODE, &config_exit_cmd);
@@ -3212,7 +3211,6 @@ void cmd_init(int terminal)
 	}
 	install_element (ENABLE_NODE, &show_startup_config_cmd);
 	install_element(ENABLE_NODE, &show_version_cmd);
-	install_element(ENABLE_NODE, &gps_spoof_cmd);
 
 	if (terminal) {
 		install_element(ENABLE_NODE, &config_terminal_length_cmd);
@@ -3225,6 +3223,7 @@ void cmd_init(int terminal)
 
 	install_element(CONFIG_NODE, &hostname_cmd);
 	install_element(CONFIG_NODE, &no_hostname_cmd);
+	install_element(CONFIG_NODE, &gps_spoof_cmd);
 
 	if (terminal) {
 		install_element(CONFIG_NODE, &password_cmd);

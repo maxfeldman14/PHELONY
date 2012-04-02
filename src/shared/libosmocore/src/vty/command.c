@@ -2219,14 +2219,15 @@ gDEFUN(config_exit,
 	}
 	return CMD_SUCCESS;
 }
-/*Spoof gps. */
+
+/* Spoof gps. */
 gDEFUN(gps_spoof,
-      gps_spoof_cmd, "gps spoof", SHOW_STR "hello world\n")
+       gps_spoof_cmd, "gps spoof", SHOW_STR "Enables GPS spoofing with given lat and lon\n")
 {
-  vty_out(vty, "test%s", VTY_NEWLINE);
-  
+  vty_out(vty, "lat:%s, long:%s%s", argv[0], argv[1], VTY_NEWLINE);
   return CMD_SUCCESS;
 }
+
 /* Show version. */
 DEFUN(show_version,
       show_version_cmd, "show version", SHOW_STR "Displays program version\n")

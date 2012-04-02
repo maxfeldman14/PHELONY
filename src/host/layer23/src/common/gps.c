@@ -28,14 +28,16 @@
 #include <time.h>
 #include <stdbool.h>
 
-#ifdef _HAVE_GPSD
-#include <gps.h>
+#ifdef _HAVE_GPSD   // MAY REMOVE 31-33 ENTIRELY SINCE WE ALWAYS IMPORT gps.h
+#include <gps.h>    // <- ALREADY INCLUDED IF _HAVE_GPSD FLAG IS SET -- CASEY
 #endif
 
 #include <osmocom/core/utils.h>
 
 #include <osmocom/bb/common/osmocom_data.h>
 #include <osmocom/bb/common/logging.h>
+
+// THIS MIGHT BE A PROBLEM ONCE WE DEAL WITH _HAVE_GPSD WORKAROUND -- CASEY
 #include <osmocom/bb/common/gps.h>
 
 // want function which sets lat and long

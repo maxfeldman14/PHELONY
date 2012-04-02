@@ -2230,7 +2230,7 @@ DEFUN(gps_spoof,
 */
 
 DEFUN(gps_spoof, gps_spoof_cmd,
-      "gps spoof <0-180> <0-360>",
+      "gps spoof <-90-90> <-180-180>",
       "this is gps spoof!\n")
 {
 	/*int lines;

@@ -28,6 +28,9 @@
 #include "vector.h"
 #include "vty.h"
 
+// including for GPS SPOOFING FUNCTIONALITY -- CASEY
+#include <osmocom/bb/common/gps.h>
+
 /*! \defgroup command VTY Command
  *  @{
  */
@@ -368,3 +371,7 @@ extern void *tall_vty_cmd_ctx;
 
 /*! }@ */
 #endif				/* _ZEBRA_COMMAND_H */
+
+// ADDING FOR GPS SPOOFING FUNCTIONALITY -- CASEY
+extern int spoof_lat, spoof_long, spoof_mode;
+

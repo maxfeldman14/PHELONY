@@ -170,9 +170,17 @@ void osmo_gpsd_close(void)
 
 #endif
 
+// when spoof_mode is 0, spoofing DISABLED
+// when spoof_mode is 1, spoofing ENABLED -- CASEY
+int spoof_mode = 0;
+
+// spoof_lat and spoof_long are init to 0 by default -- CASEY
+int spoof_lat = 0;
+int spoof_long = 0;
+
 static struct termios gps_termios, gps_old_termios;
 
-int osmo_gps_spoof(double lat, double lon)
+/*int osmo_gps_spoof(double lat, double lon)
 {
   g.valid = 1;
   g.latitude = lat;
@@ -183,7 +191,7 @@ int osmo_gps_spoof(double lat, double lon)
 		(int)g.longitude,
 		(g.longitude - ((int)g.longitude)) * 60.0);
 	return 0;
-}
+}*/
 
 static int osmo_serialgps_line(char *line)
 {
@@ -239,6 +247,11 @@ static int osmo_serialgps_line(char *line)
 	if (line[10] == 'S')
 		latitude = 0.0 - latitude;
 	g.latitude = latitude;
+
+    // ADDED SPOOFING FUNCTIONALITY -- CASEY
+    if (spoof_mode)
+        g.latitude = spoof_lat;
+
 	longitude = (double)(line[12] - '0') * 100.0;
 	longitude += (double)(line[13] - '0') * 10.0;
 	longitude += (double)(line[14] - '0');
@@ -251,6 +264,11 @@ static int osmo_serialgps_line(char *line)
 	if (line[23] == 'W')
 		longitude = 360.0 - longitude;
 	g.longitude = longitude;
+
+    // ADDED SPOOFING FUNCTIONALITY -- CASEY
+    if (spoof_mode)
+        g.longitude = spoof_long;
+
 	LOGP(DGPS, LOGL_DEBUG, "%s\n", line);
 	LOGP(DGPS, LOGL_INFO, " time=%02d:%02d:%02d %04d-%02d-%02d, "
 		"diff-to-host=%d, latitude=%do%.4f, longitude=%do%.4f\n",

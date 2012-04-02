@@ -40,6 +40,9 @@ Boston, MA 02111-1307, USA.  */
 
 #include <osmocom/core/talloc.h>
 
+// including for GPS SPOOFING FUNCTIONALITY -- CASEY
+#include <osmocom/bb/common/gps.h>
+
 /*! \addtogroup command
  * @{
  */
@@ -48,6 +51,10 @@ Boston, MA 02111-1307, USA.  */
 #define CONFIGFILE_MASK 022
 
 void *tall_vty_cmd_ctx;
+
+// including for GPS SPOOFING FUNCTIONALITY -- CASEY
+// these are declared as extern in command.h
+int spoof_lat, spoof_long, spoof_mode;
 
 /* Command vector which includes some level of command lists. Normally
    each daemon maintains each own cmdvec. */
@@ -2233,16 +2240,14 @@ DEFUN(gps_spoof, gps_spoof_cmd,
       "gps spoof <-90-90> <-180-180>",
       "this is gps spoof!\n")
 {
-	/*int lines;
-	char *endptr = NULL;
+    // reinit extern spoof_lat and spoof_long vars -- changes should be visible
+    // in gps.c -- CASEY
+    spoof_lat = argv[0];
+    spoof_long = argv[1];
 
-	lines = strtol(argv[0], &endptr, 10);
-	if (lines < 0 || lines > 512 || *endptr != '\0') {
-		vty_out(vty, "length is malformed%s", VTY_NEWLINE);
-		return CMD_WARNING;
-	} */
+    vty_out(vty, "GPS HAS BEEN SPOOFED lat %s long %s%s", spoof_lat,
+            spoof_long, VTY_NEWLINE);
 
-  vty_out(vty, "GPS HAS BEEN SPOOFED lat %s long %s%s", argv[0], argv[1], VTY_NEWLINE);
 	return CMD_SUCCESS;
 }
 

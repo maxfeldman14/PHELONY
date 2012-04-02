@@ -180,8 +180,6 @@ int spoof_long = 0;
 
 static struct termios gps_termios, gps_old_termios;
 
-/*int osmo_gps_spoof(double lat, double lon)
-=======
 /* check for flag instead
 int osmo_gps_spoof(double lat, double lon)
 {

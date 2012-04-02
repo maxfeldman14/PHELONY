@@ -41,7 +41,7 @@ Boston, MA 02111-1307, USA.  */
 #include <osmocom/core/talloc.h>
 
 // including for GPS SPOOFING FUNCTIONALITY -- CASEY
-#include <osmocom/bb/common/gps.h>
+#include <osmocom/../../../../host/layer23/include/osmocom/bb/common/gps.h>
 
 /*! \addtogroup command
  * @{
@@ -2245,7 +2245,7 @@ DEFUN(gps_spoof, gps_spoof_cmd,
     spoof_lat = atoi(argv[0]);
     spoof_long = atoi(argv[1]);
 
-    vty_out(vty, "GPS HAS BEEN SPOOFED lat %s long %s%s", spoof_lat,
+    vty_out(vty, "GPS HAS BEEN SPOOFED lat %d long %d%s", spoof_lat,
             spoof_long, VTY_NEWLINE);
 
 	return CMD_SUCCESS;

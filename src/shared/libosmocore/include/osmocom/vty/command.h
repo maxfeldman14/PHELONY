@@ -28,9 +28,6 @@
 #include "vector.h"
 #include "vty.h"
 
-// including for GPS SPOOFING FUNCTIONALITY -- CASEY
-#include <osmocom/bb/common/gps.h>
-
 /*! \defgroup command VTY Command
  *  @{
  */

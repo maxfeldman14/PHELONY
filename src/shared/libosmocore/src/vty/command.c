@@ -2220,12 +2220,30 @@ gDEFUN(config_exit,
 	return CMD_SUCCESS;
 }
 
-/* Spoof gps. */
-gDEFUN(gps_spoof,
+/* Spoof gps.
+DEFUN(gps_spoof,
        gps_spoof_cmd, "gps spoof", SHOW_STR "Enables GPS spoofing with given lat and lon\n")
 {
-  vty_out(vty, "lat:%s, long:%s%s", argv[0], argv[1], VTY_NEWLINE);
+  vty_out(vty, "lat:%s, long:%s%s", argv[1], argv[2], VTY_NEWLINE);
   return CMD_SUCCESS;
+}
+*/
+
+DEFUN(gps_spoof, gps_spoof_cmd,
+      "gps spoof <0-180> <0-360>",
+      "this is gps spoof!\n")
+{
+	/*int lines;
+	char *endptr = NULL;
+
+	lines = strtol(argv[0], &endptr, 10);
+	if (lines < 0 || lines > 512 || *endptr != '\0') {
+		vty_out(vty, "length is malformed%s", VTY_NEWLINE);
+		return CMD_WARNING;
+	} */
+
+  vty_out(vty, "GPS HAS BEEN SPOOFED lat %s long %s%s", argv[0], argv[1], VTY_NEWLINE);
+	return CMD_SUCCESS;
 }
 
 /* Show version. */

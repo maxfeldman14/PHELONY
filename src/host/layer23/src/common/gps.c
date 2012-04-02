@@ -236,39 +236,44 @@ static int osmo_serialgps_line(char *line)
 	g.gmt = gps_now;
 	tm = localtime(&gps_now);
 
-	/* position */
-	latitude = (double)(line[0] - '0') * 10.0;
-	latitude += (double)(line[1] - '0');
-	latitude += (double)(line[2] - '0') / 6.0;
-	latitude += (double)(line[3] - '0') / 60.0;
-	latitude += (double)(line[5] - '0') / 600.0;
-	latitude += (double)(line[6] - '0') / 6000.0;
-	latitude += (double)(line[7] - '0') / 60000.0;
-	latitude += (double)(line[8] - '0') / 600000.0;
-	if (line[10] == 'S')
-		latitude = 0.0 - latitude;
-	g.latitude = latitude;
+  // moved Casey's spoofing functionality up to prevent
+  // unnecessary calculations
+  if (spoof_mode) {
+    g.latitude = spoof_lat;
+	  LOGP(DGPS, LOGL_DEBUG, "SPOOFED LATITUDE\n");
+  } else {
+    /* actually calculate latitude */
+    latitude = (double)(line[0] - '0') * 10.0;
+    latitude += (double)(line[1] - '0');
+    latitude += (double)(line[2] - '0') / 6.0;
+    latitude += (double)(line[3] - '0') / 60.0;
+    latitude += (double)(line[5] - '0') / 600.0;
+    latitude += (double)(line[6] - '0') / 6000.0;
+    latitude += (double)(line[7] - '0') / 60000.0;
+    latitude += (double)(line[8] - '0') / 600000.0;
+    if (line[10] == 'S')
+      latitude = 0.0 - latitude;
+    g.latitude = latitude;
+  }
 
-    // ADDED SPOOFING FUNCTIONALITY -- CASEY
-    if (spoof_mode)
-        g.latitude = spoof_lat;
-
-	longitude = (double)(line[12] - '0') * 100.0;
-	longitude += (double)(line[13] - '0') * 10.0;
-	longitude += (double)(line[14] - '0');
-	longitude += (double)(line[15] - '0') / 6.0;
-	longitude += (double)(line[16] - '0') / 60.0;
-	longitude += (double)(line[18] - '0') / 600.0;
-	longitude += (double)(line[19] - '0') / 6000.0;
-	longitude += (double)(line[20] - '0') / 60000.0;
-	longitude += (double)(line[21] - '0') / 600000.0;
-	if (line[23] == 'W')
-		longitude = 360.0 - longitude;
-	g.longitude = longitude;
-
-    // ADDED SPOOFING FUNCTIONALITY -- CASEY
-    if (spoof_mode)
-        g.longitude = spoof_long;
+  if (spoof_mode) {
+    g.longitude = spoof_long;
+    LOGP(DGPS, LOGL_DEBUG, "SPOOFED LONGITUDE\n");
+  } else {
+    /* actually calculate longitude */
+    longitude = (double)(line[12] - '0') * 100.0;
+    longitude += (double)(line[13] - '0') * 10.0;
+    longitude += (double)(line[14] - '0');
+    longitude += (double)(line[15] - '0') / 6.0;
+    longitude += (double)(line[16] - '0') / 60.0;
+    longitude += (double)(line[18] - '0') / 600.0;
+    longitude += (double)(line[19] - '0') / 6000.0;
+    longitude += (double)(line[20] - '0') / 60000.0;
+    longitude += (double)(line[21] - '0') / 600000.0;
+    if (line[23] == 'W')
+      longitude = 360.0 - longitude;
+    g.longitude = longitude;
+  }
 
 	LOGP(DGPS, LOGL_DEBUG, "%s\n", line);
 	LOGP(DGPS, LOGL_INFO, " time=%02d:%02d:%02d %04d-%02d-%02d, "

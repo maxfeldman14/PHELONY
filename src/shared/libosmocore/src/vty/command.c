@@ -2228,28 +2228,34 @@ gDEFUN(config_exit,
 	return CMD_SUCCESS;
 }
 
-/* Spoof gps.
-DEFUN(gps_spoof,
-       gps_spoof_cmd, "gps spoof", SHOW_STR "Enables GPS spoofing with given lat and lon\n")
-{
-  vty_out(vty, "lat:%s, long:%s%s", argv[1], argv[2], VTY_NEWLINE);
-  return CMD_SUCCESS;
-}
-*/
-
+/* enable gps spoofing. must provide lat and lon args. */
 DEFUN(gps_spoof, gps_spoof_cmd,
       "gps spoof <-90-90> <-180-180>",
       "this is gps spoof!\n")
 {
     // reinit extern spoof_lat and spoof_long vars -- changes should be visible
     // in gps.c -- CASEY
-    spoof_lat = atoi(argv[0]);
-    spoof_long = atoi(argv[1]);
+    spoof_mode = 1; //spoofing on
+    spoof_lat = atoi(argv[0]); //set the global latitude
+    spoof_long = atoi(argv[1]); //set the global longitude
 
     vty_out(vty, "GPS HAS BEEN SPOOFED lat %d long %d%s", spoof_lat,
             spoof_long, VTY_NEWLINE);
 
 	return CMD_SUCCESS;
+}
+
+/* de-enable (or "disable", if you prefer) gps spoofing. */
+DEFUN(no_gps_spoof, no_gps_spoof_cmd,
+      "no gps spoof", "this turns off gps spoofing\n")
+{
+    //turn off spoof mode
+    spoof_mode = 0; //spoofing off
+    //spoof lat and long values are now irrelevant
+    
+    vty_out(vty, "GPS no longer spoofed%s", VTY_NEWLINE);
+
+  return CMD_SUCCESS;
 }
 
 /* Show version. */
@@ -3249,6 +3255,7 @@ void cmd_init(int terminal)
 	install_element(CONFIG_NODE, &hostname_cmd);
 	install_element(CONFIG_NODE, &no_hostname_cmd);
 	install_element(CONFIG_NODE, &gps_spoof_cmd);
+	install_element(CONFIG_NODE, &no_gps_spoof_cmd);
 
 	if (terminal) {
 		install_element(CONFIG_NODE, &password_cmd);

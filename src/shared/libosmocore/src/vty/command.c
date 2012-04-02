@@ -2242,8 +2242,8 @@ DEFUN(gps_spoof, gps_spoof_cmd,
 {
     // reinit extern spoof_lat and spoof_long vars -- changes should be visible
     // in gps.c -- CASEY
-    spoof_lat = argv[0];
-    spoof_long = argv[1];
+    spoof_lat = atoi(argv[0]);
+    spoof_long = atoi(argv[1]);
 
     vty_out(vty, "GPS HAS BEEN SPOOFED lat %s long %s%s", spoof_lat,
             spoof_long, VTY_NEWLINE);

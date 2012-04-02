@@ -2233,16 +2233,17 @@ DEFUN(gps_spoof, gps_spoof_cmd,
       "gps spoof <-90-90> <-180-180>",
       "this is gps spoof!\n")
 {
-	/*int lines;
-	char *endptr = NULL;
+  int lat = atoi(argv[0]);
+  int lon = atoi(argv[1]);
 
+	/*int lines;
 	lines = strtol(argv[0], &endptr, 10);
 	if (lines < 0 || lines > 512 || *endptr != '\0') {
 		vty_out(vty, "length is malformed%s", VTY_NEWLINE);
 		return CMD_WARNING;
 	} */
 
-  vty_out(vty, "GPS HAS BEEN SPOOFED lat %s long %s%s", argv[0], argv[1], VTY_NEWLINE);
+  vty_out(vty, "GPS HAS BEEN SPOOFED lat: %d lon: %d%s", lat, lon, VTY_NEWLINE);
 	return CMD_SUCCESS;
 }
 

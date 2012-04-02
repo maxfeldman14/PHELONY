@@ -41,6 +41,7 @@ Boston, MA 02111-1307, USA.  */
 #include <osmocom/core/talloc.h>
 
 // including for GPS SPOOFING FUNCTIONALITY -- CASEY
+#include <stdint.h>
 #include <osmocom/../../../../host/layer23/include/osmocom/bb/common/gps.h>
 
 /*! \addtogroup command

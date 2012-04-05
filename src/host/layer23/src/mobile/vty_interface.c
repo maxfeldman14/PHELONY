@@ -890,15 +890,17 @@ DEFUN(sms, sms_cmd, "sms MS_NAME NUMBER .LINE",
 	return CMD_SUCCESS;
 }
 
-DEFUN(encrypted_sms, encrypted_sms_cmd, "esms MS_NAME NUMBER .LINE",
-	"Send an SMS\nName of MS (see \"show ms\")\nPhone number to send SMS "
+DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER .LINE",
+	"Send an encrypted SMS\nName of MS (see \"show ms\")\nPhone number to send SMS "
 	"(Use digits '0123456789*#abc', and '+' to dial international)\n"
 	"SMS text\n")
 {
+  //need to figure out what input AES needs
 	struct osmocom_ms *ms;
 	struct gsm_settings *set;
 	struct gsm_settings_abbrev *abbrev;
 	char *number, *sms_sca = NULL;
+  char *message;
 
 	ms = get_ms(argv[0], vty);
 	if (!ms)
@@ -934,7 +936,8 @@ DEFUN(encrypted_sms, encrypted_sms_cmd, "esms MS_NAME NUMBER .LINE",
 	if (vty_check_number(vty, number))
 		return CMD_WARNING;
 
-	sms_send(ms, sms_sca, number, argv_concat(argv, argc, 2));
+  message = argv_concat(argv, argc, 2);
+	sms_send(ms, sms_sca, number, message);
 
 	return CMD_SUCCESS;
 }
@@ -2817,7 +2820,7 @@ int ms_vty_init(void)
 	install_element(ENABLE_NODE, &call_retr_cmd);
 	install_element(ENABLE_NODE, &call_dtmf_cmd);
 	install_element(ENABLE_NODE, &sms_cmd);
-	install_element(ENABLE_NODE, &encrypted_sms_cmd);
+	install_element(ENABLE_NODE, &esms_cmd);
 	install_element(ENABLE_NODE, &service_cmd);
 	install_element(ENABLE_NODE, &test_reselection_cmd);
 	install_element(ENABLE_NODE, &delete_forbidden_plmn_cmd);

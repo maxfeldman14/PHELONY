@@ -890,6 +890,54 @@ DEFUN(sms, sms_cmd, "sms MS_NAME NUMBER .LINE",
 	return CMD_SUCCESS;
 }
 
+DEFUN(encrypted_sms, encrypted_sms_cmd, "esms MS_NAME NUMBER .LINE",
+	"Send an SMS\nName of MS (see \"show ms\")\nPhone number to send SMS "
+	"(Use digits '0123456789*#abc', and '+' to dial international)\n"
+	"SMS text\n")
+{
+	struct osmocom_ms *ms;
+	struct gsm_settings *set;
+	struct gsm_settings_abbrev *abbrev;
+	char *number, *sms_sca = NULL;
+
+	ms = get_ms(argv[0], vty);
+	if (!ms)
+		return CMD_WARNING;
+	set = &ms->settings;
+
+	if (!set->sms_ptp) {
+		vty_out(vty, "SMS not supported by this mobile, please enable "
+			"SMS support%s", VTY_NEWLINE);
+		return CMD_WARNING;
+	}
+
+	if (ms->subscr.sms_sca[0])
+		sms_sca = ms->subscr.sms_sca;
+	else if (set->sms_sca[0])
+		sms_sca = set->sms_sca;
+
+	if (!sms_sca) {
+		vty_out(vty, "SMS sms-service-center not defined on SIM card, "
+			"please define one at settings.%s", VTY_NEWLINE);
+		return CMD_WARNING;
+	}
+
+	number = (char *)argv[1];
+	llist_for_each_entry(abbrev, &set->abbrev, list) {
+		if (!strcmp(number, abbrev->abbrev)) {
+			number = abbrev->number;
+			vty_out(vty, "Using number '%s'%s", number,
+				VTY_NEWLINE);
+			break;
+		}
+	}
+	if (vty_check_number(vty, number))
+		return CMD_WARNING;
+
+	sms_send(ms, sms_sca, number, argv_concat(argv, argc, 2));
+
+	return CMD_SUCCESS;
+}
 DEFUN(service, service_cmd, "service MS_NAME (*#06#|*#21#|*#67#|*#61#|*#62#"
 	"|*#002#|*#004#|*xx*number#|*xx#|#xx#|##xx#|STRING|hangup)",
 	"Send a Supplementary Service request\nName of MS (see \"show ms\")\n"
@@ -2769,6 +2817,7 @@ int ms_vty_init(void)
 	install_element(ENABLE_NODE, &call_retr_cmd);
 	install_element(ENABLE_NODE, &call_dtmf_cmd);
 	install_element(ENABLE_NODE, &sms_cmd);
+	install_element(ENABLE_NODE, &encrypted_sms_cmd);
 	install_element(ENABLE_NODE, &service_cmd);
 	install_element(ENABLE_NODE, &test_reselection_cmd);
 	install_element(ENABLE_NODE, &delete_forbidden_plmn_cmd);

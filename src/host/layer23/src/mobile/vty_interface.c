@@ -41,7 +41,9 @@
 #include <osmocom/bb/mobile/gsm411_sms.h>
 #include <osmocom/vty/telnet_interface.h>
 
-#include <openssl/ssl.h>
+//aes.h from osmocom doesn't work right now. going to try openssl
+//#include <osmocom/../../../../shared/libosmocore/src/gsm/milenage/aes.h>
+#include <openssl/aes.h>
 
 void *l23_ctx;
 
@@ -896,6 +898,10 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER .LINE",
 	"SMS text\n")
 {
   //need to figure out what input AES needs
+  //testing that openssl is included
+  int test = AES_BLOCK_SIZE;
+  //testing that we can actually use openssl functions
+  
 	struct osmocom_ms *ms;
 	struct gsm_settings *set;
 	struct gsm_settings_abbrev *abbrev;

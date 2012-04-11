@@ -200,7 +200,8 @@ libmobile_a_SOURCES = gsm322.c gsm480_ss.c gsm411_sms.c gsm48_cc.c gsm48_mm.c \
 	transaction.c vty_interface.c voice.c mncc_sock.c
 
 mobile_SOURCES = main.c app_mobile.c
-mobile_LDADD = libmobile.a $(LDADD)
+#libssl and libcrypto were added
+mobile_LDADD = libmobile.a $(LDADD) /usr/lib/libssl.a /usr/lib/libcrypto.a
 all: all-am
 
 .SUFFIXES:

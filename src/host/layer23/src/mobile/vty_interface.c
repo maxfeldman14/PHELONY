@@ -43,6 +43,7 @@
 
 //aes.h from osmocom doesn't work right now. going to try openssl
 //#include <osmocom/../../../../shared/libosmocore/src/gsm/milenage/aes.h>
+#include <openssl/evp.h>
 #include <openssl/aes.h>
 
 void *l23_ctx;
@@ -907,6 +908,9 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER .LINE",
 	struct gsm_settings_abbrev *abbrev;
 	char *number, *sms_sca = NULL;
   char *message;
+  EVP_CIPHER_CTX *e_ctx; 
+  // EVP_CIPHER_CTX_init(e_ctx);
+  
 
 	ms = get_ms(argv[0], vty);
 	if (!ms)

@@ -910,7 +910,10 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER .LINE",
   char *message;
   EVP_CIPHER_CTX *e_ctx; 
   EVP_CIPHER_CTX_init(e_ctx);
-  
+  const EVP_CIPHER *cipher = EVP_aes_128_cbc();
+  unsigned char key[AES_BLOCK_SIZE];
+  unsigned char iv[AES_BLOCK_SIZE];
+  //maybe we should send the iv as a text message too 
 
 	ms = get_ms(argv[0], vty);
 	if (!ms)
@@ -947,6 +950,9 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER .LINE",
 		return CMD_WARNING;
 
   message = argv_concat(argv, argc, 2);
+  vty_out(vty, "About to encrypt this message: %s%s", message, VTY_NEWLINE);
+  //do encryption
+  vty_out(vty, "Sending this encrypted message: %s%s", message, VTY_NEWLINE);
 	sms_send(ms, sms_sca, number, message);
 
 	return CMD_SUCCESS;

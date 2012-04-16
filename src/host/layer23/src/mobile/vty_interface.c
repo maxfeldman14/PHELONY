@@ -893,27 +893,141 @@ DEFUN(sms, sms_cmd, "sms MS_NAME NUMBER .LINE",
 	return CMD_SUCCESS;
 }
 
-DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER .LINE",
+DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER KEY IV .LINE",
 	"Send an encrypted SMS\nName of MS (see \"show ms\")\nPhone number to send SMS "
 	"(Use digits '0123456789*#abc', and '+' to dial international)\n"
 	"SMS text\n")
 {
+  //manually input key and iv. 
+  //note: the .LINE syntax gathers all additional args, so even a message with spaces can be handled
+  //args, in order:
+  //MS name, number, key, iv, everything else is the message
+
   //need to figure out what input AES needs
   //testing that openssl is included
-  int test = AES_BLOCK_SIZE;
   //testing that we can actually use openssl functions
-  
+    //TODO: char and key need to be taken in from argv
+  //they will be argv[2] and argv[3]
+  //the problem is that argv[x] is a character array
+  //so it needs to be converted to this
+  //
+  //the way i see it is that the user will provide a hex string as input,
+  //ie. esms MS1 18005555555 20F201... 0AB3...
+  //and 20F... and 0AB3... will be converted to iv and key, respectively
+
+  /*
+  these will be argv[2] and argv[3]
+  after conversion
+  unsigned char * key;
+  unsigned char * iv;
+*/
+
 	struct osmocom_ms *ms;
 	struct gsm_settings *set;
 	struct gsm_settings_abbrev *abbrev;
-	char *number, *sms_sca = NULL;
-  char *message;
-  EVP_CIPHER_CTX *e_ctx; 
-  EVP_CIPHER_CTX_init(e_ctx);
-  const EVP_CIPHER *cipher = EVP_aes_128_cbc();
-  unsigned char key[AES_BLOCK_SIZE];
-  unsigned char iv[AES_BLOCK_SIZE];
-  //maybe we should send the iv as a text message too 
+	char *number, *sms_sca, *message = NULL;
+  EVP_CIPHER_CTX en;
+  EVP_CIPHER_CTX_init(&en);
+  const EVP_CIPHER *cipher_type;
+  unsigned char *passkey, *passiv, *plaintxt;
+  unsigned char *plaintext = NULL;
+  unsigned char *ciphertext = NULL;
+  int input_len = 0;
+
+  unsigned char iv[] = { 0x0, 0x1, 0x2, 0x3,
+                         0x4, 0x5, 0x6, 0x7,
+                         0x8, 0x9, 0xa, 0xb,
+                         0x4, 0x5, 0x6, 0x7,
+                         0x4, 0x5, 0x6, 0x7,
+                         0x8, 0x9, 0xa, 0xb,
+                         0x8, 0x9, 0xa, 0xb,
+                         0xc, 0xd, 0xe, 0xf };
+
+
+  unsigned char key[] = { 0xb, 0xe, 0x5, 0x6,
+                          0x8, 0xe, 0x2, 0x6,
+                          0x8, 0xe, 0x2, 0x6,
+                          0x8, 0xe, 0x2, 0x6,
+                          0xb, 0x7, 0x5, 0x8,
+                          0xb, 0x7, 0x5, 0x8,
+                          0xb, 0x7, 0x5, 0x8,
+                          0x9, 0xf, 0xf, 0xc };
+
+  message = argv_concat(argv, argc, 4);
+
+  vty_out(vty, "Going to write %s%s", message, VTY_NEWLINE);
+  const char *string_to_encrypt = "Hello world"; 
+  //char *string_to_encrypt = "hello world";
+
+  cipher_type = EVP_aes_128_cbc();
+
+  EVP_EncryptInit_ex(&en, cipher_type, NULL, key, iv);
+
+  // The data we want to encrypt is a string.  So we can just do a simple
+  // strlen to calculate its length.  But the encrypted buffer is going to
+  // be padded with PKCS padding.  In the worst case, our string is a
+  // multiple of the AES block size (16 bytes).  In that case, the PKCS
+  // padding will be an additional 16 bytes after our data.  So we could
+  // precisely calculate the buffer with this:
+  // int input_len = strlen(string_to_encrypt);
+  // malloc( input_len + 16 - (input_len % 16) );
+  // But why get fancy?  Just add an extra AES block and have at most 16
+  // unused bytes at the end, and usually less than that.
+  static const int MAX_PADDING_LEN = 16;
+
+  // We add 1 because we're encrypting a string, which has a NULL terminator
+  // and want that NULL terminator to be present when we decrypt.
+  input_len = strlen(string_to_encrypt) + 1;
+  ciphertext = (unsigned char *) malloc(input_len + MAX_PADDING_LEN);
+
+  /* allows reusing of 'e' for multiple encryption cycles */
+  if(!EVP_EncryptInit_ex(&en, NULL, NULL, NULL, NULL)){
+    printf("ERROR in EVP_EncryptInit_ex \n");
+	  vty_out(vty, "Error in evp encrypt init%s", VTY_NEWLINE);
+    return 1;
+  }
+
+  // This function works on binary data, not strings.  So we cast our
+  // string to an unsigned char * and tell it that the length is the string
+  // length + 1 byte for the null terminator.
+  int bytes_written = 0;
+  int ciphertext_len = 0;
+  if(!EVP_EncryptUpdate(&en,
+                        ciphertext, &bytes_written,
+                        (unsigned char *) string_to_encrypt, input_len) ) {
+	  vty_out(vty, "Error in evp encrypt update%s", VTY_NEWLINE);
+    return 1;
+  }
+  ciphertext_len += bytes_written;
+
+  // Right now the ciphertext buffer contains only the encrypted version
+  // of the input data up to the last full AES block.  E.g., if your input
+  // size is 206, then ciphertext_len will be 192 because you have 14 bytes
+  // left to encrypt and those bytes can't fill a full AES block.  But the
+  // encryptor has stored those bytes and is waiting either for more bytes
+  // or the call to EVP_EncryptFinal where it will add padding to make the
+  // encrypted data the same size as the AES block (i.e., 2 bytes of padding
+  // in the above example).
+
+  // EVP_EncryptFinal_ex writes the padding.  The whole point of the
+  // bytes_written variable from EVP_EncryptUpdate is to tell us how much
+  // of the buffer is full so we know where we can write the padding.
+  // Note that we know our buffer is large enough so we're not bothering to
+  // keep track of the buffer size.  We just keep track of how much data is
+  // in it.
+
+  if(!EVP_EncryptFinal_ex(&en,
+                          ciphertext + bytes_written,
+                          &bytes_written)){
+    printf("ERROR in EVP_EncryptFinal_ex \n");
+	  vty_out(vty, "Error in evp encrypt final%s", VTY_NEWLINE);
+    return 1;
+  }
+  ciphertext_len += bytes_written;
+
+  EVP_CIPHER_CTX_cleanup(&en);
+
+  vty_out(vty, "encrypted message: %s%s", ciphertext, VTY_NEWLINE);
 
 	ms = get_ms(argv[0], vty);
 	if (!ms)
@@ -948,15 +1062,13 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER .LINE",
 	}
 	if (vty_check_number(vty, number))
 		return CMD_WARNING;
-
-  message = argv_concat(argv, argc, 2);
-  vty_out(vty, "About to encrypt this message: %s%s", message, VTY_NEWLINE);
-  //do encryption
-  vty_out(vty, "Sending this encrypted message: %s%s", message, VTY_NEWLINE);
-	sms_send(ms, sms_sca, number, message);
+  message = argv_concat(argv, argc, 4);
+	sms_send(ms, sms_sca, number, ciphertext);
 
 	return CMD_SUCCESS;
+
 }
+
 DEFUN(service, service_cmd, "service MS_NAME (*#06#|*#21#|*#67#|*#61#|*#62#"
 	"|*#002#|*#004#|*xx*number#|*xx#|#xx#|##xx#|STRING|hangup)",
 	"Send a Supplementary Service request\nName of MS (see \"show ms\")\n"
@@ -1214,7 +1326,7 @@ DEFUN(cfg_ms, cfg_ms_cmd, "ms MS_NAME",
 
 	if (!found) {
 		if (!vty_reading) {
-			vty_out(vty, "MS name '%s' does not exits, try "
+			vty_out(vty, "MS name '%s' does not exist, try "
 				"'ms %s create'%s", argv[0], argv[0],
 				VTY_NEWLINE);
 			return CMD_WARNING;

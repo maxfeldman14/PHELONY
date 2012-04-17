@@ -934,6 +934,10 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER KEY IV .LINE",
   unsigned char *ciphertext = NULL;
   int input_len = 0;
 
+  //args iv and key can be 16 char strings
+  //and the char would correspond to a hex value
+  /*
+
   unsigned char iv[] = { 0x0, 0x1, 0x2, 0x3,
                          0x4, 0x5, 0x6, 0x7,
                          0x8, 0x9, 0xa, 0xb,
@@ -952,11 +956,26 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER KEY IV .LINE",
                           0xb, 0x7, 0x5, 0x8,
                           0xb, 0x7, 0x5, 0x8,
                           0x9, 0xf, 0xf, 0xc };
+*/
+  unsigned char * iv = (unsigned char *) argv[2];
+  unsigned char * key = (unsigned char *) argv[3];
 
+  vty_out(vty, "IV: %s", VTY_NEWLINE);
+  int i = 0;
+  for(i; i < 16; i++){
+    vty_out(vty, "%x ", iv[i]);
+  }
+  vty_out(vty, "%s", VTY_NEWLINE);
+
+  vty_out(vty, "IV: %s", VTY_NEWLINE);
+  for(i = 0; i < 16; i++){
+    vty_out(vty, "%x ", key[i]);
+  }
+  vty_out(vty, "%s", VTY_NEWLINE);
   message = argv_concat(argv, argc, 4);
 
-  vty_out(vty, "Going to write %s%s", message, VTY_NEWLINE);
-  const char *string_to_encrypt = "Hello world"; 
+  vty_out(vty, "unencrypted message: %s%s", message, VTY_NEWLINE);
+  const char *string_to_encrypt = message; 
   //char *string_to_encrypt = "hello world";
 
   cipher_type = EVP_aes_128_cbc();
@@ -1027,7 +1046,11 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER KEY IV .LINE",
 
   EVP_CIPHER_CTX_cleanup(&en);
 
-  vty_out(vty, "encrypted message: %s%s", ciphertext, VTY_NEWLINE);
+  vty_out(vty, "encrypted hex: %s", VTY_NEWLINE);
+  for(i = 0; i < 16; i++){
+    vty_out(vty, "%x ", ciphertext[i]);
+  }
+  vty_out(vty, "%s", VTY_NEWLINE);
 
 	ms = get_ms(argv[0], vty);
 	if (!ms)
@@ -1068,6 +1091,7 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER KEY IV .LINE",
 	return CMD_SUCCESS;
 
 }
+
 
 DEFUN(service, service_cmd, "service MS_NAME (*#06#|*#21#|*#67#|*#61#|*#62#"
 	"|*#002#|*#004#|*xx*number#|*xx#|#xx#|##xx#|STRING|hangup)",

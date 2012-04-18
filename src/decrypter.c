@@ -43,11 +43,11 @@ char * decrypt(char * iv, char * key, char * ciphertext){
   }
   plaintext_len += bytes_written;
 
+  //not needed, it seems (i think this only checks padding)
 /*
   if(!EVP_DecryptFinal_ex(&de,
                           plaintext + bytes_written, &bytes_written)){
     printf("ERROR in EVP_DecryptFinal_ex\n");
-    // i got rid of the return because this does a chec
     //return 1;
   }
   */
@@ -56,7 +56,6 @@ char * decrypt(char * iv, char * key, char * ciphertext){
   EVP_CIPHER_CTX_cleanup(&de);
 
   return plaintext;
-  //printf("Decrypted value = %s\n", plaintext);
 }
 
 int main(int argc, char **argv)

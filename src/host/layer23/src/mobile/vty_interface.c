@@ -967,7 +967,7 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER KEY IV .LINE",
   }
   vty_out(vty, "%s", VTY_NEWLINE);
 
-  vty_out(vty, "IV: %s", VTY_NEWLINE);
+  vty_out(vty, "KEY: %s", VTY_NEWLINE);
   for(i = 0; i < 16; i++){
     vty_out(vty, "%x ", key[i]);
   }

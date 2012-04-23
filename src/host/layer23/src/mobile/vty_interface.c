@@ -911,8 +911,6 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER KEY IV .LINE",
   EVP_CIPHER_CTX en;
   EVP_CIPHER_CTX_init(&en);
   const EVP_CIPHER *cipher_type;
-  unsigned char *passkey, *passiv, *plaintxt;
-  unsigned char *plaintext = NULL;
   unsigned char *ciphertext = NULL;
   int input_len = 0;
 
@@ -1035,10 +1033,50 @@ DEFUN(dsms, dsms_cmd, "dsms KEY IV .LINE",
 	"Decrypt an arbitrary message with key and iv")
 {
   //use the key and iv to decrypt the message
-  char * message = NULL;
+  char * ciphertext = NULL;
   unsigned char * iv = (unsigned char *) argv[1];
   unsigned char * key = (unsigned char *) argv[0];
-  message = argv_concat(argv, argc, 2);
+  ciphertext = argv_concat(argv, argc, 2);
+
+  EVP_CIPHER_CTX de;
+  EVP_CIPHER_CTX_init(&de);
+  const EVP_CIPHER *cipher_type;
+
+  char * plaintext;
+  int bytes_written = 0;
+  int ciphertext_len = 0;
+  cipher_type = EVP_aes_128_cbc();
+
+  EVP_DecryptInit_ex(&de, cipher_type, NULL, key, iv);
+
+  if(!EVP_DecryptInit_ex(&de, NULL, NULL, NULL, NULL)){
+    vty_out(vty, "ERROR in EVP_DecryptInit_ex%s", VTY_NEWLINE);
+  }
+
+  ciphertext_len = strlen(ciphertext);
+
+  plaintext = (unsigned char *) malloc(ciphertext_len); 
+  int plaintext_len = 0;
+  if(!EVP_DecryptUpdate(&de,
+                        plaintext, &bytes_written,
+                        ciphertext, ciphertext_len)){
+    vty_out(vty, "ERROR in EVP_DecryptUpdate%s", VTY_NEWLINE);
+  }
+  plaintext_len += bytes_written;
+
+  //not needed, it seems (i think this only checks padding)
+/*
+  if(!EVP_DecryptFinal_ex(&de,
+                          plaintext + bytes_written, &bytes_written)){
+    printf("ERROR in EVP_DecryptFinal_ex\n");
+    //return 1;
+  }
+  */
+  plaintext_len += bytes_written;
+
+  EVP_CIPHER_CTX_cleanup(&de);
+
+  vty_out(vty, "Plaintext: %s%s", plaintext, VTY_NEWLINE);
 }
 
 DEFUN(service, service_cmd, "service MS_NAME (*#06#|*#21#|*#67#|*#61#|*#62#"
@@ -2921,6 +2959,7 @@ int ms_vty_init(void)
 	install_element(ENABLE_NODE, &call_dtmf_cmd);
 	install_element(ENABLE_NODE, &sms_cmd);
 	install_element(ENABLE_NODE, &esms_cmd);
+	install_element(ENABLE_NODE, &dsms_cmd);
 	install_element(ENABLE_NODE, &service_cmd);
 	install_element(ENABLE_NODE, &test_reselection_cmd);
 	install_element(ENABLE_NODE, &delete_forbidden_plmn_cmd);

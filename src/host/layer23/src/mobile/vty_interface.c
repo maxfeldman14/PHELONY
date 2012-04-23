@@ -1022,6 +1022,9 @@ DEFUN(network_search, network_search_cmd, "network search MS_NAME",
 DEFUN(cfg_gps_enable, cfg_gps_enable_cmd, "gps enable",
 	"GPS receiver")
 {
+	printf("Foobar\n");
+	//LOGP(DNB, LOGL_INFO, "Foobar");
+
 	if (osmo_gps_open()) {
 		g.enable = 1;
 		vty_out(vty, "Failed to open GPS device!%s", VTY_NEWLINE);

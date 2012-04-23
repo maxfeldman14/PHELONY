@@ -73,6 +73,7 @@ int osmo_gpsd_cb(struct osmo_fd *bfd, unsigned int what)
 {
 	struct tm *tm;
 	unsigned diff = 0;
+	printf("Foobar in osmo_gpsd_cb\n");
 
 	g.valid = 0;
 
@@ -116,6 +117,7 @@ int osmo_gpsd_cb(struct osmo_fd *bfd, unsigned int what)
 	return 0;
 
 gps_not_ready:
+	printf("Foobar in gps_not_ready\n");
 	LOGP(DGPS, LOGL_DEBUG, "gps is offline");
 	return -1;
 }
@@ -124,6 +126,7 @@ int osmo_gpsd_open(void)
 {
 	LOGP(DGPS, LOGL_INFO, "Connecting to gpsd at '%s:%s'\n", g.gpsd_host, g.gpsd_port);
 
+	printf("Foobar in osmo_gpsd_open\n");
 	gps_bfd.data = NULL;
 	gps_bfd.when = BSC_FD_READ;
 	gps_bfd.cb = osmo_gpsd_cb;
@@ -203,10 +206,13 @@ static int osmo_serialgps_line(char *line)
 	int32_t diff;
 	double latitude, longitude;
 
+	printf("Foobar hit osmo_serialgps_line\n");
 	if (!!strncmp(line, "$GPGLL", 6))
+		printf("Foobar shat pants\n");
 		return 0;
 	line += 7;
 	if (strlen(line) < 37)
+		printf("Foobar shat pants2\n");
 		return 0;
 	line[37] = '\0';
 	/* ddmm.mmmm,N,dddmm.mmmm,E,hhmmss.mmm,A */
@@ -215,6 +221,7 @@ static int osmo_serialgps_line(char *line)
 	if (line[36] != 'A') {
 		LOGP(DGPS, LOGL_INFO, "%s (invalid)\n", line);
 		g.valid = 0;
+		printf("Foobar shat pants3\n");
 		return 0;
 	}
 	g.valid = 1;
@@ -240,6 +247,7 @@ static int osmo_serialgps_line(char *line)
 
   // moved Casey's spoofing functionality up to prevent
   // unnecessary calculations
+  printf("spoof mode is: %d\n", spoof_mode);
   if (spoof_mode) {
     g.latitude = spoof_lat;
 	  LOGP(DGPS, LOGL_DEBUG, "SPOOFED LATITUDE\n");
@@ -312,6 +320,7 @@ int osmo_serialgps_cb(struct osmo_fd *bfd, unsigned int what)
 	static int lpos = 0;
 	int i = 0, len;
 
+	printf("Foobar hit osmo_serialgps_cb\n");
 	len = read(bfd->fd, buff, sizeof(buff));
 	if (len <= 0) {
 		fprintf(stderr, "error reading GPS device (errno=%d)\n", errno);
@@ -326,10 +335,12 @@ int osmo_serialgps_cb(struct osmo_fd *bfd, unsigned int what)
 			line[lpos] = '\0';
 			lpos = 0;
 			i++;
-			if (!nmea_checksum(line))
+			if (!nmea_checksum(line)){
+				printf("Foobar shat our pants5\n");
 				fprintf(stderr, "NMEA checksum error\n");
-			else
+			}else{
 				osmo_serialgps_line(line);
+			}
 			continue;
 		}
 		line[lpos++] = buff[i++];
@@ -344,6 +355,7 @@ int osmo_serialgps_open(void)
 {
 	int baud = 0;
 
+	printf("Foobar hit osmo_serialgps_open\n");
 	if (gps_bfd.fd > 0)
 		return 0;
 
@@ -393,6 +405,8 @@ int osmo_serialgps_open(void)
 
 void osmo_serialgps_close(void)
 {
+	printf("Foobar hit osmo_serialgps_close\n");
+	
 	if (gps_bfd.fd <= 0)
 		return;
 
@@ -414,21 +428,37 @@ void osmo_gps_init(void)
 
 int osmo_gps_open(void)
 {
-	switch (g.gps_type) {
+	
+	printf("Foobar hit osmo_gps_open\n");
+	//added
+	//g.gps_type = GPS_TYPE_SERIAL;
+	//g.enable = 1;
+	g.valid = 1;
+	if (spoof_mode) {
+		printf("Foobar hit spoof\n");
+		g.enable = 1;
+		g.gps_type = GPS_TYPE_SERIAL;
+    		g.latitude = spoof_lat;
+    		g.longitude = spoof_long;
+	  	LOGP(DGPS, LOGL_DEBUG, "SPOOFED BOTH\n");
+  	}
+	//switch (g.gps_type) {
 #ifdef _HAVE_GPSD
-		case GPS_TYPE_GPSD:
-			return osmo_gpsd_open();
+//		case GPS_TYPE_GPSD:
+//			return osmo_gpsd_open();
 #endif
-		case GPS_TYPE_SERIAL:
-			return osmo_serialgps_open();
-
-		default:
-			return 0;
-	}
+//		case GPS_TYPE_SERIAL:
+//			return osmo_serialgps_open();
+////
+//		default:
+//			return 0;
+//	}
+	return 0;
 }
 
 void osmo_gps_close(void)
 {
+	printf("Foobar hit osmo_gps_close\n");
 	switch (g.gps_type) {
 #ifdef _HAVE_GPSD
 		case GPS_TYPE_GPSD:

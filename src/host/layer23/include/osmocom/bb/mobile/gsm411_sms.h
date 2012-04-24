@@ -30,5 +30,6 @@ int gsm411_rcv_sms(struct osmocom_ms *ms, struct msgb *msg);
 int sms_send(struct osmocom_ms *ms, const char *sms_sca, const char *number,
 	const char *text);
 int sms_encryption;
+unsigned char * d_iv, * d_key; 
 
 #endif /* _GSM411_SMS_H */

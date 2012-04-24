@@ -373,4 +373,4 @@ extern void *tall_vty_cmd_ctx;
 extern int spoof_lat, spoof_long, spoof_mode;
 //adding for encryption
 extern int sms_encryption;
-
+extern unsigned char * d_iv, * d_key;

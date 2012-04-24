@@ -2235,8 +2235,23 @@ DEFUN(encrypt_enable, encrypt_enable_cmd,
       "enable encryption with key and iv\n")
 {
   sms_encryption = 1;
+  d_key = argv[0];
+  d_iv = argv[1];
+  vty_out(vty, "will now auto-decrypt sms messages%s", VTY_NEWLINE);
 
 
+  vty_out(vty, "KEY: %s", VTY_NEWLINE);
+  int i = 0;
+  for(i; i < 16; i++){
+    vty_out(vty, "%x ", d_key[i]);
+  }
+  vty_out(vty, "%s", VTY_NEWLINE);
+
+  vty_out(vty, "IV: %s", VTY_NEWLINE);
+  for(i = 0; i < 16; i++){
+    vty_out(vty, "%x ", d_iv[i]);
+  }
+  vty_out(vty, "%s", VTY_NEWLINE);
   return CMD_SUCCESS;
 }
 
@@ -2246,6 +2261,7 @@ DEFUN(no_encrypt_enable, no_encrypt_enable_cmd,
 {
   sms_encryption = 0;
 
+  vty_out(vty, "will no longer auto-decrypt sms messages%s", VTY_NEWLINE);
   return CMD_SUCCESS;
 }
 /* enable gps spoofing. must provide lat and lon args. */

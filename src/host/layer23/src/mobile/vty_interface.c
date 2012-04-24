@@ -919,18 +919,18 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER KEY IV .LINE",
   unsigned char * key = (unsigned char *) argv[2];
 
   //print hexchars of iv and key
-  vty_out(vty, "IV: %s", VTY_NEWLINE);
   int i = 0;
+  vty_out(vty, "KEY: %s", VTY_NEWLINE);
   for(i; i < 16; i++){
+    vty_out(vty, "%x ", key[i]);
+  }
+  vty_out(vty, "%s", VTY_NEWLINE);
+  vty_out(vty, "IV: %s", VTY_NEWLINE);
+  for(i = 0; i < 16; i++){
     vty_out(vty, "%x ", iv[i]);
   }
   vty_out(vty, "%s", VTY_NEWLINE);
 
-  vty_out(vty, "KEY: %s", VTY_NEWLINE);
-  for(i = 0; i < 16; i++){
-    vty_out(vty, "%x ", key[i]);
-  }
-  vty_out(vty, "%s", VTY_NEWLINE);
 
   //get message
   message = argv_concat(argv, argc, 4);

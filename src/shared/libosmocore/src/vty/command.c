@@ -2230,6 +2230,24 @@ gDEFUN(config_exit,
 	return CMD_SUCCESS;
 }
 
+DEFUN(encrypt_enable, encrypt_enable_cmd,
+      "encrypt enable KEY IV",
+      "enable encryption with key and iv\n")
+{
+  sms_encryption = 1;
+
+
+  return CMD_SUCCESS;
+}
+
+DEFUN(no_encrypt_enable, no_encrypt_enable_cmd,
+      "no encrypt enable",
+      "disable encryption\n")
+{
+  sms_encryption = 0;
+
+  return CMD_SUCCESS;
+}
 /* enable gps spoofing. must provide lat and lon args. */
 DEFUN(gps_spoof, gps_spoof_cmd,
       "gps spoof <-90-90> <-180-180>",
@@ -3258,6 +3276,8 @@ void cmd_init(int terminal)
 	install_element(CONFIG_NODE, &no_hostname_cmd);
 	install_element(CONFIG_NODE, &gps_spoof_cmd);
 	install_element(CONFIG_NODE, &no_gps_spoof_cmd);
+  install_element(CONFIG_NODE, &encrypt_enable_cmd);
+  install_element(CONFIG_NODE, &no_encrypt_enable_cmd);
 
 	if (terminal) {
 		install_element(CONFIG_NODE, &password_cmd);

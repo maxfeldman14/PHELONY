@@ -53,7 +53,7 @@ AM_V_at = $(am__v_at_$(V))
 am__v_at_ = $(am__v_at_$(AM_DEFAULT_VERBOSITY))
 am__v_at_0 = @
 libmobile_a_AR = $(AR) $(ARFLAGS)
-libmobile_a_LIBADD =
+libmobile_a_LIBADD = /usr/lib/libssl.a /usr/lib/libcrypto.a
 am_libmobile_a_OBJECTS = gsm322.$(OBJEXT) gsm480_ss.$(OBJEXT) \
 	gsm411_sms.$(OBJEXT) gsm48_cc.$(OBJEXT) gsm48_mm.$(OBJEXT) \
 	gsm48_rr.$(OBJEXT) mnccms.$(OBJEXT) settings.$(OBJEXT) \
@@ -79,7 +79,7 @@ AM_V_CC = $(am__v_CC_$(V))
 am__v_CC_ = $(am__v_CC_$(AM_DEFAULT_VERBOSITY))
 am__v_CC_0 = @echo "  CC    " $@;
 CCLD = $(CC)
-LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -ldl -o $@
 AM_V_CCLD = $(am__v_CCLD_$(V))
 am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))
 am__v_CCLD_0 = @echo "  CCLD  " $@;
@@ -191,7 +191,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 INCLUDES = $(all_includes) -I$(top_srcdir)/include
-AM_CFLAGS = -Wall $(LIBOSMOCORE_CFLAGS) $(LIBOSMOGSM_CFLAGS) -ldl
+AM_CFLAGS = -Wall $(LIBOSMOCORE_CFLAGS) $(LIBOSMOGSM_CFLAGS) -ldl 
 LDADD = ../common/liblayer23.a $(LIBOSMOCORE_LIBS) $(LIBOSMOVTY_LIBS) $(LIBOSMOGSM_LIBS) $(LIBOSMOCODEC_LIBS)
 noinst_LIBRARIES = libmobile.a
 libmobile_a_SOURCES = gsm322.c gsm480_ss.c gsm411_sms.c gsm48_cc.c gsm48_mm.c \
@@ -199,7 +199,7 @@ libmobile_a_SOURCES = gsm322.c gsm480_ss.c gsm411_sms.c gsm48_cc.c gsm48_mm.c \
 	transaction.c vty_interface.c voice.c mncc_sock.c
 
 mobile_SOURCES = main.c app_mobile.c
-mobile_LDADD = libmobile.a $(LDADD)
+mobile_LDADD = libmobile.a $(LDADD) /usr/lib/libssl.a /usr/lib/libcrypto.a -ldl -lz
 all: all-am
 
 .SUFFIXES:

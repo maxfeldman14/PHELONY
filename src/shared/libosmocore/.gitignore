@@ -66,7 +66,8 @@ doc/html.tar
 
 src/crc*gen.c
 include/osmocom/core/crc*gen.h
-
+build-target/doc/*
+build-host/doc/*
 
 # vi files
 *.sw?

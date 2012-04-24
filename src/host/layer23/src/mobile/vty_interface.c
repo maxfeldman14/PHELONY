@@ -988,6 +988,8 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER KEY IV .LINE",
   }
   vty_out(vty, "%s", VTY_NEWLINE);
 
+  vty_out(vty, "string: %s%s", ciphertext, VTY_NEWLINE);
+
   //do normal mobile stuff
 	ms = get_ms(argv[0], vty);
 	if (!ms)

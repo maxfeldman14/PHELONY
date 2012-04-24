@@ -41,6 +41,9 @@
 #include <osmocom/core/talloc.h>
 #include <osmocom/bb/mobile/vty.h>
 
+#include <openssl/evp.h>
+#include <openssl/aes.h>
+
 #define UM_SAPI_SMS 3
 
 extern void *l23_ctx;
@@ -193,8 +196,47 @@ static int gsm340_rx_sms_deliver(struct osmocom_ms *ms, struct msgb *msg,
 			*p = ' ';
 	}
 	vty_notify(ms, NULL);
-	vty_notify(ms, "SMS from %s: '%s'\n", gsms->address, vty_text);
+  if (!sms_encryption){
+	  vty_notify(ms, "SMS from %s: '%s'\n", gsms->address, vty_text);
+  } else {
+    //need to decrypt then print
+    char * ciphertext = NULL;
+    unsigned char * iv = (unsigned char *) d_iv;
+    unsigned char * key = (unsigned char *) d_key;
+    ciphertext = vty_text;
 
+    EVP_CIPHER_CTX de;
+    EVP_CIPHER_CTX_init(&de);
+    const EVP_CIPHER *cipher_type;
+
+    char * plaintext;
+    int bytes_written = 0;
+    int ciphertext_len = 0;
+    cipher_type = EVP_aes_128_cbc();
+
+    EVP_DecryptInit_ex(&de, cipher_type, NULL, key, iv);
+
+    if(!EVP_DecryptInit_ex(&de, NULL, NULL, NULL, NULL)){
+	    vty_notify(ms, "ERROR in EVP_DecryptInit_ex\n");
+    }
+
+    ciphertext_len = strlen(ciphertext);
+
+    plaintext = (unsigned char *) malloc(ciphertext_len); 
+    int plaintext_len = 0;
+    if(!EVP_DecryptUpdate(&de,
+                          plaintext, &bytes_written,
+                          ciphertext, ciphertext_len)){
+	    vty_notify(ms, "ERROR in EVP_DecryptUpdate_ex\n");
+    }
+    plaintext_len += bytes_written;
+
+    plaintext_len += bytes_written;
+
+    EVP_CIPHER_CTX_cleanup(&de);
+
+	  vty_notify(ms, "SMS from %s: '%s'\n", gsms->address, plaintext);
+  }
 	home = getenv("HOME");
         if (!home) {
 fail:

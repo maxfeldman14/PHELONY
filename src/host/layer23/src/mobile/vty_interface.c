@@ -40,6 +40,7 @@
 #include <osmocom/bb/mobile/gsm480_ss.h>
 #include <osmocom/bb/mobile/gsm411_sms.h>
 #include <osmocom/vty/telnet_interface.h>
+#include <osmocom/bb/mobile/wakeup.h>
 
 //aes.h from osmocom doesn't work right now. going to try openssl
 //#include <osmocom/../../../../shared/libosmocore/src/gsm/milenage/aes.h>
@@ -758,6 +759,29 @@ DEFUN(network_select, network_select_cmd,
 	return CMD_SUCCESS;
 }
 
+DEFUN(wakeup, wakeup_cmd, "wakeup MS_NAME ARFCNs ARFCN1 ARFCNn [reps]",
+      "Wakeup the BTS associated with the given ARFCN. \n Send RACH Burst\n.")
+{
+        struct osmocom_ms *ms;
+	struct gsm_wakeupBTS *wakeupBTS;
+
+        int arfcn, count, i=0;
+	int reps = 1;
+	
+	ms = get_ms(argv[0], vty);
+	if (!ms)
+	  return CMD_WARNING;
+
+	if ( process_wakeup_cmd(ms, argc, argv) ){
+	  vty_out(vty, "BTS wakeup is processing ... '\n", VTY_NEWLINE);
+	} else {
+	  vty_out(vty, "BTS wakeup is not allowed in PLMN state: '%s' and CS state: '%s' \n", get_cs_state_name(ms->plmn.state), get_cs_state_name(ms->cellsel.state), 
+		  VTY_NEWLINE);
+	}
+
+	return CMD_SUCCESS;
+}
+
 DEFUN(call, call_cmd, "call MS_NAME (NUMBER|emergency|answer|hangup|hold)",
 	"Make a call\nName of MS (see \"show ms\")\nPhone number to call "
 	"(Use digits '0123456789*#abc', and '+' to dial international)\n"
@@ -790,18 +814,19 @@ DEFUN(call, call_cmd, "call MS_NAME (NUMBER|emergency|answer|hangup|hold)",
 	else if (!strcmp(number, "hold"))
 		mncc_hold(ms);
 	else {
-		llist_for_each_entry(abbrev, &set->abbrev, list) {
-			if (!strcmp(number, abbrev->abbrev)) {
-				number = abbrev->number;
-				vty_out(vty, "Dialing number '%s'%s", number,
-					VTY_NEWLINE);
-				break;
-			}
-		}
-		if (vty_check_number(vty, number))
-			return CMD_WARNING;
-		mncc_call(ms, number);
-	}
+
+	  llist_for_each_entry(abbrev, &set->abbrev, list) {
+	      if (!strcmp(number, abbrev->abbrev)) {
+		number = abbrev->number;
+		vty_out(vty, "Dialing number '%s'%s", number,
+			VTY_NEWLINE);
+		break;
+	      }
+	    }
+	    if (vty_check_number(vty, number))
+	      return CMD_WARNING;
+	    mncc_call(ms, number);
+	  }
 
 	return CMD_SUCCESS;
 }
@@ -2963,6 +2988,7 @@ int ms_vty_init(void)
 	install_element(ENABLE_NODE, &service_cmd);
 	install_element(ENABLE_NODE, &test_reselection_cmd);
 	install_element(ENABLE_NODE, &delete_forbidden_plmn_cmd);
+	install_element(ENABLE_NODE, &wakeup_cmd);
 
 #ifdef _HAVE_GPSD
 	install_element(CONFIG_NODE, &cfg_gps_host_cmd);

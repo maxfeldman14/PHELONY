@@ -61,6 +61,7 @@ static int gsm411_mn_send(struct gsm411_smr_inst *inst, int msg_type,
 int gsm411_sms_init(struct osmocom_ms *ms)
 {
 	LOGP(DLSMS, LOGL_INFO, "init SMS\n");
+  sms_encryption = 0;
 
 	return 0;
 }

@@ -371,4 +371,6 @@ extern void *tall_vty_cmd_ctx;
 
 // ADDING FOR GPS SPOOFING FUNCTIONALITY -- CASEY
 extern int spoof_lat, spoof_long, spoof_mode;
+//adding for encryption
+extern int sms_encryption;
 

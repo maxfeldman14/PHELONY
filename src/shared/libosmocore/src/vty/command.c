@@ -43,6 +43,8 @@ Boston, MA 02111-1307, USA.  */
 // including for GPS SPOOFING FUNCTIONALITY -- CASEY
 #include <stdint.h>
 #include <osmocom/../../../../host/layer23/include/osmocom/bb/common/gps.h>
+//for sms encryption
+#include <osmocom/../../../../host/layer23/include/osmocom/bb/mobile/gsm411_sms.h>
 
 /*! \addtogroup command
  * @{

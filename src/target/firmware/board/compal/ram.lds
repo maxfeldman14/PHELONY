@@ -11,9 +11,9 @@ ENTRY(_start)
 MEMORY
 {
     /* compal-loaded binary: our text, initialized data */
-    LRAM (rw) : ORIGIN = 0x00800000, LENGTH = 0x00014000
+    LRAM (rw) : ORIGIN = 0x00800000, LENGTH = 0x00015000
     /* compal-loaded binary: our unitialized data, stacks, heap */
-    IRAM (rw) : ORIGIN = 0x00814000, LENGTH = 0x0000c000
+    IRAM (rw) : ORIGIN = 0x00815000, LENGTH = 0x0000c000
 }
 SECTIONS
 {

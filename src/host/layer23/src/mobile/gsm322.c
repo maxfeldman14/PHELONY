@@ -40,6 +40,8 @@
 #include <osmocom/bb/common/networks.h>
 #include <osmocom/bb/mobile/vty.h>
 #include <osmocom/bb/mobile/app_mobile.h>
+#include <osmocom/bb/mobile/wakeup.h>
+
 
 #include <l1ctl_proto.h>
 

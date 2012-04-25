@@ -38,5 +38,5 @@ int wakeup_allowed(struct osmocom_ms *ms);
 int process_wakeup_cmd(struct osmocom_ms *ms, int argc, char **argv);
 void wakeup_timer_timeout(void *arg);
 int gsm322_wakeup_and_camp(struct osmocom_ms *ms, struct msgb *msg);
-
+int wakeup_process_next_arfcn(struct osmocom_ms *ms);
 #endif /* _WAKEUP_H */

@@ -11,6 +11,7 @@ at_top_srcdir='../..'
 abs_top_srcdir='/home/dingo/School/sp12/cs194/repos/PHELONY/src/shared/libosmocore/build-target/..'
 at_top_build_prefix='../'
 abs_top_builddir='/home/dingo/School/sp12/cs194/repos/PHELONY/src/shared/libosmocore/build-target'
+
 # Backward compatibility with Autotest <= 2.59b:
 at_top_builddir=$at_top_build_prefix
 

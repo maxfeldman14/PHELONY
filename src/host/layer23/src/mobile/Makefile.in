@@ -58,7 +58,8 @@ am_libmobile_a_OBJECTS = gsm322.$(OBJEXT) gsm480_ss.$(OBJEXT) \
 	gsm411_sms.$(OBJEXT) gsm48_cc.$(OBJEXT) gsm48_mm.$(OBJEXT) \
 	gsm48_rr.$(OBJEXT) mnccms.$(OBJEXT) settings.$(OBJEXT) \
 	subscriber.$(OBJEXT) support.$(OBJEXT) transaction.$(OBJEXT) \
-	vty_interface.$(OBJEXT) voice.$(OBJEXT) mncc_sock.$(OBJEXT)
+	vty_interface.$(OBJEXT) voice.$(OBJEXT) mncc_sock.$(OBJEXT) \
+	wakeup.$(OBJEXT)
 libmobile_a_OBJECTS = $(am_libmobile_a_OBJECTS)
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
@@ -196,7 +197,7 @@ LDADD = ../common/liblayer23.a $(LIBOSMOCORE_LIBS) $(LIBOSMOVTY_LIBS) $(LIBOSMOG
 noinst_LIBRARIES = libmobile.a
 libmobile_a_SOURCES = gsm322.c gsm480_ss.c gsm411_sms.c gsm48_cc.c gsm48_mm.c \
 	gsm48_rr.c mnccms.c settings.c subscriber.c support.c \
-	transaction.c vty_interface.c voice.c mncc_sock.c
+	transaction.c vty_interface.c voice.c mncc_sock.c wakeup.c
 
 mobile_SOURCES = main.c app_mobile.c
 mobile_LDADD = libmobile.a $(LDADD) /usr/lib/libssl.a /usr/lib/libcrypto.a -ldl -lz
@@ -304,6 +305,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/transaction.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/voice.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vty_interface.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wakeup.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

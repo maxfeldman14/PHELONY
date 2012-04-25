@@ -64,7 +64,7 @@ static int gsm411_mn_send(struct gsm411_smr_inst *inst, int msg_type,
 int gsm411_sms_init(struct osmocom_ms *ms)
 {
 	LOGP(DLSMS, LOGL_INFO, "init SMS\n");
-  sms_encryption = 0;
+    sms_encryption = 0;
 
 	return 0;
 }
@@ -200,16 +200,15 @@ static int gsm340_rx_sms_deliver(struct osmocom_ms *ms, struct msgb *msg,
 	  vty_notify(ms, "SMS from %s: '%s'\n", gsms->address, vty_text);
   } else {
     //need to decrypt then print
-    char * ciphertext = NULL;
-    unsigned char * iv = (unsigned char *) d_iv;
-    unsigned char * key = (unsigned char *) d_key;
-    ciphertext = vty_text;
+    char *ciphertext = vty_text;
+    unsigned char *iv = (unsigned char *) d_iv;
+    unsigned char *key = (unsigned char *) d_key;
 
     EVP_CIPHER_CTX de;
     EVP_CIPHER_CTX_init(&de);
     const EVP_CIPHER *cipher_type;
 
-    char * plaintext;
+    char *plaintext;
     int bytes_written = 0;
     int ciphertext_len = 0;
     cipher_type = EVP_aes_128_cbc();
@@ -222,20 +221,23 @@ static int gsm340_rx_sms_deliver(struct osmocom_ms *ms, struct msgb *msg,
 
     ciphertext_len = strlen(ciphertext);
 
+    // print out supposed ciphertext
+    printf("PLAINTEXT: '%X'\n", ciphertext);
+
     plaintext = (unsigned char *) malloc(ciphertext_len); 
-    int plaintext_len = 0;
+
     if(!EVP_DecryptUpdate(&de,
                           plaintext, &bytes_written,
                           ciphertext, ciphertext_len)){
 	    vty_notify(ms, "ERROR in EVP_DecryptUpdate_ex\n");
     }
-    plaintext_len += bytes_written;
-
-    plaintext_len += bytes_written;
 
     EVP_CIPHER_CTX_cleanup(&de);
 
-	  vty_notify(ms, "SMS from %s: '%s'\n", gsms->address, plaintext);
+    vty_notify(ms, "SMS from %s: '%s'\n", gsms->address, plaintext);
+
+    // print out supposed plaintext
+    printf("PLAINTEXT: '%X'\n", plaintext);
   }
 	home = getenv("HOME");
         if (!home) {

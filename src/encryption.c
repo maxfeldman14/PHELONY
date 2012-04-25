@@ -43,13 +43,15 @@ int decrypt(unsigned char * iv, unsigned char * key, unsigned char * ciphertext,
   return 0;
 }
 
-int encrypt(unsigned char * iv, unsigned char * key, unsigned char * ciphertext, unsigned char * plaintext){ 
+unsigned char * encrypt( unsigned char * iv, unsigned char * key, unsigned char * plaintext){ 
 
   EVP_CIPHER_CTX en;
   EVP_CIPHER_CTX_init(&en);
   const EVP_CIPHER *cipher_type;
   int input_len = 0;
 
+  unsigned char * ciphertext;
+  ciphertext = (unsigned char *) malloc(strlen(plaintext));
   cipher_type = EVP_aes_128_cbc();
 
   //init cipher
@@ -66,7 +68,7 @@ int encrypt(unsigned char * iv, unsigned char * key, unsigned char * ciphertext,
   /* allows reusing of 'e' for multiple encryption cycles */
   if(!EVP_EncryptInit_ex(&en, NULL, NULL, NULL, NULL)){
     printf("ERROR in EVP_EncryptInit_ex \n");
-    return 1;
+    return NULL;
   }
 
   // This function works on binary data, not strings.  So we cast our
@@ -78,7 +80,7 @@ int encrypt(unsigned char * iv, unsigned char * key, unsigned char * ciphertext,
   if(!EVP_EncryptUpdate(&en,
                         ciphertext, &bytes_written,
                         (unsigned char *) plaintext, input_len) ) {
-    return 1;
+    return NULL;
   }
   ciphertext_len += bytes_written;
 
@@ -87,20 +89,27 @@ int encrypt(unsigned char * iv, unsigned char * key, unsigned char * ciphertext,
                           ciphertext + bytes_written,
                           &bytes_written)){
     printf("ERROR in EVP_EncryptFinal_ex \n");
-    return 1;
+    return NULL;
   }
   ciphertext_len += bytes_written;
 
   //cleanup
   EVP_CIPHER_CTX_cleanup(&en);
+  printf("%s\n", ciphertext);
 
-  return 0;
+  return ciphertext;
 }
 
 int main(int argc, char **argv)
 {
   unsigned char * in = "hello world";
-  printf("%s", in);
+  printf("Input: %s\n", in);
+  unsigned char * out = NULL;
+  //out = (unsigned char *) malloc(strlen(in));
+  unsigned char * iv = "aaaaaaaaaaaaaaaa";
+  unsigned char * key = "bbbbbbbbbbbbbbbb";
+  out = encrypt(iv, key, in);
+  printf("encryped: %s\n", out);
   return 0;
 
 }

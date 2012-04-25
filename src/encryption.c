@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <openssl/evp.h>
 
-int decrypt(char * iv, char * key, char * ciphertext, char * plaintext){ 
+int decrypt(unsigned char * iv, unsigned char * key, unsigned char * ciphertext, unsigned char * plaintext){ 
 
   EVP_CIPHER_CTX de;
   EVP_CIPHER_CTX_init(&de);
@@ -43,7 +43,7 @@ int decrypt(char * iv, char * key, char * ciphertext, char * plaintext){
   return 0;
 }
 
-int encrypt(char * iv, char * key, char * ciphertext, char * plaintext){ 
+int encrypt(unsigned char * iv, unsigned char * key, unsigned char * ciphertext, unsigned char * plaintext){ 
 
   EVP_CIPHER_CTX en;
   EVP_CIPHER_CTX_init(&en);
@@ -99,6 +99,8 @@ int encrypt(char * iv, char * key, char * ciphertext, char * plaintext){
 
 int main(int argc, char **argv)
 {
+  unsigned char * in = "hello world";
+  printf("%s", in);
   return 0;
 
 }

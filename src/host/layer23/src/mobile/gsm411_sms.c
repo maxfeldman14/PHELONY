@@ -198,6 +198,11 @@ static int gsm340_rx_sms_deliver(struct osmocom_ms *ms, struct msgb *msg,
 	vty_notify(ms, NULL);
   if (!sms_encryption){
 	  vty_notify(ms, "SMS from %s: '%s'\n", gsms->address, vty_text);
+    int i = 0;
+    for (i; i < strlen(vty_text); i++){
+      vty_notify(ms, "%x", vty_text[i]);
+      vty_notify(ms, "\n");
+    }
   } else {
     //need to decrypt then print
     char * ciphertext = NULL;

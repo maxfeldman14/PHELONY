@@ -114,7 +114,7 @@ int main(int argc, char **argv)
   printf("in: %s\n", in);
   printf("encrypted: %s\n", out);
   final = decrypt(iv, key, out); 
-  printf("in: %s\n", final);
+  printf("final: %s\n", final);
   return 0;
 
 }

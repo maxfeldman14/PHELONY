@@ -3,11 +3,13 @@
 #include <stdlib.h>
 #include <openssl/evp.h>
 
-int decrypt(unsigned char * iv, unsigned char * key, unsigned char * ciphertext, unsigned char * plaintext){ 
+unsigned char * decrypt(unsigned char * iv, unsigned char * key, unsigned char * ciphertext){ 
 
   EVP_CIPHER_CTX de;
   EVP_CIPHER_CTX_init(&de);
   const EVP_CIPHER *cipher_type;
+  unsigned char * plaintext;
+  plaintext = (unsigned char *) malloc(strlen(ciphertext));
 
   int bytes_written = 0;
   int ciphertext_len = 0;
@@ -17,7 +19,7 @@ int decrypt(unsigned char * iv, unsigned char * key, unsigned char * ciphertext,
 
   if(!EVP_DecryptInit_ex(&de, NULL, NULL, NULL, NULL)){
     printf("ERROR in EVP_DecryptInit_ex \n");
-    return 1;
+    return NULL;
   }
 
   ciphertext_len = strlen(ciphertext);
@@ -27,20 +29,20 @@ int decrypt(unsigned char * iv, unsigned char * key, unsigned char * ciphertext,
                         plaintext, &bytes_written,
                         ciphertext, ciphertext_len)){
     printf("ERROR in EVP_DecryptUpdate\n");
-    return 1;
+    return NULL;
   }
   plaintext_len += bytes_written;
 
   if(!EVP_DecryptFinal_ex(&de,
                           plaintext + bytes_written, &bytes_written)){
     printf("ERROR in EVP_DecryptFinal_ex\n");
-    //return 1;
+    return NULL;
   }
   plaintext_len += bytes_written;
 
   EVP_CIPHER_CTX_cleanup(&de);
 
-  return 0;
+  return plaintext;
 }
 
 unsigned char * encrypt( unsigned char * iv, unsigned char * key, unsigned char * plaintext){ 
@@ -95,7 +97,6 @@ unsigned char * encrypt( unsigned char * iv, unsigned char * key, unsigned char 
 
   //cleanup
   EVP_CIPHER_CTX_cleanup(&en);
-  printf("%s\n", ciphertext);
 
   return ciphertext;
 }
@@ -105,11 +106,15 @@ int main(int argc, char **argv)
   unsigned char * in = "hello world";
   printf("Input: %s\n", in);
   unsigned char * out = NULL;
+  unsigned char * final = NULL;
   //out = (unsigned char *) malloc(strlen(in));
   unsigned char * iv = "aaaaaaaaaaaaaaaa";
   unsigned char * key = "bbbbbbbbbbbbbbbb";
   out = encrypt(iv, key, in);
-  printf("encryped: %s\n", out);
+  printf("in: %s\n", in);
+  printf("encrypted: %s\n", out);
+  final = decrypt(iv, key, out); 
+  printf("in: %s\n", final);
   return 0;
 
 }

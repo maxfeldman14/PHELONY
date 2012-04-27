@@ -1,14 +1,15 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <openssl/aes.h>
 #include <openssl/evp.h>
 
-unsigned char * decrypt(unsigned char * iv, unsigned char * key, unsigned char * ciphertext){ 
+unsigned char *decrypt_text(unsigned char *iv, unsigned char *key, unsigned char *ciphertext) { 
 
   EVP_CIPHER_CTX de;
   EVP_CIPHER_CTX_init(&de);
   const EVP_CIPHER *cipher_type;
-  unsigned char * plaintext;
+  unsigned char *plaintext;
   plaintext = (unsigned char *) malloc(strlen(ciphertext));
 
   int bytes_written = 0;
@@ -45,26 +46,23 @@ unsigned char * decrypt(unsigned char * iv, unsigned char * key, unsigned char *
   return plaintext;
 }
 
-unsigned char * encrypt( unsigned char * iv, unsigned char * key, unsigned char * plaintext){ 
+unsigned char *encrypt_text(unsigned char *iv, unsigned char *key, unsigned char *plaintext) { 
 
   EVP_CIPHER_CTX en;
   EVP_CIPHER_CTX_init(&en);
   const EVP_CIPHER *cipher_type;
   int input_len = 0;
 
-  unsigned char * ciphertext;
+  unsigned char *ciphertext;
   ciphertext = (unsigned char *) malloc(strlen(plaintext));
   cipher_type = EVP_aes_128_cbc();
 
   //init cipher
   EVP_EncryptInit_ex(&en, cipher_type, NULL, key, iv);
 
-  //static const int MAX_PADDING_LEN = 16;
-
   // We add 1 because we're encrypting a string, which has a NULL terminator
   // and want that NULL terminator to be present when we decrypt.
   input_len = strlen(plaintext) + 1;
-  //ciphertext = (unsigned char *) malloc(input_len + MAX_PADDING_LEN);
   ciphertext = (unsigned char *) malloc(input_len);
 
   /* allows reusing of 'e' for multiple encryption cycles */
@@ -101,8 +99,7 @@ unsigned char * encrypt( unsigned char * iv, unsigned char * key, unsigned char 
   return ciphertext;
 }
 
-int main(int argc, char **argv)
-{
+/*int main(int argc, char **argv) {
   unsigned char * in = "hello world";
   printf("Input: %s\n", in);
   unsigned char * out = NULL;
@@ -110,11 +107,11 @@ int main(int argc, char **argv)
   //out = (unsigned char *) malloc(strlen(in));
   unsigned char * iv = "aaaaaaaaaaaaaaaa";
   unsigned char * key = "bbbbbbbbbbbbbbbb";
-  out = encrypt(iv, key, in);
+  out = encrypt_text(iv, key, in);
   printf("in: %s\n", in);
   printf("encrypted: %s\n", out);
-  final = decrypt(iv, key, out); 
+  final = decrypt_text(iv, key, out); 
   printf("final: %s\n", final);
-  return 0;
 
-}
+  return 0;
+}*/

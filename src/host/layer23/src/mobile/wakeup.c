@@ -308,6 +308,7 @@ int wakeup_process_next_arfcn(struct osmocom_ms *ms)
 		  cs->state == GSM322_C9_CHOOSE_ANY_CELL  ||
 		  cs->state == GSM322_ANY_SEARCH       ||
 		  cs->state == GSM322_HPLMN_SEARCH ) ){
+	    LOGP(DPLMN, LOGL_INFO, "WAKEUP made it successfully through wakeup_process_next_arfcn.\n");
 	    return wakeup_l1cmd_and_timer(ms);
 	  } 
 	}

@@ -38,6 +38,7 @@
 #include <osmocom/bb/mobile/mncc.h>
 #include <osmocom/bb/mobile/voice.h>
 #include <osmocom/vty/telnet_interface.h>
+#include <osmocom/bb/mobile/wakeup.h>
 
 #include <osmocom/core/msgb.h>
 #include <osmocom/core/talloc.h>
@@ -236,6 +237,11 @@ struct osmocom_ms *mobile_new(char *name)
 	gsm_settings_init(ms);
 
 	ms->shutdown = 2; /* being down */
+
+
+	//so we don't initially start trying to do wakeup requests
+	struct gsm_wakeupBTS *wB = &ms->wakeupBTS;
+	wB->state = GSM_WAKEUP_NULL;
 
 	if (mncc_recv_app) {
 		char name[32];

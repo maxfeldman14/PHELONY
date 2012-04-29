@@ -3817,7 +3817,7 @@ static int gsm322_a_event(struct osmocom_ms *ms, struct msgb *msg)
 	}
 
 	if ( !wakeup_process_next_arfcn(ms) )
-	  rc = plmnastatelist[i].rout(ms, msg);
+		rc = plmnastatelist[i].rout(ms, msg);
 
 	return rc;
 }
@@ -4051,7 +4051,7 @@ int gsm322_c_event(struct osmocom_ms *ms, struct msgb *msg)
 	}
 
 	if ( !wakeup_process_next_arfcn(ms) )
-	  rc = cellselstatelist[i].rout(ms, msg);
+		rc = cellselstatelist[i].rout(ms, msg);
 
 	return rc;
 }

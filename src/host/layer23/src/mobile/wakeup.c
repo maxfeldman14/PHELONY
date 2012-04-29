@@ -132,9 +132,12 @@ int wakeup_l1cmd_and_timer (struct osmocom_ms *ms)
 	 */
 
 	for (;reps > 0; reps--){
+	  LOGP(DPLMN, LOGL_INFO, "doing l1ctl_tx_wakeup_req %d\n", reps);
 	  l1ctl_tx_wakeup_req(ms, wakeupBTS->arfcns[wakeupBTS->curr_arfcn]);
 	}
+
 	
+	LOGP(DPLMN, LOGL_INFO, "Done with l1ctl_tx_wakeup_reqs\n");
 	/* Setup timer. We wait for "x" seconds before initiating camping
 	 * operation. If camping fails, we fall back to conventional camping
 	 * mechanisim, "normal camping" or "any cell camping". 

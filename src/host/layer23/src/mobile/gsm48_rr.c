@@ -678,6 +678,7 @@ static void timeout_rr_meas(void *arg)
 		gsm48_rr_tx_meas_rep(rr->ms);
 
 restart:
+	LOGP(DRR, LOGL_INFO, "Crap.  in restart%s\n", text);
 	meas->frames = meas->snr = meas->berr = meas->rxlev = 0;
 	start_rr_t_meas(rr, 1, 0);
 }

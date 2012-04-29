@@ -2873,6 +2873,7 @@ int gsm322_l1_signal(unsigned int subsys, unsigned int signal,
 	int i;
 	int8_t rxlev;
 
+	LOGP(DCS, LOGL_INFO, "Crap. in gsm322_l1_signal with signal: %d, subsys: %d\n", signal, subsys);
 	if (subsys != SS_L1CTL)
 		return 0;
 

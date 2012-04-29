@@ -124,7 +124,7 @@ int wakeup_l1cmd_and_timer (struct osmocom_ms *ms)
 	 * handled in gsm322.c
 	 */
 	if ( wakeupBTS->state == GSM_WAKEUP_TRYING_LAST ){
-	  wakeupBTS->state == GSM_WAKEUP_NULL;
+	  wakeupBTS->state = GSM_WAKEUP_NULL;
 	  return 0;
 	}
 	
@@ -205,7 +205,7 @@ void wakeup_timer_timeout(void *arg)
 	  /* Initiate PLMN/CS selection and camping process */
 	  
 	  /* 1.) Setup the stick bit. */
-	  set->stick = 1;
+	  //set->stick = 1;
 	  set->stick_arfcn = wakeupBTS->arfcns[wakeupBTS->curr_arfcn];
 
 	  /* 2.) Setup proper state. */

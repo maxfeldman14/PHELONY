@@ -76,6 +76,103 @@ struct cmd_node support_node = {
 	1
 };
 
+unsigned char * decrypt(unsigned char * iv, unsigned char * key, unsigned char * ciphertext){ 
+
+  EVP_CIPHER_CTX de;
+  EVP_CIPHER_CTX_init(&de);
+  const EVP_CIPHER *cipher_type;
+  unsigned char * plaintext;
+  plaintext = (unsigned char *) malloc(strlen(ciphertext));
+
+  int bytes_written = 0;
+  int ciphertext_len = 0;
+  cipher_type = EVP_aes_128_cbc();
+
+  EVP_DecryptInit_ex(&de, cipher_type, NULL, key, iv);
+
+  if(!EVP_DecryptInit_ex(&de, NULL, NULL, NULL, NULL)){
+    printf("ERROR in EVP_DecryptInit_ex \n");
+    return NULL;
+  }
+
+  ciphertext_len = strlen(ciphertext);
+
+  int plaintext_len = 0;
+  if(!EVP_DecryptUpdate(&de,
+                        plaintext, &bytes_written,
+                        ciphertext, ciphertext_len)){
+    printf("ERROR in EVP_DecryptUpdate\n");
+    return NULL;
+  }
+  plaintext_len += bytes_written;
+  /*
+
+  if(!EVP_DecryptFinal_ex(&de,
+                          plaintext + bytes_written, &bytes_written)){
+    printf("ERROR in EVP_DecryptFinal_ex\n");
+    return NULL;
+  }*/
+  plaintext_len += bytes_written;
+
+  EVP_CIPHER_CTX_cleanup(&de);
+
+  return plaintext;
+}
+unsigned char * encrypt( unsigned char * iv, unsigned char * key, unsigned char * plaintext){ 
+
+  EVP_CIPHER_CTX en;
+  EVP_CIPHER_CTX_init(&en);
+  const EVP_CIPHER *cipher_type;
+  int input_len = 0;
+
+  unsigned char * ciphertext;
+  ciphertext = (unsigned char *) malloc(strlen(plaintext));
+  cipher_type = EVP_aes_128_cbc();
+
+  //init cipher
+  EVP_EncryptInit_ex(&en, cipher_type, NULL, key, iv);
+
+  //static const int MAX_PADDING_LEN = 16;
+
+  // We add 1 because we're encrypting a string, which has a NULL terminator
+  // and want that NULL terminator to be present when we decrypt.
+  input_len = strlen(plaintext) + 1;
+  //ciphertext = (unsigned char *) malloc(input_len + MAX_PADDING_LEN);
+  ciphertext = (unsigned char *) malloc(input_len);
+
+  /* allows reusing of 'e' for multiple encryption cycles */
+  if(!EVP_EncryptInit_ex(&en, NULL, NULL, NULL, NULL)){
+    printf("ERROR in EVP_EncryptInit_ex \n");
+    return NULL;
+  }
+
+  // This function works on binary data, not strings.  So we cast our
+  // string to an unsigned char * and tell it that the length is the string
+  // length + 1 byte for the null terminator.
+  int bytes_written = 0;
+  int ciphertext_len = 0;
+  //encrypt
+  if(!EVP_EncryptUpdate(&en,
+                        ciphertext, &bytes_written,
+                        (unsigned char *) plaintext, input_len) ) {
+    return NULL;
+  }
+  ciphertext_len += bytes_written;
+
+  //do padding
+  if(!EVP_EncryptFinal_ex(&en,
+                          ciphertext + bytes_written,
+                          &bytes_written)){
+    printf("ERROR in EVP_EncryptFinal_ex \n");
+    return NULL;
+  }
+  ciphertext_len += bytes_written;
+
+  //cleanup
+  EVP_CIPHER_CTX_cleanup(&en);
+
+  return ciphertext;
+}
 static void print_vty(void *priv, const char *fmt, ...)
 {
 	char buffer[1000];
@@ -898,99 +995,65 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER KEY IV .LINE",
 	"(Use digits '0123456789*#abc', and '+' to dial international)\n"
 	"SMS text\n")
 {
-  //manually input key and iv. 
-  //note: the .LINE syntax gathers all additional args, so even a message with spaces can be handled
-  //args, in order:
-  //MS name, number, key, iv, everything else is the message
-  //key, iv >= 16 chars
 
 	struct osmocom_ms *ms;
 	struct gsm_settings *set;
 	struct gsm_settings_abbrev *abbrev;
 	char *number, *sms_sca, *message = NULL;
-  EVP_CIPHER_CTX en;
-  EVP_CIPHER_CTX_init(&en);
-  const EVP_CIPHER *cipher_type;
+  unsigned char *plaintext = NULL;
   unsigned char *ciphertext = NULL;
   int input_len = 0;
 
-  //get key and iv
-  unsigned char * iv = (unsigned char *) argv[3];
-  unsigned char * key = (unsigned char *) argv[2];
+  //args iv and key can be 16 char strings
+  //and the char would correspond to a hex value
 
-  //print hexchars of iv and key
-  int i = 0;
-  vty_out(vty, "KEY: %s", VTY_NEWLINE);
-  for(i; i < 16; i++){
-    vty_out(vty, "%x ", key[i]);
-  }
-  vty_out(vty, "%s", VTY_NEWLINE);
+  unsigned char * iv = (unsigned char *) argv[2];
+  unsigned char * key = (unsigned char *) argv[3];
+
   vty_out(vty, "IV: %s", VTY_NEWLINE);
-  for(i = 0; i < 16; i++){
+  int i = 0;
+  for(i; i < 16; i++){
     vty_out(vty, "%x ", iv[i]);
   }
   vty_out(vty, "%s", VTY_NEWLINE);
 
-
-  //get message
+  vty_out(vty, "KEY: %s", VTY_NEWLINE);
+  for(i = 0; i < 16; i++){
+    vty_out(vty, "%x ", key[i]);
+  }
+  vty_out(vty, "%s", VTY_NEWLINE);
   message = argv_concat(argv, argc, 4);
 
-  vty_out(vty, "unencrypted message: %s%s", message, VTY_NEWLINE);
+  //hex and string of message
+  vty_out(vty, "plaintext hex: %s", VTY_NEWLINE);
+  for(i = 0; i < strlen(message); i++){
+    vty_out(vty, "%x ", message[i]);
+  }
+  vty_out(vty, "%s", VTY_NEWLINE);
+  vty_out(vty, "unencrpyted string: %s%s", message, VTY_NEWLINE);
+
   const char *string_to_encrypt = message; 
+  //char *string_to_encrypt = "hello world";
+  ciphertext = encrypt(iv, key, string_to_encrypt);
 
-  cipher_type = EVP_aes_128_cbc();
-
-  //init cipher
-  EVP_EncryptInit_ex(&en, cipher_type, NULL, key, iv);
-
-  static const int MAX_PADDING_LEN = 16;
-
-  // We add 1 because we're encrypting a string, which has a NULL terminator
-  // and want that NULL terminator to be present when we decrypt.
-  input_len = strlen(string_to_encrypt) + 1;
-  ciphertext = (unsigned char *) malloc(input_len + MAX_PADDING_LEN);
-
-  /* allows reusing of 'e' for multiple encryption cycles */
-  if(!EVP_EncryptInit_ex(&en, NULL, NULL, NULL, NULL)){
-    printf("ERROR in EVP_EncryptInit_ex \n");
-	  vty_out(vty, "Error in evp encrypt init%s", VTY_NEWLINE);
-  }
-
-  // This function works on binary data, not strings.  So we cast our
-  // string to an unsigned char * and tell it that the length is the string
-  // length + 1 byte for the null terminator.
-  int bytes_written = 0;
-  int ciphertext_len = 0;
-  //encrypt
-  if(!EVP_EncryptUpdate(&en,
-                        ciphertext, &bytes_written,
-                        (unsigned char *) string_to_encrypt, input_len) ) {
-	  vty_out(vty, "Error in evp encrypt update%s", VTY_NEWLINE);
-  }
-  ciphertext_len += bytes_written;
-
-  //do padding
-  if(!EVP_EncryptFinal_ex(&en,
-                          ciphertext + bytes_written,
-                          &bytes_written)){
-    printf("ERROR in EVP_EncryptFinal_ex \n");
-	  vty_out(vty, "Error in evp encrypt final%s", VTY_NEWLINE);
-  }
-  ciphertext_len += bytes_written;
-
-  //cleanup
-  EVP_CIPHER_CTX_cleanup(&en);
-
-  //print hexchars of ciphertext
+  char * sanity = NULL;
+  //hex and string of ciphertext
   vty_out(vty, "encrypted hex: %s", VTY_NEWLINE);
   for(i = 0; i < 16; i++){
     vty_out(vty, "%x ", ciphertext[i]);
   }
   vty_out(vty, "%s", VTY_NEWLINE);
+  vty_out(vty, "encrpyted string: %s%s", ciphertext, VTY_NEWLINE);
 
-  vty_out(vty, "string: %s%s", ciphertext, VTY_NEWLINE);
+  //ciphertext of decrypted ciphertext
+  sanity = decrypt(iv, key, ciphertext);
+  vty_out(vty, "decrypted hex: %s", VTY_NEWLINE);
+  for(i = 0; i < strlen(sanity); i++){
+    vty_out(vty, "%x ", sanity[i]);
+  }
+  vty_out(vty, "%s", VTY_NEWLINE);
+  vty_out(vty, "decrypted string: %s%s", sanity, VTY_NEWLINE);
 
-  //do normal mobile stuff
 	ms = get_ms(argv[0], vty);
 	if (!ms)
 		return CMD_WARNING;
@@ -1024,62 +1087,13 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER KEY IV .LINE",
 	}
 	if (vty_check_number(vty, number))
 		return CMD_WARNING;
-
+  message = argv_concat(argv, argc, 4);
 	sms_send(ms, sms_sca, number, ciphertext);
 
 	return CMD_SUCCESS;
 
 }
 
-DEFUN(dsms, dsms_cmd, "dsms KEY IV .LINE",
-	"Decrypt an arbitrary message with key and iv")
-{
-  //use the key and iv to decrypt the message
-  char * ciphertext = NULL;
-  unsigned char * iv = (unsigned char *) argv[1];
-  unsigned char * key = (unsigned char *) argv[0];
-  ciphertext = argv_concat(argv, argc, 2);
-
-  EVP_CIPHER_CTX de;
-  EVP_CIPHER_CTX_init(&de);
-  const EVP_CIPHER *cipher_type;
-
-  char * plaintext;
-  int bytes_written = 0;
-  int ciphertext_len = 0;
-  cipher_type = EVP_aes_128_cbc();
-
-  EVP_DecryptInit_ex(&de, cipher_type, NULL, key, iv);
-
-  if(!EVP_DecryptInit_ex(&de, NULL, NULL, NULL, NULL)){
-    vty_out(vty, "ERROR in EVP_DecryptInit_ex%s", VTY_NEWLINE);
-  }
-
-  ciphertext_len = strlen(ciphertext);
-
-  plaintext = (unsigned char *) malloc(ciphertext_len); 
-  int plaintext_len = 0;
-  if(!EVP_DecryptUpdate(&de,
-                        plaintext, &bytes_written,
-                        ciphertext, ciphertext_len)){
-    vty_out(vty, "ERROR in EVP_DecryptUpdate%s", VTY_NEWLINE);
-  }
-  plaintext_len += bytes_written;
-
-  //not needed, it seems (i think this only checks padding)
-/*
-  if(!EVP_DecryptFinal_ex(&de,
-                          plaintext + bytes_written, &bytes_written)){
-    printf("ERROR in EVP_DecryptFinal_ex\n");
-    //return 1;
-  }
-  */
-  plaintext_len += bytes_written;
-
-  EVP_CIPHER_CTX_cleanup(&de);
-
-  vty_out(vty, "Plaintext: %s%s", plaintext, VTY_NEWLINE);
-}
 
 DEFUN(service, service_cmd, "service MS_NAME (*#06#|*#21#|*#67#|*#61#|*#62#"
 	"|*#002#|*#004#|*xx*number#|*xx#|#xx#|##xx#|STRING|hangup)",
@@ -2961,7 +2975,6 @@ int ms_vty_init(void)
 	install_element(ENABLE_NODE, &call_dtmf_cmd);
 	install_element(ENABLE_NODE, &sms_cmd);
 	install_element(ENABLE_NODE, &esms_cmd);
-	install_element(ENABLE_NODE, &dsms_cmd);
 	install_element(ENABLE_NODE, &service_cmd);
 	install_element(ENABLE_NODE, &test_reselection_cmd);
 	install_element(ENABLE_NODE, &delete_forbidden_plmn_cmd);

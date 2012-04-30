@@ -76,7 +76,7 @@ struct cmd_node support_node = {
 	1
 };
 
-unsigned char * decrypt(unsigned char * iv, unsigned char * key, unsigned char * ciphertext){ 
+unsigned char * mdecrypt(unsigned char * iv, unsigned char * key, unsigned char * ciphertext){ 
 
   EVP_CIPHER_CTX de;
   EVP_CIPHER_CTX_init(&de);
@@ -118,7 +118,7 @@ unsigned char * decrypt(unsigned char * iv, unsigned char * key, unsigned char *
 
   return plaintext;
 }
-unsigned char * encrypt( unsigned char * iv, unsigned char * key, unsigned char * plaintext){ 
+unsigned char * mencrypt( unsigned char * iv, unsigned char * key, unsigned char * plaintext){ 
 
   EVP_CIPHER_CTX en;
   EVP_CIPHER_CTX_init(&en);
@@ -1034,7 +1034,7 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER KEY IV .LINE",
 
   const char *string_to_encrypt = message; 
   //char *string_to_encrypt = "hello world";
-  ciphertext = encrypt(iv, key, string_to_encrypt);
+  ciphertext = mencrypt(iv, key, string_to_encrypt);
 
   char * sanity = NULL;
   //hex and string of ciphertext
@@ -1046,7 +1046,7 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER KEY IV .LINE",
   vty_out(vty, "encrpyted string: %s%s", ciphertext, VTY_NEWLINE);
 
   //ciphertext of decrypted ciphertext
-  sanity = decrypt(iv, key, ciphertext);
+  sanity = mdecrypt(iv, key, ciphertext);
   vty_out(vty, "decrypted hex: %s", VTY_NEWLINE);
   for(i = 0; i < strlen(sanity); i++){
     vty_out(vty, "%x ", sanity[i]);

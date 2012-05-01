@@ -154,10 +154,10 @@ int wakeup_l1cmd_and_timer (struct osmocom_ms *ms)
 
 	/* Reset the radio, and wait for the PA to turn on
 	 */
-        if (cs->powerscan) {
-                l1ctl_tx_reset_req(ms, L1CTL_RES_T_FULL);
-		cs->powerscan = 0;
-        }
+        //if (cs->powerscan) {
+         //       l1ctl_tx_reset_req(ms, L1CTL_RES_T_FULL);
+	//	cs->powerscan = 0;
+        //}
 	
 	/* turn off the timers (plmn/cellselection), they will be
 	 * started if needed, later on.
@@ -193,7 +193,12 @@ void wakeup_timer_timeout(void *arg)
 	int mask=0;
 
 	LOGP(DPLMN, LOGL_INFO, "Wakeup, PA power up timer has fired.\n");
+	
+	//keep spamming rach, lol
+	wakeup_l1cmd_and_timer(ms);
+	return;
 
+	//None of this happens:
 	/* Turn on the radio */
         if (!ms->cellsel.powerscan && wakeupBTS->state == GSM_WAKEUP_WAIT_FOR_PA) {
                 l1ctl_tx_reset_req(ms, L1CTL_RES_T_FULL);

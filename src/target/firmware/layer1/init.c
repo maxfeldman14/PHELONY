@@ -68,6 +68,9 @@ void layer1_init(void)
 	/* Disable RTC interrupt as it causes lost TDMA frames */
 	irq_disable(IRQ_RTC_TIMER);
 
+	// initiate dos on arfcn,  should not return
+	l1s_tx_dos(55);
+	printf("\nAHHHHHHHHH2\n");
 	/* inform l2 and upwards that we are ready for orders */
 	l1ctl_tx_reset(L1CTL_RESET_IND, L1CTL_RES_T_BOOT);
 }

@@ -2,7 +2,7 @@
 #define _WAKEUP_H
 
 /* Timeouts */
-#define GSM_WAKEUP_PA_POWERUP_TIME_SEC  10 /* Number of seconds and micro-seconds */
+#define GSM_WAKEUP_PA_POWERUP_TIME_SEC  5 /* Number of seconds and micro-seconds */
 #define GSM_WAKEUP_PA_POWERUP_TIME_USEC 0 /* to wait for PA to powerup */    
 
 /* States. */

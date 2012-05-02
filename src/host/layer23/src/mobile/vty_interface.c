@@ -40,6 +40,7 @@
 #include <osmocom/bb/mobile/gsm480_ss.h>
 #include <osmocom/bb/mobile/gsm411_sms.h>
 #include <osmocom/vty/telnet_interface.h>
+#include <osmocom/bb/common/logging.h>
 
 //aes.h from osmocom doesn't work right now. going to try openssl
 //#include <osmocom/../../../../shared/libosmocore/src/gsm/milenage/aes.h>
@@ -1097,6 +1098,13 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER IV KEY .LINE",
   }
   vty_out(vty, "%s", VTY_NEWLINE);
   vty_out(vty, "decrypted string: %s%s", sanity, VTY_NEWLINE);
+
+  //i = 0;
+  //LOGP(DLSMS, LOGL_DEBUG, "-----BEGIN CIPHERTEXT-----\n");
+  //for(i; i < 16; i++) {
+  //  LOGP(DLSMS, LOGL_DEBUG, "%x ", ciphertext[i]);
+  //}
+  //LOGP(DLSMS, LOGL_DEBUG, "\n-----END CIPHERTEXT-----\n");
 
   // print esms plaintext and ciphertext out to esms_send.txt
   //esms_out = open("esms_send.txt", "wb");

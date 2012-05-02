@@ -242,14 +242,39 @@ static int gsm340_rx_sms_deliver(struct osmocom_ms *ms, struct msgb *msg,
     vty_notify(ms, "SMS from %s: '%s'\n", gsms->address, plaintext);
 
     // print ciphertext and plaintext out to esms_recv.txt
-    FILE *esms_out = open("esms_recv.txt", "w");
-    fprintf(esms_out, "ESMS RECEIVE -- CIPHERTEXT: '%X'\n", ciphertext);
-    fprintf(esms_out, "ESMS RECEIVE -- PLAINTEXT: '%X'\n", plaintext);
-    fclose(esms_out);
+    //FILE *esms_out = open("esms_recv.txt", "a+");
+    //fprintf(esms_out, "ESMS RECEIVE -- CIPHERTEXT: '%X'\n", ciphertext);
+    //fprintf(esms_out, "ESMS RECEIVE -- PLAINTEXT: '%X'\n", plaintext);
+    //fclose(esms_out);
 
-    // print ciphertext and plaintext out to vty in case esms_recv fails
-    vty_notify(ms, "ESMS RECEIVE -- CIPHERTEXT: '%X'\n", ciphertext);
-    vty_notify(ms, "ESMS RECEIVE -- PLAINTEXT: '%X'\n", plaintext);
+    // start printing via logging functions
+	LOGP(DLSMS, LOGL_DEBUG, "\n-----ESMS RECEIVE START-----\n");
+
+    //print iv
+	LOGP(DLSMS, LOGL_DEBUG, "-----BEGIN IV-----");
+    LOGP(DLSMS, LOGL_DEBUG, "%s\n", iv);
+
+    //print key
+	LOGP(DLSMS, LOGL_DEBUG, "-----BEGIN KEY-----");
+    LOGP(DLSMS, LOGL_DEBUG, "%s\n", key);
+
+    //print ciphertext
+	LOGP(DLSMS, LOGL_DEBUG, "\n-----BEGIN CIPHERTEXT-----\n");
+
+    // we know that ciphertext is at least as long as the plaintext
+    int i = 0;
+    for(i; i < 16; i++) {
+        LOGP(DLSMS, LOGL_DEBUG, "%x ", ciphertext[i]);
+    }
+    LOGP(DLSMS, LOGL_DEBUG, "\n-----END CIPHERTEXT-----\n");
+
+    //print plaintext
+	LOGP(DLSMS, LOGL_DEBUG, "\n-----BEGIN PLAINTEXT-----\n");
+    i = 0;
+    for(i; i < 16; i++){
+        LOGP(DLSMS, LOGL_DEBUG, "%x ", plaintext[i]);
+    }
+    LOGP(DLSMS, LOGL_DEBUG, "\n-----END PLAINTEXT-----\n");
   }
 	home = getenv("HOME");
         if (!home) {

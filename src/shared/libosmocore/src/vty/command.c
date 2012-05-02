@@ -2231,12 +2231,12 @@ gDEFUN(config_exit,
 }
 
 DEFUN(encrypt_enable, encrypt_enable_cmd,
-      "encrypt enable KEY IV",
+      "encrypt enable IV KEY",
       "enable encryption with key and iv\n")
 {
   sms_encryption = 1;
-  d_key = argv[0];
-  d_iv = argv[1];
+  d_iv = argv[0];
+  d_key = argv[1];
   vty_out(vty, "will now auto-decrypt sms messages%s", VTY_NEWLINE);
 
 

@@ -468,6 +468,47 @@ void trf6151_set_arfcn(uint16_t arfcn, int tx)
 	rf_arfcn = arfcn; // TODO: arfcn is referenced at other places
 }
 
+void trf6151_set_dl_arfcn(uint16_t arfcn, int tx)
+{
+	uint32_t freq_khz;
+	uint16_t pll_config;
+	int uplink;
+	enum trf6151_gsm_band pll_band;
+
+	//uplink = !!(arfcn & ARFCN_UPLINK);
+	uplink = 0;
+	arfcn != ~ARFCN_UPLINK;
+
+	switch (gsm_arfcn2band(arfcn)) {
+	case GSM_BAND_850:
+	case GSM_BAND_900:
+	case GSM_BAND_1800:
+	case GSM_BAND_1900:
+		/* Supported */
+		break;
+	case GSM_BAND_450:
+	case GSM_BAND_480:
+	case GSM_BAND_750:
+	case GSM_BAND_810:
+		printf("Unsupported band ! YMMV.\n");
+		break;
+	}
+
+	freq_khz = gsm_arfcn2freq10(arfcn, uplink) * 100;
+	printd("ARFCN %u -> %u kHz\n", arfcn, freq_khz);
+
+	if (!tx)
+		trf6151_pll_rx(freq_khz, &pll_config, &pll_band);
+	else
+		trf6151_pll_tx(freq_khz, &pll_config, &pll_band);
+
+	trf6151_band_select(pll_band);
+	trf6151_reg_write(REG_PLL, pll_config);
+
+	rf_band = pll_band;
+	rf_arfcn = arfcn; // TODO: arfcn is referenced at other places
+}
+
 void trf6151_calib_dc_offs(void)
 {
 	uint16_t rx = trf6151_reg_cache[REG_RX];
@@ -580,6 +621,24 @@ void trf6151_tx_window(int16_t start_qbits, uint16_t arfcn)
 	tpu_enq_at(start_pll_qbits);
 
 	trf6151_set_arfcn(arfcn, 1);
+	trf6151_set_mode(TRF6151_TX);
+
+	/* FIXME: power down at the right time again */
+#endif
+}
+
+/* prepare a Tx window with the TRF6151 finished at time 'start' (in qbits) */
+void trf6151_tx_dos_window(int16_t start_qbits, uint16_t arfcn)
+{
+#ifdef CONFIG_TX_ENABLE
+	int16_t start_pll_qbits;
+
+	/* power up at the right time _before_ the 'start_qbits' point in time */
+	start_pll_qbits = add_mod5000(start_qbits,  -(TRF6151_TX_PLL_DELAY + TRF6151_RX_TPU_DELAY));
+	tpu_enq_at(start_pll_qbits);
+
+	trf6151_set_dl_arfcn(arfcn, tx);
+	//trf6151_set_arfcn(arfcn, 1);
 	trf6151_set_mode(TRF6151_TX);
 
 	/* FIXME: power down at the right time again */

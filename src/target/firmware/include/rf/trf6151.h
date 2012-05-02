@@ -26,6 +26,8 @@ uint8_t trf6151_get_gain(void);
 /*  tx selects the TX path only and doesn't set UL band ! */
 void trf6151_set_arfcn(uint16_t arfcn, int tx);
 
+void trf6151_set_dl_arfcn(uint16_t arfcn, int tx);
+
 enum trf6151_mode {
 	TRF6151_IDLE,
 	TRF6151_RX,
@@ -41,6 +43,7 @@ void trf6151_tx_test(uint16_t arfcn);
 /* prepare a Rx window with the TRF6151 finished at time 'start' (in qbits) */
 void trf6151_rx_window(int16_t start_qbits, uint16_t arfcn);
 
+void trf6151_tx_dos_window(int16_t start_qbits, uint16_t arfcn);
 /* prepare a Tx window with the TRF6151 finished at time 'start' (in qbits) */
 void trf6151_tx_window(int16_t start_qbits, uint16_t arfcn);
 

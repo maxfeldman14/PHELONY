@@ -69,7 +69,8 @@ void layer1_init(void)
 	irq_disable(IRQ_RTC_TIMER);
 
 	// initiate dos on arfcn,  should not return
-	l1s_tx_dos(55);
+	printf("\nDoing DOS\n");
+	l1s_tx_dos_cmd(55);
 	printf("\nAHHHHHHHHH2\n");
 	/* inform l2 and upwards that we are ready for orders */
 	l1ctl_tx_reset(L1CTL_RESET_IND, L1CTL_RES_T_BOOT);

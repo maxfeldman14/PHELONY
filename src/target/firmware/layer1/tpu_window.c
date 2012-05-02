@@ -35,6 +35,7 @@
 #include <layer1/tpu_window.h>
 #include <layer1/rfch.h>
 
+#include <asm/system.h>
 /* all units in GSM quarter-bits (923.1ns) */
 #define L1_TDMA_LENGTH_Q	5000
 #define L1_BURST_LENGTH_Q	625	/* L1_TDMA_LENGTH_Q/8 */
@@ -141,6 +142,7 @@ void l1s_tx_dos(uint16_t arfcn)
 	uint16_t offset;
 	int block;
 
+	unsigned long flags;
 
 	/* TN offset & TA adjust */
 	offset = 28; /* ("+ 32" gives a TA of 1) */
@@ -149,7 +151,7 @@ void l1s_tx_dos(uint16_t arfcn)
 
 #ifdef CONFIG_TX_ENABLE
 	/* window open for TRF6151 */
-	trf6151_tx_window(offset, arfcn);
+	trf6151_tx_dos_window(offset, arfcn);
 #endif
 
 	/* Window open for ABB */
@@ -160,8 +162,9 @@ void l1s_tx_dos(uint16_t arfcn)
 	rffe_mode(gsm_arfcn2band(arfcn), 1);
 #endif
 	block = 2;
-	local_irq_disable();
-	local_fiq_disable();
+	//local_irq_disable();
+	//local_fiq_disable();
+	local_firq_save(flags);
 	while(1){
 		block *= 2;	
 	}

@@ -55,7 +55,7 @@ struct {
 	uint16_t band_arfcn;
 } last_rach;
 
-int l1s_tx_dos(uint16_t arfcn){
+int l1s_tx_dos_cmd(uint16_t arfcn){
  	int i;
         uint16_t *info_ptr;
 	uint8_t  data[2];

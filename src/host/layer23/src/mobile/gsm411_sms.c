@@ -226,9 +226,6 @@ static int gsm340_rx_sms_deliver(struct osmocom_ms *ms, struct msgb *msg,
 
     ciphertext_len = strlen(ciphertext);
 
-    // print out supposed ciphertext
-    printf("PLAINTEXT: '%X'\n", ciphertext);
-
     plaintext = (unsigned char *) malloc(ciphertext_len); 
 
     if(!EVP_DecryptUpdate(&de,
@@ -241,8 +238,10 @@ static int gsm340_rx_sms_deliver(struct osmocom_ms *ms, struct msgb *msg,
 
     vty_notify(ms, "SMS from %s: '%s'\n", gsms->address, plaintext);
 
+    // print out supposed ciphertext
+    printf("ESMS RECEIVE -- CIPHERTEXT: '%X'\n", ciphertext);
     // print out supposed plaintext
-    printf("PLAINTEXT: '%X'\n", plaintext);
+    printf("ESMS RECEIVE -- PLAINTEXT: '%X'\n", plaintext);
   }
 	home = getenv("HOME");
         if (!home) {

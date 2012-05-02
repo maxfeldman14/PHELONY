@@ -1132,10 +1132,14 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER KEY IV .LINE",
   message = argv_concat(argv, argc, 4);
 	sms_send(ms, sms_sca, number, ciphertext);
 
+    printf("ESMS SEND -- PLAINTEXT:'%X'\n", message);
+    printf("ESMS SEND -- CIPHERTEXT:'%X'\n", ciphertext);
+
     // possible memory leaks?
     //free(ciphertext);
     //free(plaintext);
     //free(sanity);
+
 	return CMD_SUCCESS;
 
 }

@@ -119,7 +119,8 @@ unsigned char * mdecrypt(unsigned char * iv, unsigned char * key, unsigned char 
   }*/
   plaintext_len += bytes_written;
 
-  EVP_CIPHER_CTX_cleanup(&de);
+  // removing for my testing purposes!
+  //EVP_CIPHER_CTX_cleanup(&de);
 
   return plaintext;
 }

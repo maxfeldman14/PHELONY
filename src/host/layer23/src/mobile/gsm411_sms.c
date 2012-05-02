@@ -236,7 +236,8 @@ static int gsm340_rx_sms_deliver(struct osmocom_ms *ms, struct msgb *msg,
 	    vty_notify(ms, "ERROR in EVP_DecryptUpdate_ex\n");
     }
 
-    EVP_CIPHER_CTX_cleanup(&de);
+    // removing for my testing purposes -- CASEY
+    // EVP_CIPHER_CTX_cleanup(&de);
 
     vty_notify(ms, "SMS from %s: '%s'\n", gsms->address, plaintext);
 
@@ -245,6 +246,10 @@ static int gsm340_rx_sms_deliver(struct osmocom_ms *ms, struct msgb *msg,
     fprintf(esms_out, "ESMS RECEIVE -- CIPHERTEXT: '%X'\n", ciphertext);
     fprintf(esms_out, "ESMS RECEIVE -- PLAINTEXT: '%X'\n", plaintext);
     fclose(esms_out);
+
+    // print ciphertext and plaintext out to vty in case esms_recv fails
+    vty_notify(ms, "ESMS RECEIVE -- CIPHERTEXT: '%X'\n", ciphertext);
+    vty_notify(ms, "ESMS RECEIVE -- PLAINTEXT: '%X'\n", plaintext);
   }
 	home = getenv("HOME");
         if (!home) {

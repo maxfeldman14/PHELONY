@@ -1008,14 +1008,14 @@ DEFUN(test_enc_dec, test_enc_dec_cmd, "test_enc_dec KEY IV .LINE",
     unsigned char *iv = (unsigned char *) argv[0];
     unsigned char *key = (unsigned char *) argv[1];
     unsigned char *plaintext = argv_concat(argv, argc, 2);
-    unsigned char *ciphertext = encrypt(iv, key, plaintext);
+    unsigned char *ciphertext = mencrypt(iv, key, plaintext);
     
     vty_out(vty, "iv: %s\n", iv);
     vty_out(vty, "key: %s\n", key);
     vty_out(vty, "plaintext:%s\n", plaintext);
     vty_out(vty, "ciphertext: %s\n", ciphertext);
 
-    unsigned char *plaintext2 = decrypt(iv, key, ciphertext);
+    unsigned char *plaintext2 = mdecrypt(iv, key, ciphertext);
     
     if(strncmp(plaintext, plaintext2, MAX_TEXT_LEN) == 0) {
         vty_out(vty, "encryption/decryption SUCCESS -- plaintext: %s\nciphertext: %s\nplaintext2: %s\n", plaintext, \
@@ -1075,12 +1075,8 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER KEY IV .LINE",
   vty_out(vty, "unencrpyted string: %s%s", message, VTY_NEWLINE);
 
   const char *string_to_encrypt = message; 
-<<<<<<< .merge_file_2hnZOO
   //char *string_to_encrypt = "hello world";
   ciphertext = mencrypt(iv, key, string_to_encrypt);
-=======
-  ciphertext = encrypt(iv, key, string_to_encrypt);
->>>>>>> .merge_file_9W3haU
 
   char *sanity = NULL;
   //hex and string of ciphertext

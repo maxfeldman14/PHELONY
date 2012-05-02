@@ -76,13 +76,17 @@ struct cmd_node support_node = {
 	1
 };
 
-unsigned char * decrypt(unsigned char * iv, unsigned char * key, unsigned char * ciphertext){ 
-
+unsigned char *decrypt(unsigned char *iv, unsigned char *key, unsigned char *ciphertext) { 
   EVP_CIPHER_CTX de;
   EVP_CIPHER_CTX_init(&de);
   const EVP_CIPHER *cipher_type;
   unsigned char * plaintext;
   plaintext = (unsigned char *) malloc(strlen(ciphertext));
+
+  if(!ciphertext) {
+    printf("malloc didn't allocate plaintext correctly -- returning NULL");
+    return NULL;
+  }
 
   int bytes_written = 0;
   int ciphertext_len = 0;
@@ -118,7 +122,8 @@ unsigned char * decrypt(unsigned char * iv, unsigned char * key, unsigned char *
 
   return plaintext;
 }
-unsigned char * encrypt( unsigned char * iv, unsigned char * key, unsigned char * plaintext){ 
+
+unsigned char *encrypt(unsigned char *iv, unsigned char *key, unsigned char *plaintext) { 
 
   EVP_CIPHER_CTX en;
   EVP_CIPHER_CTX_init(&en);
@@ -132,13 +137,17 @@ unsigned char * encrypt( unsigned char * iv, unsigned char * key, unsigned char 
   //init cipher
   EVP_EncryptInit_ex(&en, cipher_type, NULL, key, iv);
 
-  //static const int MAX_PADDING_LEN = 16;
 
   // We add 1 because we're encrypting a string, which has a NULL terminator
   // and want that NULL terminator to be present when we decrypt.
   input_len = strlen(plaintext) + 1;
   //ciphertext = (unsigned char *) malloc(input_len + MAX_PADDING_LEN);
   ciphertext = (unsigned char *) malloc(input_len);
+
+  if(!ciphertext) {
+    printf("malloc didn't allocate ciphertext correctly -- returning NULL");
+    return NULL;
+  }
 
   /* allows reusing of 'e' for multiple encryption cycles */
   if(!EVP_EncryptInit_ex(&en, NULL, NULL, NULL, NULL)){
@@ -173,6 +182,7 @@ unsigned char * encrypt( unsigned char * iv, unsigned char * key, unsigned char 
 
   return ciphertext;
 }
+
 static void print_vty(void *priv, const char *fmt, ...)
 {
 	char buffer[1000];
@@ -990,6 +1000,37 @@ DEFUN(sms, sms_cmd, "sms MS_NAME NUMBER .LINE",
 	return CMD_SUCCESS;
 }
 
+DEFUN(test_enc_dec, test_enc_dec_cmd, "test_enc_dec KEY IV .LINE",
+    "Tests encrypt and decrypt functions\n") {
+
+    const unsigned int MAX_TEXT_LEN = 256;
+    unsigned char *iv = (unsigned char *) argv[0];
+    unsigned char *key = (unsigned char *) argv[1];
+    unsigned char *plaintext = argv_concat(argv, argc, 2);
+    unsigned char *ciphertext = encrypt(iv, key, plaintext);
+    
+    vty_out(vty, "iv: %s\n", iv);
+    vty_out(vty, "key: %s\n", key);
+    vty_out(vty, "plaintext:%s\n", plaintext);
+    vty_out(vty, "ciphertext: %s\n", ciphertext);
+
+    unsigned char *plaintext2 = decrypt(iv, key, ciphertext);
+    
+    if(strncmp(plaintext, plaintext2, MAX_TEXT_LEN) == 0) {
+        vty_out(vty, "encryption/decryption SUCCESS -- plaintext: %s\nciphertext: %s\nplaintext2: %s\n", plaintext, \
+                ciphertext, plaintext2, VTY_NEWLINE);
+    } else {
+        vty_out(vty, "encryption/decryption FAILURE -- plaintext: %s\nciphertext: %s\nplaintext2: %s\n", plaintext, \
+                ciphertext, plaintext2, VTY_NEWLINE);
+    }
+
+    // possible issue with memory leaks, so free
+    //free(plaintext);
+    //free(ciphertext);
+
+    return CMD_SUCCESS;
+}
+
 DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER KEY IV .LINE",
 	"Send an encrypted SMS\nName of MS (see \"show ms\")\nPhone number to send SMS "
 	"(Use digits '0123456789*#abc', and '+' to dial international)\n"
@@ -1007,8 +1048,8 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER KEY IV .LINE",
   //args iv and key can be 16 char strings
   //and the char would correspond to a hex value
 
-  unsigned char * iv = (unsigned char *) argv[2];
-  unsigned char * key = (unsigned char *) argv[3];
+  unsigned char *iv = (unsigned char *) argv[2];
+  unsigned char *key = (unsigned char *) argv[3];
 
   vty_out(vty, "IV: %s", VTY_NEWLINE);
   int i = 0;
@@ -1033,10 +1074,9 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER KEY IV .LINE",
   vty_out(vty, "unencrpyted string: %s%s", message, VTY_NEWLINE);
 
   const char *string_to_encrypt = message; 
-  //char *string_to_encrypt = "hello world";
   ciphertext = encrypt(iv, key, string_to_encrypt);
 
-  char * sanity = NULL;
+  char *sanity = NULL;
   //hex and string of ciphertext
   vty_out(vty, "encrypted hex: %s", VTY_NEWLINE);
   for(i = 0; i < 16; i++){
@@ -1090,6 +1130,10 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER KEY IV .LINE",
   message = argv_concat(argv, argc, 4);
 	sms_send(ms, sms_sca, number, ciphertext);
 
+    // possible memory leaks?
+    //free(ciphertext);
+    //free(plaintext);
+    //free(sanity);
 	return CMD_SUCCESS;
 
 }
@@ -2974,6 +3018,7 @@ int ms_vty_init(void)
 	install_element(ENABLE_NODE, &call_retr_cmd);
 	install_element(ENABLE_NODE, &call_dtmf_cmd);
 	install_element(ENABLE_NODE, &sms_cmd);
+    install_element(ENABLE_NODE, &test_enc_dec_cmd);
 	install_element(ENABLE_NODE, &esms_cmd);
 	install_element(ENABLE_NODE, &service_cmd);
 	install_element(ENABLE_NODE, &test_reselection_cmd);

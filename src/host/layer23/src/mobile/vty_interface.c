@@ -86,7 +86,7 @@ unsigned char * mdecrypt(unsigned char * iv, unsigned char * key, unsigned char 
   EVP_CIPHER_CTX_set_key_length(&de, 16);
   const EVP_CIPHER *cipher_type;
   unsigned char * plaintext;
-  int block_size = EVP_CIPHER_block_size(&en);
+  int block_size = EVP_CIPHER_block_size(&de);
   int plen = str_len + block_size;
   *pt_len = plen;
   plaintext = (unsigned char *) malloc(plen * sizeof(unsigned char));
@@ -189,7 +189,7 @@ unsigned char * mencrypt( unsigned char * iv, unsigned char * key, unsigned char
   }
   ciphertext_len += bytes_written;
   *ct_written = ciphertext_len;
-  ciphertext[ct_written] = '\0';
+  ciphertext[ciphertext_len] = '\0';
 
   //cleanup -- getting rid of this for now -- CASEY
   //EVP_CIPHER_CTX_cleanup(&en);
@@ -1045,7 +1045,7 @@ DEFUN(test_enc_dec, test_enc_dec_cmd, "test_enc_dec IV KEY .LINE",
                 ciphertext, plaintext2, VTY_NEWLINE);
         vty_out(vty, "ciphertext written: %d\n%s", c_written, VTY_NEWLINE);
     } else {
-        vty_out(vty, "encryption/decryption FAILURE -- plaintext: %s\nciphertext: %s\nplaintext2: %s\n", plaintext, \
+        vty_out(vty, "encryption/decryption FAILURE -- plaintext: %s\nciphertext: %s\nplaintext2: %s\n%s", plaintext, \
                 ciphertext, plaintext2, VTY_NEWLINE);
     }
 

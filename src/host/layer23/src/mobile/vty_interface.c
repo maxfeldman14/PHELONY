@@ -181,7 +181,8 @@ unsigned int invswitcherpiss(unsigned char piss){
 			return 15;
 			break;
 		default:
-			vty_out(vty, "FUCKKKKK!%s", VTY_NEWLINE);
+		//	vty_out(vty, "FUCKKKKK!%s", VTY_NEWLINE);
+	  		LOGP(DLSMS, LOGL_DEBUG, "FUCK\n");
 			return 9999;
 	}
 }
@@ -236,7 +237,8 @@ unsigned char switcherpiss(unsigned int piss){
 			return 'f';
 			break;
 		default:
-			vty_out(vty, "FUCKKKKK!%s", VTY_NEWLINE);
+			//vty_out(vty, "FUCKKKKK!%s", VTY_NEWLINE);
+	  		LOGP(DLSMS, LOGL_DEBUG, "FUCK\n");
 			return 'j';
 	}
 }
@@ -249,7 +251,7 @@ unsigned char * text_xform(unsigned char * text, int byte_len){
 	unsigned char * iter = textout;
 	for(x=0; x < byte_len; x ++){
 		n = (unsigned int) text[x];
-		unsigned int low = (unsigned int) (n & 0x0000000f));
+		unsigned int low = (unsigned int) (n & 0x0000000f);
 		unsigned int high = (unsigned int) ((n & 0x000000f0)>>4);
 		*iter = switcherpiss(high);
 		iter++;
@@ -269,7 +271,7 @@ unsigned char * inv_text_xform(unsigned char * text, int byte_len){
 		iter++;
 		unsigned int low = invswitcherpiss(*iter);
 		iter++;
-		textout[x] = (unsigned char)  (((high << 4) & 0x000000f0) & (low & 0x0000000f))
+		textout[x] = (unsigned char)  (((high << 4) & 0x000000f0) & (low & 0x0000000f));
 	}
 	textout[x] = '\0';
 	return text;

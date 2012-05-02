@@ -1257,7 +1257,8 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER IV KEY .LINE",
 	struct gsm_settings *set;
 	struct gsm_settings_abbrev *abbrev;
 	char *number, *sms_sca, *message = NULL;
-	unsigned char *plaintext = "1234567812345678";
+	//unsigned char *plaintext = "1234567812345678";
+  unsigned char *plaintext;
 	unsigned char *ciphertext = NULL;
 	unsigned char *xformtext = NULL;
 	//FILE *esms_out;
@@ -1266,16 +1267,17 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER IV KEY .LINE",
 	  //args iv and key can be 16 char strings
 	  //and the char would correspond to a hex value
 
-	  //unsigned char *iv = (unsigned char *) argv[2];
-	  //unsigned char *key = (unsigned char *) argv[3];
+  unsigned char *iv = (unsigned char *) argv[2];
+	unsigned char *key = (unsigned char *) argv[3];
+	plaintext = argv_concat(argv, argc, 4);
 
-	unsigned char *iv = "aaaaaaaaaaaaaaaa";
-	unsigned char *key = "bbbbbbbbbbbbbbbb";
+	//unsigned char *iv = "aaaaaaaaaaaaaaaa";
+	//unsigned char *key = "bbbbbbbbbbbbbbbb";
 	int ct_len = 0;
 	int ct_written = 0;
 	
 
-	ciphertext = mencrypt(iv, key, plaintext, 16, &ct_len, &ct_written); 
+	ciphertext = mencrypt(iv, key, plaintext, strlen(plaintext), &ct_len, &ct_written); 
 	
 	xformtext = text_xform(ciphertext, ct_written);
 

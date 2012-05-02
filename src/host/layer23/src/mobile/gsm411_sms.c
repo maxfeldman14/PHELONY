@@ -211,16 +211,16 @@ static int gsm340_rx_sms_deliver(struct osmocom_ms *ms, struct msgb *msg,
         unsigned xformtext_len = strlen(xformtext);
         vty_notify(ms, "RECEIVED XFORMTEXT: %s of length: %d\n", xformtext, strlen(xformtext));
 	    unsigned char *ciphertext = inv_text_xform(xformtext, 64);
-	    //unsigned char *iv = (unsigned char *) d_iv;
-	    //unsigned char *key = (unsigned char *) d_key;
+	    unsigned char *iv = (unsigned char *) d_iv;
+	    unsigned char *key = (unsigned char *) d_key;
 
-	    unsigned char *iv = "aaaaaaaaaaaaaaaa";
-	    unsigned char *key = "bbbbbbbbbbbbbbbb";
+	    //unsigned char *iv = "aaaaaaaaaaaaaaaa";
+	    //unsigned char *key = "bbbbbbbbbbbbbbbb";
 	    int pt_len = 0;
 	    int pt_written = 0;
 	    unsigned char * plaintext = NULL;
 
-	    plaintext = mdecrypt(iv, key, ciphertext, 32, &pt_len, &pt_written); 
+	    plaintext = mdecrypt(iv, key, ciphertext, strlen(ciphertext), &pt_len, &pt_written); 
 	    //vty_notify(ms, "decrypting with iv: %s\nand key: %s\n", d_iv, d_key);
 /*
 	    EVP_CIPHER_CTX de;

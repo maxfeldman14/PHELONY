@@ -1177,74 +1177,78 @@ DEFUN(sms, sms_cmd, "sms MS_NAME NUMBER .LINE",
 DEFUN(test_enc_dec, test_enc_dec_cmd, "test_enc_dec IV KEY .LINE",
     "Tests encrypt and decrypt functions\n") {
 
-    //const unsigned int MAX_TEXT_LEN = 256;
-    //unsigned char *iv = (unsigned char *) argv[0];
-    //iv[16] = '\0';
-    //unsigned char *key = (unsigned char *) argv[1];
-    //key[16] = '\0';
-    //unsigned char *plaintext = argv_concat(argv, argc, 2);
-    unsigned char *plaintext = "1234567890123456789012345678901";
-    unsigned char *key = "aaaaaaaaaaaaaaaa";
-    unsigned char *iv = "bbbbbbbbbbbbbbbb";
-
-    unsigned int x = 0;
-    for(x= 0; x < 16; x++){
-    	unsigned char inter = switcherpiss(x);
-	unsigned int final = invswitcherpiss(inter);
-	if ( final != x){
-    		vty_out(vty, "ahh! the switcherpiss= final: %x  inter: %x %s", final, inter, VTY_NEWLINE);
-    		printf("ERROR in switcherpiss \n");
-	}
+  //const unsigned int MAX_TEXT_LEN = 256;
+  //unsigned char *iv = (unsigned char *) argv[0];
+  //iv[16] = '\0';
+  //unsigned char *key = (unsigned char *) argv[1];
+  //key[16] = '\0';
+  //unsigned char *plaintext = argv_concat(argv, argc, 2);
+  /*
+  unsigned char *plaintext = "1234567890123456789012345678901";
+  unsigned char *key = "aaaaaaaaaaaaaaaa";
+  unsigned char *iv = "bbbbbbbbbbbbbbbb";
+*/
+  unsigned char *iv = (unsigned char *) argv[0];
+	unsigned char *key = (unsigned char *) argv[1];
+	unsigned char *plaintext = argv_concat(argv, argc, 2);
+  unsigned int x = 0;
+  for(x= 0; x < 16; x++){
+    unsigned char inter = switcherpiss(x);
+    unsigned int final = invswitcherpiss(inter);
+    if ( final != x){
+          vty_out(vty, "ahh! the switcherpiss= final: %x  inter: %x %s", final, inter, VTY_NEWLINE);
+          printf("ERROR in switcherpiss \n");
     }
+  }
 
-    unsigned char * foobar = "ha";
-    unsigned char * foobar1 = text_xform(foobar, 2);
-    unsigned char * foobar3 = inv_text_xform(foobar1, 4);
-    if(memcmp(foobar, foobar3, 2) == 0){
-    	vty_out(vty, "matches1%s", VTY_NEWLINE);
-    } else {
-    	vty_out(vty, "doesn't matches1, foobar = %s foobar1= %s foobar3= %s%s", foobar, foobar1, foobar3, VTY_NEWLINE);
-    }
+  unsigned char * foobar = "ha";
+  unsigned char * foobar1 = text_xform(foobar, 2);
+  unsigned char * foobar3 = inv_text_xform(foobar1, 4);
+  if(memcmp(foobar, foobar3, 2) == 0){
+    vty_out(vty, "matches1%s", VTY_NEWLINE);
+  } else {
+    vty_out(vty, "doesn't matches1, foobar = %s foobar1= %s foobar3= %s%s", foobar, foobar1, foobar3, VTY_NEWLINE);
+  }
 
-    int c_str_len = 31;
-    int c_len = 0;
-    int c_written = 0;
-    unsigned char *ciphertext = mencrypt(iv, key, plaintext, c_str_len, &c_len, &c_written);
-    unsigned char *xformtext =  text_xform(ciphertext, c_written);
+  int c_str_len = 31;
+  int c_len = 0;
+  int c_written = 0;
+  unsigned char *ciphertext = mencrypt(iv, key, plaintext, c_str_len, &c_len, &c_written);
+  unsigned char *xformtext =  text_xform(ciphertext, c_written);
+  
+  vty_out(vty, "iv: %s%s", iv, VTY_NEWLINE);
+  vty_out(vty, "key: %s%s", key, VTY_NEWLINE);
+  vty_out(vty, "plaintext:%s%s", plaintext, VTY_NEWLINE);
+  vty_out(vty, "ciphertext:%s%s", ciphertext, VTY_NEWLINE);
+  vty_out(vty, "xformtext:%s%s", xformtext, VTY_NEWLINE);
+
+  unsigned char *dexformtext =  inv_text_xform(xformtext, c_written * 2);
+  vty_out(vty, "dexformtext:%s%s", dexformtext, VTY_NEWLINE);
+  if(memcmp(dexformtext, ciphertext, c_written) == 0){
+    vty_out(vty, "matches%s", VTY_NEWLINE);
+  }else{
+    vty_out(vty, "doesn't match%s", VTY_NEWLINE);
+  }
     
-    vty_out(vty, "iv: %s%s", iv, VTY_NEWLINE);
-    vty_out(vty, "key: %s%s", key, VTY_NEWLINE);
-    vty_out(vty, "plaintext:%s%s", plaintext, VTY_NEWLINE);
-    vty_out(vty, "ciphertext:%s%s", ciphertext, VTY_NEWLINE);
-    vty_out(vty, "xformtext:%s%s", xformtext, VTY_NEWLINE);
+  int p_str_len = c_written;
+  int p_len = 0;
+  int p_written = 0;
+  unsigned char *plaintext2 = mdecrypt(iv, key, dexformtext, p_str_len, &p_len, &p_written);
+  
+  if(strcmp(plaintext, plaintext2) == 0) {
+      vty_out(vty, "encryption/decryption SUCCESS -- plaintext: %s\nciphertext: %s\nplaintext2: %s\n%s", plaintext, \
+              ciphertext, plaintext2, VTY_NEWLINE);
+      vty_out(vty, "ciphertext written: %d\n%s", c_written, VTY_NEWLINE);
+  } else {
+      vty_out(vty, "encryption/decryption FAILURE -- plaintext: %s\nciphertext: %s\nplaintext2: %s\n%s", plaintext, \
+              ciphertext, plaintext2, VTY_NEWLINE);
+  }
 
-    unsigned char *dexformtext =  inv_text_xform(xformtext, c_written * 2);
-    vty_out(vty, "dexformtext:%s%s", dexformtext, VTY_NEWLINE);
-    if(memcmp(dexformtext, ciphertext, c_written) == 0){
-    	vty_out(vty, "matches%s", VTY_NEWLINE);
-    }else{
-    	vty_out(vty, "doesn't match%s", VTY_NEWLINE);
-    }
-    	
-    int p_str_len = c_written;
-    int p_len = 0;
-    int p_written = 0;
-    unsigned char *plaintext2 = mdecrypt(iv, key, dexformtext, p_str_len, &p_len, &p_written);
-    
-    if(strcmp(plaintext, plaintext2) == 0) {
-        vty_out(vty, "encryption/decryption SUCCESS -- plaintext: %s\nciphertext: %s\nplaintext2: %s\n%s", plaintext, \
-                ciphertext, plaintext2, VTY_NEWLINE);
-        vty_out(vty, "ciphertext written: %d\n%s", c_written, VTY_NEWLINE);
-    } else {
-        vty_out(vty, "encryption/decryption FAILURE -- plaintext: %s\nciphertext: %s\nplaintext2: %s\n%s", plaintext, \
-                ciphertext, plaintext2, VTY_NEWLINE);
-    }
+  // possible issue with memory leaks, so free
+  //free(plaintext);
+  //free(ciphertext);
 
-    // possible issue with memory leaks, so free
-    //free(plaintext);
-    //free(ciphertext);
-
-    return CMD_SUCCESS;
+  return CMD_SUCCESS;
 }
 
 DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER IV KEY .LINE",
@@ -3270,7 +3274,7 @@ int ms_vty_init(void)
 	install_element(ENABLE_NODE, &call_retr_cmd);
 	install_element(ENABLE_NODE, &call_dtmf_cmd);
 	install_element(ENABLE_NODE, &sms_cmd);
-    install_element(ENABLE_NODE, &test_enc_dec_cmd);
+  install_element(ENABLE_NODE, &test_enc_dec_cmd);
 	install_element(ENABLE_NODE, &esms_cmd);
 	install_element(ENABLE_NODE, &service_cmd);
 	install_element(ENABLE_NODE, &test_reselection_cmd);

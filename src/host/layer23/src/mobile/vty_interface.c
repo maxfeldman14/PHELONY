@@ -83,7 +83,7 @@ unsigned char * mdecrypt(unsigned char * iv, unsigned char * key, unsigned char 
 
   EVP_CIPHER_CTX de;
   EVP_CIPHER_CTX_init(&de);
-  EVP_CIPHER_CTX_set_key_length(&de, 16);
+  //EVP_CIPHER_CTX_set_key_length(&de, 16);
   const EVP_CIPHER *cipher_type;
   unsigned char * plaintext;
   int block_size = EVP_CIPHER_block_size(&de);
@@ -136,7 +136,7 @@ unsigned char * mencrypt( unsigned char * iv, unsigned char * key, unsigned char
 
   EVP_CIPHER_CTX en;
   EVP_CIPHER_CTX_init(&en);
-  EVP_CIPHER_CTX_set_key_length(&en, 16);
+  //EVP_CIPHER_CTX_set_key_length(&en, 16);
   const EVP_CIPHER *cipher_type;
   //int input_len = 0;
   int block_size = EVP_CIPHER_block_size(&en);
@@ -1019,13 +1019,15 @@ DEFUN(test_enc_dec, test_enc_dec_cmd, "test_enc_dec IV KEY .LINE",
 
     //const unsigned int MAX_TEXT_LEN = 256;
     //unsigned char *iv = (unsigned char *) argv[0];
+    //iv[16] = '\0';
     //unsigned char *key = (unsigned char *) argv[1];
+    //key[16] = '\0';
     //unsigned char *plaintext = argv_concat(argv, argc, 2);
-    unsigned char *plaintext = "1234567812345678";
+    unsigned char *plaintext = "1234567890123456789012345678901";
     unsigned char *key = "aaaaaaaaaaaaaaaa";
     unsigned char *iv = "bbbbbbbbbbbbbbbb";
 
-    int c_str_len = 16;
+    int c_str_len = 31;
     int c_len = 0;
     int c_written = 0;
     unsigned char *ciphertext = mencrypt(iv, key, plaintext, c_str_len, &c_len, &c_written);
@@ -1085,6 +1087,8 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER IV KEY .LINE",
 
 	ciphertext = mencrypt(iv, key, plaintext, 16, &ct_len, &ct_written); 
 	vty_out(vty, "Ciphertext written: %d%s", ct_written,  VTY_NEWLINE);
+
+    cip = ciphertext;
 	  
 
 /*
@@ -1183,7 +1187,7 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER IV KEY .LINE",
     sms_send(ms, sms_sca, number, ciphertext);
 
     // possible memory leaks?
-    free(ciphertext);
+    //free(ciphertext);
     //free(plaintext);
     //free(sanity);
 

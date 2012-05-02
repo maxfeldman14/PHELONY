@@ -216,7 +216,7 @@ static int gsm340_rx_sms_deliver(struct osmocom_ms *ms, struct msgb *msg,
 	    int pt_written = 0;
 	    unsigned char * plaintext = NULL;
 
-	    plaintext = mdecrypt(iv, key, ciphertext, 16, &pt_len, &pt_written); 
+	    plaintext = mdecrypt(iv, key, ciphertext, 32, &pt_len, &pt_written); 
 	    //vty_notify(ms, "decrypting with iv: %s\nand key: %s\n", d_iv, d_key);
 /*
 	    EVP_CIPHER_CTX de;
@@ -267,21 +267,38 @@ static int gsm340_rx_sms_deliver(struct osmocom_ms *ms, struct msgb *msg,
 	    LOGP(DLSMS, LOGL_DEBUG, "%s\n", key);
 
 	    //print ciphertext
-		LOGP(DLSMS, LOGL_DEBUG, "\n-----BEGIN CIPHERTEXT-----\n");
-
-	    // we know that ciphertext is at least as long as the plaintext
+		LOGP(DLSMS, LOGL_DEBUG, "\n-----BEGIN TRANSMITTED CIPHERTEXT-----\n");
 	    int i = 0;
-	    for(i; i < 16; i++) {
+	    for(i; i < 32; i++) {
+		LOGP(DLSMS, LOGL_DEBUG, "%x ", ciphertext[i]);
+	    }
+	    LOGP(DLSMS, LOGL_DEBUG, "\n-----END CIPHERTEXT-----\n");
+
+		LOGP(DLSMS, LOGL_DEBUG, "\n-----BEGIN GLOBAL CIPHERTEXT-----\n");
+        i = 0;
+	    for(i; i < 32; i++) {
+		LOGP(DLSMS, LOGL_DEBUG, "%x ", cip[i]);
+	    }
+	    LOGP(DLSMS, LOGL_DEBUG, "\n-----END GLOBAL CIPHERTEXT-----\n");
+
+        //print plaintext
+		LOGP(DLSMS, LOGL_DEBUG, "\n-----BEGIN PLAINTEXT-----\n");
+	    LOGP(DLSMS, LOGL_DEBUG, "%s\n", plaintext);
+
+	    /*int i = 0;
+	    for(i; i < 32; i++) {
 		LOGP(DLSMS, LOGL_DEBUG, "%x ", ciphertext[i]);
 	    }
 	    LOGP(DLSMS, LOGL_DEBUG, "\n-----END CIPHERTEXT-----\n");
 
 	    //print plaintext
 		LOGP(DLSMS, LOGL_DEBUG, "\n-----BEGIN PLAINTEXT-----\n"); i = 0;
-	    for(i; i < 16; i++){
+	    for(i; i < pt_written; i++){
 		LOGP(DLSMS, LOGL_DEBUG, "%x ", plaintext[i]);
 	    }
 	    LOGP(DLSMS, LOGL_DEBUG, "\n-----END PLAINTEXT-----\n");
+        */
+
 	  }
 		home = getenv("HOME");
 		if (!home) {

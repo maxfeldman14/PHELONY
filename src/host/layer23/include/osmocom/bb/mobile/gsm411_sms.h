@@ -33,5 +33,6 @@ int sms_encryption;
 unsigned char * mencrypt( unsigned char * iv, unsigned char * key, unsigned char * plaintext, int str_len, int * ct_len, int * ct_written); 
 unsigned char * mdecrypt(unsigned char * iv, unsigned char * key, unsigned char * ciphertext, int str_len, int * pt_len, int * pt_written); 
 unsigned char * d_iv, * d_key; 
+unsigned char * cip;
 
 #endif /* _GSM411_SMS_H */

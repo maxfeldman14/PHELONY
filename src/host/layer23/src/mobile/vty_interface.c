@@ -86,8 +86,16 @@ unsigned char * mdecrypt(unsigned char * iv, unsigned char * key, unsigned char 
   //EVP_CIPHER_CTX_set_key_length(&de, 16);
   const EVP_CIPHER *cipher_type;
   unsigned char * plaintext;
+  int bytes_written = 0;
+  cipher_type = EVP_aes_128_cbc();
+
+  printf("Made it here!");
+  if(!EVP_DecryptInit_ex(&de, cipher_type, NULL, key, iv)){
+    printf("ERROR in EVP_DecryptInit_ex \n");
+    return NULL;
+  }
   int block_size = EVP_CIPHER_block_size(&de);
-  int plen = str_len + block_size;
+  int plen = str_len + block_size + 16;
   *pt_len = plen;
   plaintext = (unsigned char *) malloc(plen * sizeof(unsigned char));
 
@@ -96,13 +104,6 @@ unsigned char * mdecrypt(unsigned char * iv, unsigned char * key, unsigned char 
     return NULL;
   }
 
-  int bytes_written = 0;
-  cipher_type = EVP_aes_128_cbc();
-
-  if(!EVP_DecryptInit_ex(&de, cipher_type, NULL, key, iv)){
-    printf("ERROR in EVP_DecryptInit_ex \n");
-    return NULL;
-  }
 
 
   int plaintext_len = 0;
@@ -271,10 +272,17 @@ unsigned char * inv_text_xform(unsigned char * text, int byte_len){
 		iter++;
 		unsigned int low = invswitcherpiss(*iter);
 		iter++;
-		textout[x] = (unsigned char)  (((high << 4) & 0x000000f0) & (low & 0x0000000f));
+		//unsigned char foo1 = high & 0xff;
+		//unsigned char foo2 = low & 0xff;
+    		//vty_out(vty, "high: %x, low: %x %s",foo1, foo2, VTY_NEWLINE);
+		//unsigned char fin = foo1 << 4;
+		//unsigned char fin1 = ;
+		
+
+		textout[x] = (((high << 4) & 0x000000f0) | (low & 0x0000000f));
 	}
 	textout[x] = '\0';
-	return text;
+	return textout;
 }
 		
 
@@ -290,12 +298,8 @@ unsigned char * mencrypt( unsigned char * iv, unsigned char * key, unsigned char
   //EVP_CIPHER_CTX_set_key_length(&en, 16);
   const EVP_CIPHER *cipher_type;
   //int input_len = 0;
-  int block_size = EVP_CIPHER_block_size(&en);
 
   unsigned char * ciphertext;
-  int clen = str_len + block_size;
-  *ct_len = clen;
-  ciphertext = (unsigned char *) malloc(clen * sizeof(unsigned char));
   cipher_type = EVP_aes_128_cbc();
 
   //init cipher
@@ -307,14 +311,19 @@ unsigned char * mencrypt( unsigned char * iv, unsigned char * key, unsigned char
   //ciphertext = (unsigned char *) malloc(input_len + MAX_PADDING_LEN);
   //ciphertext = (unsigned char *) malloc(input_len);
 
-  if(!ciphertext) {
-    printf("malloc didn't allocate ciphertext correctly -- returning NULL");
-    return NULL;
-  }
-
   /* allows reusing of 'e' for multiple encryption cycles */
   if(!EVP_EncryptInit_ex(&en, cipher_type, NULL, key, iv)){
     printf("ERROR in EVP_EncryptInit_ex \n");
+    return NULL;
+  }
+
+  int block_size = EVP_CIPHER_block_size(&en);
+  int clen = str_len + block_size + 16;
+  *ct_len = clen;
+  ciphertext = (unsigned char *) malloc(clen * sizeof(unsigned char));
+
+  if(!ciphertext) {
+    printf("malloc didn't allocate ciphertext correctly -- returning NULL");
     return NULL;
   }
 
@@ -1184,7 +1193,17 @@ DEFUN(test_enc_dec, test_enc_dec_cmd, "test_enc_dec IV KEY .LINE",
 	unsigned int final = invswitcherpiss(inter);
 	if ( final != x){
     		vty_out(vty, "ahh! the switcherpiss= final: %x  inter: %x %s", final, inter, VTY_NEWLINE);
+    		printf("ERROR in switcherpiss \n");
 	}
+    }
+
+    unsigned char * foobar = "ha";
+    unsigned char * foobar1 = text_xform(foobar, 2);
+    unsigned char * foobar3 = inv_text_xform(foobar1, 4);
+    if(memcmp(foobar, foobar3, 2) == 0){
+    	vty_out(vty, "matches1%s", VTY_NEWLINE);
+    } else {
+    	vty_out(vty, "doesn't matches1, foobar = %s foobar1= %s foobar3= %s%s", foobar, foobar1, foobar3, VTY_NEWLINE);
     }
 
     int c_str_len = 31;
@@ -1200,6 +1219,13 @@ DEFUN(test_enc_dec, test_enc_dec_cmd, "test_enc_dec IV KEY .LINE",
     vty_out(vty, "xformtext:%s%s", xformtext, VTY_NEWLINE);
 
     unsigned char *dexformtext =  inv_text_xform(xformtext, c_written * 2);
+    vty_out(vty, "dexformtext:%s%s", dexformtext, VTY_NEWLINE);
+    if(memcmp(dexformtext, ciphertext, c_written) == 0){
+    	vty_out(vty, "matches%s", VTY_NEWLINE);
+    }else{
+    	vty_out(vty, "doesn't match%s", VTY_NEWLINE);
+    }
+    	
     int p_str_len = c_written;
     int p_len = 0;
     int p_written = 0;

@@ -186,15 +186,16 @@ static int gsm340_rx_sms_deliver(struct osmocom_ms *ms, struct msgb *msg,
 	int len;
 	const char *home;
 	char *sms_file;
-	char vty_text[sizeof(gsms->text)], *p;
+	unsigned char vty_text[sizeof(gsms->text)], *p;
 	FILE *fp;
 
 	/* remove linefeeds and show at VTY */
-	strcpy(vty_text, gsms->text);
-	for (p = vty_text; *p; p++) {
+	//strcpy(vty_text, gsms->text);
+	memcpy(vty_text, gsms->text, sizeof(gsms->text));
+	/*for (p = vty_text; *p; p++) {
 		if (*p == '\n' || *p == '\r')
 			*p = ' ';
-	}
+	}*/
 	vty_notify(ms, NULL);
   if (!sms_encryption){
 	  vty_notify(ms, "SMS from %s: '%s'\n", gsms->address, vty_text);
@@ -205,11 +206,14 @@ static int gsm340_rx_sms_deliver(struct osmocom_ms *ms, struct msgb *msg,
     }
   } else {
     //need to decrypt then print
-    char *ciphertext = vty_text;
-    unsigned char *iv = (unsigned char *) d_iv;
-    unsigned char *key = (unsigned char *) d_key;
+    unsigned char *ciphertext = vty_text;
+    //unsigned char *iv = (unsigned char *) d_iv;
+    //unsigned char *key = (unsigned char *) d_key;
 
-    vty_notify(ms, "decrypting with iv: %s\nand key: %s\n", d_iv, d_key);
+    unsigned char iv[16] = "aaaaaaaaaaaaaaaa";
+    unsigned char key[16] = "bbbbbbbbbbbbbbbb";
+
+    //vty_notify(ms, "decrypting with iv: %s\nand key: %s\n", d_iv, d_key);
 
     EVP_CIPHER_CTX de;
     EVP_CIPHER_CTX_init(&de);
@@ -269,8 +273,7 @@ static int gsm340_rx_sms_deliver(struct osmocom_ms *ms, struct msgb *msg,
     LOGP(DLSMS, LOGL_DEBUG, "\n-----END CIPHERTEXT-----\n");
 
     //print plaintext
-	LOGP(DLSMS, LOGL_DEBUG, "\n-----BEGIN PLAINTEXT-----\n");
-    i = 0;
+	LOGP(DLSMS, LOGL_DEBUG, "\n-----BEGIN PLAINTEXT-----\n"); i = 0;
     for(i; i < 16; i++){
         LOGP(DLSMS, LOGL_DEBUG, "%x ", plaintext[i]);
     }

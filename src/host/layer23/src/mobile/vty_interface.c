@@ -1052,8 +1052,11 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER IV KEY .LINE",
   //args iv and key can be 16 char strings
   //and the char would correspond to a hex value
 
-  unsigned char *iv = (unsigned char *) argv[2];
-  unsigned char *key = (unsigned char *) argv[3];
+  //unsigned char *iv = (unsigned char *) argv[2];
+  //unsigned char *key = (unsigned char *) argv[3];
+
+  unsigned char iv[16] = "aaaaaaaaaaaaaaaa";
+  unsigned char key[16] = "bbbbbbbbbbbbbbbb";
 
   vty_out(vty, "IV: %s", VTY_NEWLINE);
   int i = 0;

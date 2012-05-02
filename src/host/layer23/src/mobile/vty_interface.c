@@ -178,8 +178,8 @@ unsigned char * mencrypt( unsigned char * iv, unsigned char * key, unsigned char
   }
   ciphertext_len += bytes_written;
 
-  //cleanup
-  EVP_CIPHER_CTX_cleanup(&en);
+  //cleanup -- getting rid of this for now -- CASEY
+  //EVP_CIPHER_CTX_cleanup(&en);
 
   return ciphertext;
 }

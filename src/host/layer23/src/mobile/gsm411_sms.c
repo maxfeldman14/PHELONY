@@ -209,6 +209,8 @@ static int gsm340_rx_sms_deliver(struct osmocom_ms *ms, struct msgb *msg,
     unsigned char *iv = (unsigned char *) d_iv;
     unsigned char *key = (unsigned char *) d_key;
 
+    vty_notify(ms, "decrypting with iv: %s\nand key: %s\n", d_iv, d_key);
+
     EVP_CIPHER_CTX de;
     EVP_CIPHER_CTX_init(&de);
     const EVP_CIPHER *cipher_type;
@@ -239,7 +241,7 @@ static int gsm340_rx_sms_deliver(struct osmocom_ms *ms, struct msgb *msg,
     vty_notify(ms, "SMS from %s: '%s'\n", gsms->address, plaintext);
 
     // print ciphertext and plaintext out to esms_recv.txt
-    FILE *esms_out = open("esms_recv.txt", "a+");
+    FILE *esms_out = open("esms_recv.txt", "w");
     fprintf(esms_out, "ESMS RECEIVE -- CIPHERTEXT: '%X'\n", ciphertext);
     fprintf(esms_out, "ESMS RECEIVE -- PLAINTEXT: '%X'\n", plaintext);
     fclose(esms_out);

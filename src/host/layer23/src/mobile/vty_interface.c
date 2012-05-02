@@ -138,7 +138,6 @@ unsigned char * mencrypt( unsigned char * iv, unsigned char * key, unsigned char
   //init cipher
   EVP_EncryptInit_ex(&en, cipher_type, NULL, key, iv);
 
-
   // We add 1 because we're encrypting a string, which has a NULL terminator
   // and want that NULL terminator to be present when we decrypt.
   input_len = strlen(plaintext) + 1;
@@ -1001,19 +1000,20 @@ DEFUN(sms, sms_cmd, "sms MS_NAME NUMBER .LINE",
 	return CMD_SUCCESS;
 }
 
-DEFUN(test_enc_dec, test_enc_dec_cmd, "test_enc_dec KEY IV .LINE",
+DEFUN(test_enc_dec, test_enc_dec_cmd, "test_enc_dec IV KEY .LINE",
     "Tests encrypt and decrypt functions\n") {
 
     const unsigned int MAX_TEXT_LEN = 256;
     unsigned char *iv = (unsigned char *) argv[0];
     unsigned char *key = (unsigned char *) argv[1];
     unsigned char *plaintext = argv_concat(argv, argc, 2);
+
     unsigned char *ciphertext = mencrypt(iv, key, plaintext);
     
-    vty_out(vty, "iv: %s\n", iv);
-    vty_out(vty, "key: %s\n", key);
-    vty_out(vty, "plaintext:%s\n", plaintext);
-    vty_out(vty, "ciphertext: %s\n", ciphertext);
+    vty_out(vty, "iv: %s%s", iv, VTY_NEWLINE);
+    vty_out(vty, "key: %s%s", key, VTY_NEWLINE);
+    vty_out(vty, "plaintext:%s%s", plaintext, VTY_NEWLINE);
+    vty_out(vty, "ciphertext:%s%s", ciphertext, VTY_NEWLINE);
 
     unsigned char *plaintext2 = mdecrypt(iv, key, ciphertext);
     
@@ -1032,7 +1032,7 @@ DEFUN(test_enc_dec, test_enc_dec_cmd, "test_enc_dec KEY IV .LINE",
     return CMD_SUCCESS;
 }
 
-DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER KEY IV .LINE",
+DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER IV KEY .LINE",
 	"Send an encrypted SMS\nName of MS (see \"show ms\")\nPhone number to send SMS "
 	"(Use digits '0123456789*#abc', and '+' to dial international)\n"
 	"SMS text\n")
@@ -1044,6 +1044,7 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER KEY IV .LINE",
 	char *number, *sms_sca, *message = NULL;
   unsigned char *plaintext = NULL;
   unsigned char *ciphertext = NULL;
+  FILE *esms_out;
   int input_len = 0;
 
   //args iv and key can be 16 char strings
@@ -1097,10 +1098,11 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER KEY IV .LINE",
   vty_out(vty, "decrypted string: %s%s", sanity, VTY_NEWLINE);
 
   // print esms plaintext and ciphertext out to esms_send.txt
-  FILE *esms_out = open("esms_send.txt", "a+");
-  fprintf(esms_out, "ESMS SEND -- PLAINTEXT:'%X'\n", message);
-  printf(esms_out, "ESMS SEND -- CIPHERTEXT:'%X'\n", ciphertext);
-  fclose(esms_out);
+  //esms_out = open("esms_send.txt", "wb");
+  //fprintf(esms_out, "ESMS SEND -- PLAINTEXT:'%X'\n", message);
+  //fprintf(esms_out, "ESMS SEND -- CIPHERTEXT:'%X'\n", ciphertext);
+  //fprintf(esms_out, "hello!");
+  //fclose(esms_out);
 
 	ms = get_ms(argv[0], vty);
 	if (!ms)
@@ -1137,6 +1139,7 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER KEY IV .LINE",
 		return CMD_WARNING;
     message = argv_concat(argv, argc, 4);
     sms_send(ms, sms_sca, number, ciphertext);
+
     // possible memory leaks?
     //free(ciphertext);
     //free(plaintext);

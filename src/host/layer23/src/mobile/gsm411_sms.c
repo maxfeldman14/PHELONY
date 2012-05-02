@@ -197,110 +197,114 @@ static int gsm340_rx_sms_deliver(struct osmocom_ms *ms, struct msgb *msg,
 			*p = ' ';
 	}*/
 	vty_notify(ms, NULL);
-  if (!sms_encryption){
-	  vty_notify(ms, "SMS from %s: '%s'\n", gsms->address, vty_text);
-    int i = 0;
-    for (i; i < strlen(vty_text); i++){
-      vty_notify(ms, "%x", vty_text[i]);
-      vty_notify(ms, "\n");
-    }
-  } else {
-    //need to decrypt then print
-    unsigned char *ciphertext = vty_text;
-    //unsigned char *iv = (unsigned char *) d_iv;
-    //unsigned char *key = (unsigned char *) d_key;
+	  if (!sms_encryption){
+		  vty_notify(ms, "SMS from %s: '%s'\n", gsms->address, vty_text);
+	    int i = 0;
+	    for (i; i < strlen(vty_text); i++){
+	      vty_notify(ms, "%x", vty_text[i]);
+	      vty_notify(ms, "\n");
+	    }
+	  } else {
+	    //need to decrypt then print
+	    unsigned char *ciphertext = vty_text;
+	    //unsigned char *iv = (unsigned char *) d_iv;
+	    //unsigned char *key = (unsigned char *) d_key;
 
-    unsigned char iv[16] = "aaaaaaaaaaaaaaaa";
-    unsigned char key[16] = "bbbbbbbbbbbbbbbb";
+	    unsigned char *iv = "aaaaaaaaaaaaaaaa";
+	    unsigned char *key = "bbbbbbbbbbbbbbbb";
+	    int pt_len = 0;
+	    int pt_written = 0;
+	    unsigned char * plaintext = NULL;
 
-    //vty_notify(ms, "decrypting with iv: %s\nand key: %s\n", d_iv, d_key);
+	    plaintext = mdecrypt(iv, key, ciphertext, 16, &pt_len, &pt_written); 
+	    //vty_notify(ms, "decrypting with iv: %s\nand key: %s\n", d_iv, d_key);
+/*
+	    EVP_CIPHER_CTX de;
+	    EVP_CIPHER_CTX_init(&de);
+	    const EVP_CIPHER *cipher_type;
 
-    EVP_CIPHER_CTX de;
-    EVP_CIPHER_CTX_init(&de);
-    const EVP_CIPHER *cipher_type;
+	    char *plaintext;
+	    int bytes_written = 0;
+	    int ciphertext_len = 0;
+	    cipher_type = EVP_aes_128_cbc();
 
-    char *plaintext;
-    int bytes_written = 0;
-    int ciphertext_len = 0;
-    cipher_type = EVP_aes_128_cbc();
+	    EVP_DecryptInit_ex(&de, cipher_type, NULL, key, iv);
 
-    EVP_DecryptInit_ex(&de, cipher_type, NULL, key, iv);
+	    if(!EVP_DecryptInit_ex(&de, NULL, NULL, NULL, NULL)){
+		    vty_notify(ms, "ERROR in EVP_DecryptInit_ex\n");
+	    }
 
-    if(!EVP_DecryptInit_ex(&de, NULL, NULL, NULL, NULL)){
-	    vty_notify(ms, "ERROR in EVP_DecryptInit_ex\n");
-    }
+	    ciphertext_len = sizeof(ciphertext);
 
-    ciphertext_len = sizeof(ciphertext);
+	    plaintext = (unsigned char *) malloc(ciphertext_len); 
 
-    plaintext = (unsigned char *) malloc(ciphertext_len); 
+	    if(!EVP_DecryptUpdate(&de,
+				  plaintext, &bytes_written,
+				  ciphertext, ciphertext_len)){
+		    vty_notify(ms, "ERROR in EVP_DecryptUpdate_ex\n");
+	    }
+*/
+	    // removing for my testing purposes -- CASEY
+	    // EVP_CIPHER_CTX_cleanup(&de);
 
-    if(!EVP_DecryptUpdate(&de,
-                          plaintext, &bytes_written,
-                          ciphertext, ciphertext_len)){
-	    vty_notify(ms, "ERROR in EVP_DecryptUpdate_ex\n");
-    }
+	    vty_notify(ms, "SMS from %s: '%s'\n", gsms->address, plaintext);
 
-    // removing for my testing purposes -- CASEY
-    // EVP_CIPHER_CTX_cleanup(&de);
+	    // print ciphertext and plaintext out to esms_recv.txt
+	    //FILE *esms_out = open("esms_recv.txt", "a+");
+	    //fprintf(esms_out, "ESMS RECEIVE -- CIPHERTEXT: '%X'\n", ciphertext);
+	    //fprintf(esms_out, "ESMS RECEIVE -- PLAINTEXT: '%X'\n", plaintext);
+	    //fclose(esms_out);
 
-    vty_notify(ms, "SMS from %s: '%s'\n", gsms->address, plaintext);
+	    // start printing via logging functions
+		LOGP(DLSMS, LOGL_DEBUG, "\n-----ESMS RECEIVE START-----\n");
 
-    // print ciphertext and plaintext out to esms_recv.txt
-    //FILE *esms_out = open("esms_recv.txt", "a+");
-    //fprintf(esms_out, "ESMS RECEIVE -- CIPHERTEXT: '%X'\n", ciphertext);
-    //fprintf(esms_out, "ESMS RECEIVE -- PLAINTEXT: '%X'\n", plaintext);
-    //fclose(esms_out);
+	    //print iv
+		LOGP(DLSMS, LOGL_DEBUG, "-----BEGIN IV-----");
+	    LOGP(DLSMS, LOGL_DEBUG, "%s\n", iv);
 
-    // start printing via logging functions
-	LOGP(DLSMS, LOGL_DEBUG, "\n-----ESMS RECEIVE START-----\n");
+	    //print key
+		LOGP(DLSMS, LOGL_DEBUG, "-----BEGIN KEY-----");
+	    LOGP(DLSMS, LOGL_DEBUG, "%s\n", key);
 
-    //print iv
-	LOGP(DLSMS, LOGL_DEBUG, "-----BEGIN IV-----");
-    LOGP(DLSMS, LOGL_DEBUG, "%s\n", iv);
+	    //print ciphertext
+		LOGP(DLSMS, LOGL_DEBUG, "\n-----BEGIN CIPHERTEXT-----\n");
 
-    //print key
-	LOGP(DLSMS, LOGL_DEBUG, "-----BEGIN KEY-----");
-    LOGP(DLSMS, LOGL_DEBUG, "%s\n", key);
+	    // we know that ciphertext is at least as long as the plaintext
+	    int i = 0;
+	    for(i; i < 16; i++) {
+		LOGP(DLSMS, LOGL_DEBUG, "%x ", ciphertext[i]);
+	    }
+	    LOGP(DLSMS, LOGL_DEBUG, "\n-----END CIPHERTEXT-----\n");
 
-    //print ciphertext
-	LOGP(DLSMS, LOGL_DEBUG, "\n-----BEGIN CIPHERTEXT-----\n");
+	    //print plaintext
+		LOGP(DLSMS, LOGL_DEBUG, "\n-----BEGIN PLAINTEXT-----\n"); i = 0;
+	    for(i; i < 16; i++){
+		LOGP(DLSMS, LOGL_DEBUG, "%x ", plaintext[i]);
+	    }
+	    LOGP(DLSMS, LOGL_DEBUG, "\n-----END PLAINTEXT-----\n");
+	  }
+		home = getenv("HOME");
+		if (!home) {
+	fail:
+			fprintf(stderr, "Can't deliver SMS, be sure to create '%s' in "
+				"your home directory.\n", osmocomsms);
+			return GSM411_RP_CAUSE_MT_MEM_EXCEEDED;
+		}
+		len = strlen(home) + 1 + sizeof(osmocomsms);
+		sms_file = talloc_size(l23_ctx, len);
+		if (!sms_file)
+			goto fail;
+		snprintf(sms_file, len, "%s/%s", home, osmocomsms);
 
-    // we know that ciphertext is at least as long as the plaintext
-    int i = 0;
-    for(i; i < 16; i++) {
-        LOGP(DLSMS, LOGL_DEBUG, "%x ", ciphertext[i]);
-    }
-    LOGP(DLSMS, LOGL_DEBUG, "\n-----END CIPHERTEXT-----\n");
+		fp = fopen(sms_file, "a");
+		if (!fp)
+			goto fail;
+		fprintf(fp, "[SMS from %s]\n%s\n", gsms->address, gsms->text);
+		fclose(fp);
 
-    //print plaintext
-	LOGP(DLSMS, LOGL_DEBUG, "\n-----BEGIN PLAINTEXT-----\n"); i = 0;
-    for(i; i < 16; i++){
-        LOGP(DLSMS, LOGL_DEBUG, "%x ", plaintext[i]);
-    }
-    LOGP(DLSMS, LOGL_DEBUG, "\n-----END PLAINTEXT-----\n");
-  }
-	home = getenv("HOME");
-        if (!home) {
-fail:
-		fprintf(stderr, "Can't deliver SMS, be sure to create '%s' in "
-			"your home directory.\n", osmocomsms);
-		return GSM411_RP_CAUSE_MT_MEM_EXCEEDED;
-	}
-	len = strlen(home) + 1 + sizeof(osmocomsms);
-	sms_file = talloc_size(l23_ctx, len);
-	if (!sms_file)
-		goto fail;
-	snprintf(sms_file, len, "%s/%s", home, osmocomsms);
+		talloc_free(sms_file);
 
-	fp = fopen(sms_file, "a");
-	if (!fp)
-		goto fail;
-	fprintf(fp, "[SMS from %s]\n%s\n", gsms->address, gsms->text);
-	fclose(fp);
-
-	talloc_free(sms_file);
-
-	return 0;
+		return 0;
 }
 
 /* process an incoming TPDU (called from RP-DATA)

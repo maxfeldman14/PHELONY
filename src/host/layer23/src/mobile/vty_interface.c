@@ -77,74 +77,84 @@ struct cmd_node support_node = {
 	1
 };
 
-unsigned char * mdecrypt(unsigned char * iv, unsigned char * key, unsigned char * ciphertext){ 
+// key length must be 16 bytes
+// iv length must be 16 bytes
+unsigned char * mdecrypt(unsigned char * iv, unsigned char * key, unsigned char * ciphertext, int str_len, int * pt_len, int * pt_written){ 
 
   EVP_CIPHER_CTX de;
   EVP_CIPHER_CTX_init(&de);
+  EVP_CIPHER_CTX_set_key_length(&de, 16);
   const EVP_CIPHER *cipher_type;
   unsigned char * plaintext;
-  plaintext = (unsigned char *) malloc(strlen(ciphertext));
+  int block_size = EVP_CIPHER_block_size(&en);
+  int plen = str_len + block_size;
+  *pt_len = plen;
+  plaintext = (unsigned char *) malloc(plen * sizeof(unsigned char));
 
-  if(!ciphertext) {
+  if(!plaintext) {
     printf("malloc didn't allocate plaintext correctly -- returning NULL");
     return NULL;
   }
 
   int bytes_written = 0;
-  int ciphertext_len = 0;
   cipher_type = EVP_aes_128_cbc();
 
-  EVP_DecryptInit_ex(&de, cipher_type, NULL, key, iv);
-
-  if(!EVP_DecryptInit_ex(&de, NULL, NULL, NULL, NULL)){
+  if(!EVP_DecryptInit_ex(&de, cipher_type, NULL, key, iv)){
     printf("ERROR in EVP_DecryptInit_ex \n");
     return NULL;
   }
 
-  ciphertext_len = strlen(ciphertext);
 
   int plaintext_len = 0;
   if(!EVP_DecryptUpdate(&de,
                         plaintext, &bytes_written,
-                        ciphertext, ciphertext_len)){
+                        ciphertext, str_len)){
     printf("ERROR in EVP_DecryptUpdate\n");
     return NULL;
   }
   plaintext_len += bytes_written;
-  /*
+  
 
   if(!EVP_DecryptFinal_ex(&de,
                           plaintext + bytes_written, &bytes_written)){
     printf("ERROR in EVP_DecryptFinal_ex\n");
     return NULL;
-  }*/
+  }
   plaintext_len += bytes_written;
 
+  *pt_written = plaintext_len;
+
+  plaintext[plaintext_len] = '\0';
   // removing for my testing purposes!
   //EVP_CIPHER_CTX_cleanup(&de);
 
   return plaintext;
 }
-
-unsigned char * mencrypt( unsigned char * iv, unsigned char * key, unsigned char * plaintext){ 
+// key length must be 16 bytes
+// iv length must be 16 bytes
+unsigned char * mencrypt( unsigned char * iv, unsigned char * key, unsigned char * plaintext, int str_len, int * ct_len, int * ct_written){ 
 
   EVP_CIPHER_CTX en;
   EVP_CIPHER_CTX_init(&en);
+  EVP_CIPHER_CTX_set_key_length(&en, 16);
   const EVP_CIPHER *cipher_type;
-  int input_len = 0;
+  //int input_len = 0;
+  int block_size = EVP_CIPHER_block_size(&en);
 
   unsigned char * ciphertext;
-  ciphertext = (unsigned char *) malloc(strlen(plaintext));
+  int clen = str_len + block_size;
+  *ct_len = clen;
+  ciphertext = (unsigned char *) malloc(clen * sizeof(unsigned char));
   cipher_type = EVP_aes_128_cbc();
 
   //init cipher
-  EVP_EncryptInit_ex(&en, cipher_type, NULL, key, iv);
+  //EVP_EncryptInit_ex(&en, cipher_type, NULL, key, iv);
 
   // We add 1 because we're encrypting a string, which has a NULL terminator
   // and want that NULL terminator to be present when we decrypt.
-  input_len = strlen(plaintext) + 1;
+  //input_len = strlen(plaintext) + 1;
   //ciphertext = (unsigned char *) malloc(input_len + MAX_PADDING_LEN);
-  ciphertext = (unsigned char *) malloc(input_len);
+  //ciphertext = (unsigned char *) malloc(input_len);
 
   if(!ciphertext) {
     printf("malloc didn't allocate ciphertext correctly -- returning NULL");
@@ -152,7 +162,7 @@ unsigned char * mencrypt( unsigned char * iv, unsigned char * key, unsigned char
   }
 
   /* allows reusing of 'e' for multiple encryption cycles */
-  if(!EVP_EncryptInit_ex(&en, NULL, NULL, NULL, NULL)){
+  if(!EVP_EncryptInit_ex(&en, cipher_type, NULL, key, iv)){
     printf("ERROR in EVP_EncryptInit_ex \n");
     return NULL;
   }
@@ -165,7 +175,7 @@ unsigned char * mencrypt( unsigned char * iv, unsigned char * key, unsigned char
   //encrypt
   if(!EVP_EncryptUpdate(&en,
                         ciphertext, &bytes_written,
-                        (unsigned char *) plaintext, input_len) ) {
+                        plaintext, str_len) ) {
     return NULL;
   }
   ciphertext_len += bytes_written;
@@ -178,6 +188,8 @@ unsigned char * mencrypt( unsigned char * iv, unsigned char * key, unsigned char
     return NULL;
   }
   ciphertext_len += bytes_written;
+  *ct_written = ciphertext_len;
+  ciphertext[ct_written] = '\0';
 
   //cleanup -- getting rid of this for now -- CASEY
   //EVP_CIPHER_CTX_cleanup(&en);
@@ -1005,23 +1017,33 @@ DEFUN(sms, sms_cmd, "sms MS_NAME NUMBER .LINE",
 DEFUN(test_enc_dec, test_enc_dec_cmd, "test_enc_dec IV KEY .LINE",
     "Tests encrypt and decrypt functions\n") {
 
-    const unsigned int MAX_TEXT_LEN = 256;
-    unsigned char *iv = (unsigned char *) argv[0];
-    unsigned char *key = (unsigned char *) argv[1];
-    unsigned char *plaintext = argv_concat(argv, argc, 2);
+    //const unsigned int MAX_TEXT_LEN = 256;
+    //unsigned char *iv = (unsigned char *) argv[0];
+    //unsigned char *key = (unsigned char *) argv[1];
+    //unsigned char *plaintext = argv_concat(argv, argc, 2);
+    unsigned char *plaintext = "1234567812345678";
+    unsigned char *key = "aaaaaaaaaaaaaaaa";
+    unsigned char *iv = "bbbbbbbbbbbbbbbb";
 
-    unsigned char *ciphertext = mencrypt(iv, key, plaintext);
+    int c_str_len = 16;
+    int c_len = 0;
+    int c_written = 0;
+    unsigned char *ciphertext = mencrypt(iv, key, plaintext, c_str_len, &c_len, &c_written);
     
     vty_out(vty, "iv: %s%s", iv, VTY_NEWLINE);
     vty_out(vty, "key: %s%s", key, VTY_NEWLINE);
     vty_out(vty, "plaintext:%s%s", plaintext, VTY_NEWLINE);
     vty_out(vty, "ciphertext:%s%s", ciphertext, VTY_NEWLINE);
 
-    unsigned char *plaintext2 = mdecrypt(iv, key, ciphertext);
+    int p_str_len = c_written;
+    int p_len = 0;
+    int p_written = 0;
+    unsigned char *plaintext2 = mdecrypt(iv, key, ciphertext, p_str_len, &p_len, &p_written);
     
-    if(strncmp(plaintext, plaintext2, MAX_TEXT_LEN) == 0) {
-        vty_out(vty, "encryption/decryption SUCCESS -- plaintext: %s\nciphertext: %s\nplaintext2: %s\n", plaintext, \
+    if(strcmp(plaintext, plaintext2) == 0) {
+        vty_out(vty, "encryption/decryption SUCCESS -- plaintext: %s\nciphertext: %s\nplaintext2: %s\n%s", plaintext, \
                 ciphertext, plaintext2, VTY_NEWLINE);
+        vty_out(vty, "ciphertext written: %d\n%s", c_written, VTY_NEWLINE);
     } else {
         vty_out(vty, "encryption/decryption FAILURE -- plaintext: %s\nciphertext: %s\nplaintext2: %s\n", plaintext, \
                 ciphertext, plaintext2, VTY_NEWLINE);
@@ -1044,77 +1066,85 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER IV KEY .LINE",
 	struct gsm_settings *set;
 	struct gsm_settings_abbrev *abbrev;
 	char *number, *sms_sca, *message = NULL;
-  unsigned char *plaintext = NULL;
-  unsigned char *ciphertext = NULL;
-  FILE *esms_out;
-  int input_len = 0;
+	unsigned char *plaintext = "1234567812345678";
+	unsigned char *ciphertext = NULL;
+	//FILE *esms_out;
+	int input_len = 0;
 
-  //args iv and key can be 16 char strings
-  //and the char would correspond to a hex value
+	  //args iv and key can be 16 char strings
+	  //and the char would correspond to a hex value
 
-  //unsigned char *iv = (unsigned char *) argv[2];
-  //unsigned char *key = (unsigned char *) argv[3];
+	  //unsigned char *iv = (unsigned char *) argv[2];
+	  //unsigned char *key = (unsigned char *) argv[3];
 
-  unsigned char iv[16] = "aaaaaaaaaaaaaaaa";
-  unsigned char key[16] = "bbbbbbbbbbbbbbbb";
+	unsigned char *iv = "aaaaaaaaaaaaaaaa";
+	unsigned char *key = "bbbbbbbbbbbbbbbb";
+	int ct_len = 0;
+	int ct_written = 0;
+	
 
-  vty_out(vty, "IV: %s", VTY_NEWLINE);
-  int i = 0;
-  for(i; i < 16; i++){
-    vty_out(vty, "%x ", iv[i]);
-  }
-  vty_out(vty, "%s", VTY_NEWLINE);
+	ciphertext = mencrypt(iv, key, plaintext, 16, &ct_len, &ct_written); 
+	vty_out(vty, "Ciphertext written: %d%s", ct_written,  VTY_NEWLINE);
+	  
 
-  vty_out(vty, "KEY: %s", VTY_NEWLINE);
-  for(i = 0; i < 16; i++){
-    vty_out(vty, "%x ", key[i]);
-  }
-  vty_out(vty, "%s", VTY_NEWLINE);
-  message = argv_concat(argv, argc, 4);
+/*
+	  vty_out(vty, "IV: %s", VTY_NEWLINE);
+	  int i = 0;
+	  for(i; i < 16; i++){
+	    vty_out(vty, "%x ", iv[i]);
+	  }
+	  vty_out(vty, "%s", VTY_NEWLINE);
 
-  //hex and string of message
-  vty_out(vty, "plaintext hex: %s", VTY_NEWLINE);
-  for(i = 0; i < strlen(message); i++){
-    vty_out(vty, "%x ", message[i]);
-  }
-  vty_out(vty, "%s", VTY_NEWLINE);
-  vty_out(vty, "unencrpyted string: %s%s", message, VTY_NEWLINE);
+	  vty_out(vty, "KEY: %s", VTY_NEWLINE);
+	  for(i = 0; i < 16; i++){
+	    vty_out(vty, "%x ", key[i]);
+	  }
+	  vty_out(vty, "%s", VTY_NEWLINE);
+	  message = argv_concat(argv, argc, 4);
 
-  const char *string_to_encrypt = message; 
-  //char *string_to_encrypt = "hello world";
-  ciphertext = mencrypt(iv, key, string_to_encrypt);
+	  //hex and string of message
+	  vty_out(vty, "plaintext hex: %s", VTY_NEWLINE);
+	  for(i = 0; i < strlen(message); i++){
+	    vty_out(vty, "%x ", message[i]);
+	  }
+	  vty_out(vty, "%s", VTY_NEWLINE);
+	  vty_out(vty, "unencrpyted string: %s%s", message, VTY_NEWLINE);
 
-  char *sanity = NULL;
-  //hex and string of ciphertext
-  vty_out(vty, "encrypted hex: %s", VTY_NEWLINE);
-  for(i = 0; i < 16; i++){
-    vty_out(vty, "%x ", ciphertext[i]);
-  }
-  vty_out(vty, "%s", VTY_NEWLINE);
-  vty_out(vty, "encrpyted string: %s%s", ciphertext, VTY_NEWLINE);
+	  const char *string_to_encrypt = message; 
+	  //char *string_to_encrypt = "hello world";
+	  ciphertext = mencrypt(iv, key, string_to_encrypt);
 
-  //ciphertext of decrypted ciphertext
-  sanity = mdecrypt(iv, key, ciphertext);
-  vty_out(vty, "decrypted hex: %s", VTY_NEWLINE);
-  for(i = 0; i < strlen(sanity); i++){
-    vty_out(vty, "%x ", sanity[i]);
-  }
-  vty_out(vty, "%s", VTY_NEWLINE);
-  vty_out(vty, "decrypted string: %s%s", sanity, VTY_NEWLINE);
+	  char *sanity = NULL;
+	  //hex and string of ciphertext
+	  vty_out(vty, "encrypted hex: %s", VTY_NEWLINE);
+	  for(i = 0; i < 16; i++){
+	    vty_out(vty, "%x ", ciphertext[i]);
+	  }
+	  vty_out(vty, "%s", VTY_NEWLINE);
+	  vty_out(vty, "encrpyted string: %s%s", ciphertext, VTY_NEWLINE);
 
-  //i = 0;
-  //LOGP(DLSMS, LOGL_DEBUG, "-----BEGIN CIPHERTEXT-----\n");
-  //for(i; i < 16; i++) {
-  //  LOGP(DLSMS, LOGL_DEBUG, "%x ", ciphertext[i]);
-  //}
-  //LOGP(DLSMS, LOGL_DEBUG, "\n-----END CIPHERTEXT-----\n");
+	  //ciphertext of decrypted ciphertext
+	  sanity = mdecrypt(iv, key, ciphertext);
+	  vty_out(vty, "decrypted hex: %s", VTY_NEWLINE);
+	  for(i = 0; i < strlen(sanity); i++){
+	    vty_out(vty, "%x ", sanity[i]);
+	  }
+	  vty_out(vty, "%s", VTY_NEWLINE);
+	  vty_out(vty, "decrypted string: %s%s", sanity, VTY_NEWLINE);
+*/
+	  //i = 0;
+	  //LOGP(DLSMS, LOGL_DEBUG, "-----BEGIN CIPHERTEXT-----\n");
+	  //for(i; i < 16; i++) {
+	  //  LOGP(DLSMS, LOGL_DEBUG, "%x ", ciphertext[i]);
+	  //}
+	  //LOGP(DLSMS, LOGL_DEBUG, "\n-----END CIPHERTEXT-----\n");
 
-  // print esms plaintext and ciphertext out to esms_send.txt
-  //esms_out = open("esms_send.txt", "wb");
-  //fprintf(esms_out, "ESMS SEND -- PLAINTEXT:'%X'\n", message);
-  //fprintf(esms_out, "ESMS SEND -- CIPHERTEXT:'%X'\n", ciphertext);
-  //fprintf(esms_out, "hello!");
-  //fclose(esms_out);
+	  // print esms plaintext and ciphertext out to esms_send.txt
+	  //esms_out = open("esms_send.txt", "wb");
+	  //fprintf(esms_out, "ESMS SEND -- PLAINTEXT:'%X'\n", message);
+	  //fprintf(esms_out, "ESMS SEND -- CIPHERTEXT:'%X'\n", ciphertext);
+	  //fprintf(esms_out, "hello!");
+	  //fclose(esms_out);
 
 	ms = get_ms(argv[0], vty);
 	if (!ms)
@@ -1149,11 +1179,11 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER IV KEY .LINE",
 	}
 	if (vty_check_number(vty, number))
 		return CMD_WARNING;
-    message = argv_concat(argv, argc, 4);
+    //message = argv_concat(argv, argc, 4);
     sms_send(ms, sms_sca, number, ciphertext);
 
     // possible memory leaks?
-    //free(ciphertext);
+    free(ciphertext);
     //free(plaintext);
     //free(sanity);
 

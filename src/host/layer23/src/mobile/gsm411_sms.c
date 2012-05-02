@@ -206,7 +206,8 @@ static int gsm340_rx_sms_deliver(struct osmocom_ms *ms, struct msgb *msg,
 	    }
 	  } else {
 	    //need to decrypt then print
-	    unsigned char *ciphertext = vty_text;
+	    unsigned char *xformtext = vty_text;
+	    unsigned char *ciphertext = inv_text_xform(*xformtext, 64);
 	    //unsigned char *iv = (unsigned char *) d_iv;
 	    //unsigned char *key = (unsigned char *) d_key;
 

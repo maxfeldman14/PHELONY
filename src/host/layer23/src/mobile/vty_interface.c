@@ -130,6 +130,155 @@ unsigned char * mdecrypt(unsigned char * iv, unsigned char * key, unsigned char 
 
   return plaintext;
 }
+unsigned int invswitcherpiss(unsigned char piss){
+	switch(piss){
+		case '0':
+			return 0;
+			break;
+		case '1':
+			return 1;
+			break;
+		case '2':
+			return 2;
+			break;
+		case '3':
+			return 3;
+			break;
+		case '4':
+			return 4;
+			break;
+		case '5':
+			return 5;
+			break;
+		case '6':
+			return 6;
+			break;
+		case '7':
+			return 7;
+			break;
+		case '8':
+			return 8;
+			break;
+		case '9':
+			return 9;
+			break;
+		case 'a':
+			return 10;
+			break;
+		case 'b':
+			return 11;
+			break;
+		case 'c':
+			return 12;
+			break;
+		case 'd':
+			return 13;
+			break;
+		case 'e':
+			return 14;
+			break;
+		case 'f':
+			return 15;
+			break;
+		default:
+			vty_out(vty, "FUCKKKKK!%s", VTY_NEWLINE);
+			return 9999;
+	}
+}
+unsigned char switcherpiss(unsigned int piss){
+	switch(piss){
+		case 0:
+			return '0';
+			break;
+		case 1:
+			return '1';
+			break;
+		case 2:
+			return '2';
+			break;
+		case 3:
+			return '3';
+			break;
+		case 4:
+			return '4';
+			break;
+		case 5:
+			return '5';
+			break;
+		case 6:
+			return '6';
+			break;
+		case 7:
+			return '7';
+			break;
+		case 8:
+			return '8';
+			break;
+		case 9:
+			return '9';
+			break;
+		case 10:
+			return 'a';
+			break;
+		case 11:
+			return 'b';
+			break;
+		case 12:
+			return 'c';
+			break;
+		case 13:
+			return 'd';
+			break;
+		case 14:
+			return 'e';
+			break;
+		case 15:
+			return 'f';
+			break;
+		default:
+			vty_out(vty, "FUCKKKKK!%s", VTY_NEWLINE);
+			return 'j';
+	}
+}
+
+// returns array of length 2 * byte_len
+unsigned char * text_xform(unsigned char * text, int byte_len){
+	int x;
+	unsigned int n;
+  	unsigned char * textout = (unsigned char *) malloc((2 * byte_len + 1) * sizeof(unsigned char));
+	unsigned char * iter = textout;
+	for(x=0; x < byte_len; x ++){
+		n = (unsigned int) text[x];
+		unsigned int low = (unsigned int) (n & 0x0000000f));
+		unsigned int high = (unsigned int) ((n & 0x000000f0)>>4);
+		*iter = switcherpiss(high);
+		iter++;
+		*iter = switcherpiss(low);
+		iter++;
+	}
+	iter = '\0';
+	return textout;
+}
+	
+unsigned char * inv_text_xform(unsigned char * text, int byte_len){
+	int x;
+  	unsigned char * textout = (unsigned char *) malloc((byte_len/2 + 1) * sizeof(unsigned char));
+	unsigned char * iter = text;
+	for(x=0; x < byte_len/2; x ++){
+		unsigned int high = invswitcherpiss(*iter);
+		iter++;
+		unsigned int low = invswitcherpiss(*iter);
+		iter++;
+		textout[x] = (unsigned char)  (((high << 4) & 0x000000f0) & (low & 0x0000000f))
+	}
+	textout[x] = '\0';
+	return text;
+}
+		
+
+		
+	
+	
 // key length must be 16 bytes
 // iv length must be 16 bytes
 unsigned char * mencrypt( unsigned char * iv, unsigned char * key, unsigned char * plaintext, int str_len, int * ct_len, int * ct_written){ 
@@ -1027,20 +1176,32 @@ DEFUN(test_enc_dec, test_enc_dec_cmd, "test_enc_dec IV KEY .LINE",
     unsigned char *key = "aaaaaaaaaaaaaaaa";
     unsigned char *iv = "bbbbbbbbbbbbbbbb";
 
+    unsigned int x = 0;
+    for(x= 0; x < 16; x++){
+    	unsigned char inter = switcherpiss(x);
+	unsigned int final = invswitcherpiss(inter);
+	if ( final != x){
+    		vty_out(vty, "ahh! the switcherpiss= final: %x  inter: %x %s", final, inter, VTY_NEWLINE);
+	}
+    }
+
     int c_str_len = 31;
     int c_len = 0;
     int c_written = 0;
     unsigned char *ciphertext = mencrypt(iv, key, plaintext, c_str_len, &c_len, &c_written);
+    unsigned char *xformtext =  text_xform(ciphertext, c_written);
     
     vty_out(vty, "iv: %s%s", iv, VTY_NEWLINE);
     vty_out(vty, "key: %s%s", key, VTY_NEWLINE);
     vty_out(vty, "plaintext:%s%s", plaintext, VTY_NEWLINE);
     vty_out(vty, "ciphertext:%s%s", ciphertext, VTY_NEWLINE);
+    vty_out(vty, "xformtext:%s%s", xformtext, VTY_NEWLINE);
 
+    unsigned char *dexformtext =  inv_text_xform(xformtext, c_written * 2);
     int p_str_len = c_written;
     int p_len = 0;
     int p_written = 0;
-    unsigned char *plaintext2 = mdecrypt(iv, key, ciphertext, p_str_len, &p_len, &p_written);
+    unsigned char *plaintext2 = mdecrypt(iv, key, dexformtext, p_str_len, &p_len, &p_written);
     
     if(strcmp(plaintext, plaintext2) == 0) {
         vty_out(vty, "encryption/decryption SUCCESS -- plaintext: %s\nciphertext: %s\nplaintext2: %s\n%s", plaintext, \
@@ -1070,6 +1231,7 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER IV KEY .LINE",
 	char *number, *sms_sca, *message = NULL;
 	unsigned char *plaintext = "1234567812345678";
 	unsigned char *ciphertext = NULL;
+	unsigned char *xformtext = NULL;
 	//FILE *esms_out;
 	int input_len = 0;
 
@@ -1086,9 +1248,12 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER IV KEY .LINE",
 	
 
 	ciphertext = mencrypt(iv, key, plaintext, 16, &ct_len, &ct_written); 
+	
+	xformtext = text_xform(ciphertext, ct_written);
+
 	vty_out(vty, "Ciphertext written: %d%s", ct_written,  VTY_NEWLINE);
 
-    cip = ciphertext;
+    	cip = xformtext;
 	  
 
 /*
@@ -1184,7 +1349,7 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER IV KEY .LINE",
 	if (vty_check_number(vty, number))
 		return CMD_WARNING;
     //message = argv_concat(argv, argc, 4);
-    sms_send(ms, sms_sca, number, ciphertext);
+    sms_send(ms, sms_sca, number, xformtext);
 
     // possible memory leaks?
     //free(ciphertext);

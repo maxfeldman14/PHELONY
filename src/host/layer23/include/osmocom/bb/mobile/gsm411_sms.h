@@ -32,6 +32,8 @@ int sms_send(struct osmocom_ms *ms, const char *sms_sca, const char *number,
 int sms_encryption;
 unsigned char * mencrypt( unsigned char * iv, unsigned char * key, unsigned char * plaintext, int str_len, int * ct_len, int * ct_written); 
 unsigned char * mdecrypt(unsigned char * iv, unsigned char * key, unsigned char * ciphertext, int str_len, int * pt_len, int * pt_written); 
+unsigned char * text_xform(unsigned char * text, int byte_len);
+unsigned char * inv_text_xform(unsigned char * text, int byte_len);
 unsigned char * d_iv, * d_key; 
 unsigned char * cip;
 

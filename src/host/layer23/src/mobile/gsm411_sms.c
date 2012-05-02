@@ -230,7 +230,7 @@ static int gsm340_rx_sms_deliver(struct osmocom_ms *ms, struct msgb *msg,
 	    vty_notify(ms, "ERROR in EVP_DecryptInit_ex\n");
     }
 
-    ciphertext_len = strlen(ciphertext);
+    ciphertext_len = sizeof(ciphertext);
 
     plaintext = (unsigned char *) malloc(ciphertext_len); 
 

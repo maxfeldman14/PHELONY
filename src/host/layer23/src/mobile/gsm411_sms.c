@@ -191,7 +191,8 @@ static int gsm340_rx_sms_deliver(struct osmocom_ms *ms, struct msgb *msg,
 
 	/* remove linefeeds and show at VTY */
 	//strcpy(vty_text, gsms->text);
-	memcpy(vty_text, gsms->text, sizeof(gsms->text));
+    unsigned size_len = sizeof(gsms->text);
+	memcpy(vty_text, gsms->text, size_len);
 	/*for (p = vty_text; *p; p++) {
 		if (*p == '\n' || *p == '\r')
 			*p = ' ';
@@ -207,7 +208,9 @@ static int gsm340_rx_sms_deliver(struct osmocom_ms *ms, struct msgb *msg,
 	  } else {
 	    //need to decrypt then print
 	    unsigned char *xformtext = vty_text;
-	    unsigned char *ciphertext = inv_text_xform(*xformtext, 64);
+        unsigned xformtext_len = strlen(xformtext);
+        vty_notify(ms, "RECEIVED XFORMTEXT: %s of length: %d\n", xformtext, strlen(xformtext));
+	    unsigned char *ciphertext = inv_text_xform(xformtext, 64);
 	    //unsigned char *iv = (unsigned char *) d_iv;
 	    //unsigned char *key = (unsigned char *) d_key;
 
@@ -275,12 +278,12 @@ static int gsm340_rx_sms_deliver(struct osmocom_ms *ms, struct msgb *msg,
 	    }
 	    LOGP(DLSMS, LOGL_DEBUG, "\n-----END CIPHERTEXT-----\n");
 
-		LOGP(DLSMS, LOGL_DEBUG, "\n-----BEGIN GLOBAL CIPHERTEXT-----\n");
+		/*LOGP(DLSMS, LOGL_DEBUG, "\n-----BEGIN GLOBAL CIPHERTEXT-----\n");
         i = 0;
 	    for(i; i < 32; i++) {
 		LOGP(DLSMS, LOGL_DEBUG, "%x ", cip[i]);
 	    }
-	    LOGP(DLSMS, LOGL_DEBUG, "\n-----END GLOBAL CIPHERTEXT-----\n");
+	    LOGP(DLSMS, LOGL_DEBUG, "\n-----END GLOBAL CIPHERTEXT-----\n");*/
 
         //print plaintext
 		LOGP(DLSMS, LOGL_DEBUG, "\n-----BEGIN PLAINTEXT-----\n");

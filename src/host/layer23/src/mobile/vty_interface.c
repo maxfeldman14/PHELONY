@@ -1096,6 +1096,12 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER KEY IV .LINE",
   vty_out(vty, "%s", VTY_NEWLINE);
   vty_out(vty, "decrypted string: %s%s", sanity, VTY_NEWLINE);
 
+  // print esms plaintext and ciphertext out to esms_send.txt
+  FILE *esms_out = open("esms_send.txt", "a+");
+  fprintf(esms_out, "ESMS SEND -- PLAINTEXT:'%X'\n", message);
+  printf(esms_out, "ESMS SEND -- CIPHERTEXT:'%X'\n", ciphertext);
+  fclose(esms_out);
+
 	ms = get_ms(argv[0], vty);
 	if (!ms)
 		return CMD_WARNING;
@@ -1129,12 +1135,8 @@ DEFUN(esms, esms_cmd, "esms MS_NAME NUMBER KEY IV .LINE",
 	}
 	if (vty_check_number(vty, number))
 		return CMD_WARNING;
-  message = argv_concat(argv, argc, 4);
-	sms_send(ms, sms_sca, number, ciphertext);
-
-    printf("ESMS SEND -- PLAINTEXT:'%X'\n", message);
-    printf("ESMS SEND -- CIPHERTEXT:'%X'\n", ciphertext);
-
+    message = argv_concat(argv, argc, 4);
+    sms_send(ms, sms_sca, number, ciphertext);
     // possible memory leaks?
     //free(ciphertext);
     //free(plaintext);

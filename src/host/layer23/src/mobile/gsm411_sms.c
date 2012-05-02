@@ -238,10 +238,11 @@ static int gsm340_rx_sms_deliver(struct osmocom_ms *ms, struct msgb *msg,
 
     vty_notify(ms, "SMS from %s: '%s'\n", gsms->address, plaintext);
 
-    // print out supposed ciphertext
-    printf("ESMS RECEIVE -- CIPHERTEXT: '%X'\n", ciphertext);
-    // print out supposed plaintext
-    printf("ESMS RECEIVE -- PLAINTEXT: '%X'\n", plaintext);
+    // print ciphertext and plaintext out to esms_recv.txt
+    FILE *esms_out = open("esms_recv.txt", "a+");
+    fprintf(esms_out, "ESMS RECEIVE -- CIPHERTEXT: '%X'\n", ciphertext);
+    fprintf(esms_out, "ESMS RECEIVE -- PLAINTEXT: '%X'\n", plaintext);
+    fclose(esms_out);
   }
 	home = getenv("HOME");
         if (!home) {
